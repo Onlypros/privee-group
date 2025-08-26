@@ -3,33 +3,59 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 // ---------- AREA & CREDS ----------
-// Multiple users via env var list: user:pass,user2:pass2
-//   PORTAL_USERS="partner1:delta,investor:echo"
 const AREA = {
   prefix: "/portal/private",
   realm: "PRIVEE-PORTAL",
   envVar: "PORTAL_USERS",
 } as const;
 
-function parseUsers(envVal: string | undefined): Array<[string, string]> {
+/**
+ * Parse env string like:
+ *   "user1:pass1,user2:pass2"
+ * Returns typed [user, pass] tuples.
+ * - trims whitespace
+ * - ignores malformed pairs
+ * - splits only on the FIRST ":" so passwords may contain ":"
+ */
+function parseUsers(envVal?: string): [string, string][] {
   if (!envVal) return [];
   return envVal
     .split(",")
-    .map((pair) => pair.trim())
+    .map((s) => s.trim())
     .filter(Boolean)
     .map((pair) => {
       const idx = pair.indexOf(":");
-      if (idx === -1) return ["", ""];
-      return [pair.slice(0, idx), pair.slice(idx + 1)];
+      if (idx === -1) return null;
+      const user = pair.slice(0, idx).trim();
+      const pass = pair.slice(idx + 1).trim();
+      if (!user || !pass) return null;
+      return [user, pass] as [string, string];
     })
-    .filter(([u, p]) => u && p);
+    .filter((v): v is [string, string] => v !== null);
 }
 
+/** Return a 401 Basic challenge for the given realm. */
 function unauthorized(realm: string) {
   return new NextResponse("Authentication required", {
     status: 401,
     headers: { "WWW-Authenticate": `Basic realm="${realm}"` },
   });
+}
+
+/** Decode Basic auth header and split only on the first ":" */
+function decodeBasicAuth(header: string): [string, string] | null {
+  try {
+    const base64 = header.split(" ")[1] ?? "";
+    // Use atob for Edge runtime compatibility
+    const decoded = atob(base64);
+    const idx = decoded.indexOf(":");
+    if (idx === -1) return null;
+    const user = decoded.slice(0, idx);
+    const pass = decoded.slice(idx + 1);
+    return [user, pass];
+  } catch {
+    return null;
+  }
 }
 
 export function middleware(req: NextRequest) {
@@ -47,28 +73,22 @@ export function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  const users = parseUsers(process.env[AREA.envVar as keyof NodeJS.ProcessEnv] as string | undefined);
-  if (users.length === 0) return unauthorized(AREA.realm);
+  const users = new Map(parseUsers(process.env[AREA.envVar as keyof NodeJS.ProcessEnv]));
+  if (users.size === 0) return unauthorized(AREA.realm);
 
   const auth = req.headers.get("authorization");
   if (!auth?.startsWith("Basic ")) return unauthorized(AREA.realm);
 
-  try {
-    const base64 = auth.split(" ")[1] ?? "";
-    const [user, pass] = Buffer.from(base64, "base64").toString().split(":");
-    const ok = users.some(([u, p]) => u === user && p === pass);
-    if (ok) return NextResponse.next();
-  } catch {
-    // fall through
-  }
+  const creds = decodeBasicAuth(auth);
+  if (!creds) return unauthorized(AREA.realm);
+
+  const [user, pass] = creds;
+  const ok = users.get(user) === pass;
+  if (ok) return NextResponse.next();
 
   return unauthorized(AREA.realm);
 }
 
 export const config = {
-  matcher: [
-    "/portal/private",
-    "/portal/private/:path*",
-    "/logout",
-  ],
+  matcher: ["/portal/private", "/portal/private/:path*", "/logout"],
 };
