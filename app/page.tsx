@@ -23,12 +23,12 @@ export default function Home() {
         {/* Centered logo */}
         <div className="relative z-20 flex items-center justify-center">
           <Image
-            src="/creative/vectorlogo.png"
+            src="/creative/nothelogo.png"
             alt="PRIVÉE GROUP"
             width={800}
             height={1200}
             priority
-            className="w-[260px] md:w-[420px] h-auto"
+            className="w-[200px] md:w-[320px] lg:w-[360px] h-auto"
           />
         </div>
 

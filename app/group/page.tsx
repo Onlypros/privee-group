@@ -3,14 +3,15 @@ import Link from "next/link";
 import EmailCTA from "../components/EmailCTA";
 
 export const metadata = {
-  title: "The Group — PRIVÉE GROUP",
+  title: "Our Group — PRIVÉE GROUP",
   description:
-    "Filler description for the Group page. Replace with real content later.",
+    "The Privée Group is a cultural house for creative work, mission, and collaboration.",
   openGraph: {
-    title: "The Group — PRIVÉE GROUP",
+    title: "Our Group — PRIVÉE GROUP",
     description:
-      "Filler description for the Group page. Replace with real content later.",
+      "The Privée Group is a cultural house for creative work, mission, and collaboration.",
     url: "/group",
+    type: "website",
   },
 };
 
@@ -28,7 +29,8 @@ export default function GroupPage() {
             The Privée Group is a cultural house for creative work, mission, and collaboration.
           </p>
           <p className="mt-5 text-sm leading-relaxed text-black md:text-[9px]">
-            We work with founders, organizations, and investors <br /> building with clarity, purpose, and long-term value.
+            We work with founders, organizations, and investors <br />
+            building with clarity, purpose, and long-term value.
           </p>
         </div>
       </section>
@@ -86,20 +88,6 @@ export default function GroupPage() {
         </ul>
       </section>
 
-      {/* <hr className="mx-auto my-8 max-w-3xl border-black/10" /> */}
-
-      {/* Our Belief */}
-      {/* <section className="mx-auto max-w-3xl py-10 text-center">
-        <h2 className="text-xl font-medium md:text-xs uppercase tracking-wide">
-          Our Belief
-        </h2>
-        <div className="mx-auto mt-4 max-w-xl text-center text-black italic">
-          <p className="text-sm leading-snug md:text-[9px]">
-            Placeholder belief statement in italics.
-          </p>
-        </div>
-      </section> */}
-
       <hr className="mx-auto my-8 max-w-3xl border-black/10" />
 
       {/* Request Collaboration */}
@@ -114,7 +102,7 @@ export default function GroupPage() {
         <div className="mt-6 flex items-center justify-center gap-6">
           <Link
             href="/portal"
-            className="w-30 inline-block text-center tracking-widest border-1 border-black px-6 py-2 text-[10px] uppercase transition hover:bg-black hover:text-white"
+            className="w-30 inline-block text-center tracking-widest border border-black px-6 py-2 text-[10px] uppercase transition hover:bg-black hover:text-white"
             aria-label="Open the Portal page"
           >
             Portal

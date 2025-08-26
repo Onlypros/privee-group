@@ -14,7 +14,7 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 
-  /* Fonts: use Inter from layout.tsx site‑wide */
+  /* Fonts: use Inter from layout.tsx site-wide */
   --font-sans: var(--font-inter), Helvetica, Arial, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
@@ -36,7 +36,7 @@
 *, ::before, ::after { box-sizing: border-box; }
 html {
   -webkit-text-size-adjust: 100%;
-  /* smooth scroll for the scroll cue */
+  /* ✅ keep smooth scrolling globally */
   scroll-behavior: smooth;
 }
 body {
@@ -63,9 +63,12 @@ body {
 .scroll-caret { animation: caretFloat 2.2s ease-in-out infinite; }
 
 /* ---------- Reduced-motion & media fallbacks ---------- */
-/* If user prefers reduced motion, hide autoplay video and show any
-   .hero-image fallback you include; also stop the cue animation. */
+/* If user prefers reduced motion, hide autoplay video, stop cue animations,
+   and turn off smooth scroll for accessibility. */
 @media (prefers-reduced-motion: reduce) {
+  html[data-scroll-behavior="smooth"] {
+    scroll-behavior: auto !important;
+  }
   .hero-video { display: none !important; }
   .hero-image { display: block !important; }
   .scroll-caret { animation: none !important; }

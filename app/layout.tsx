@@ -8,7 +8,7 @@ import LuxuryFooter from "./components/LuxuryFooter";
 const inter = Inter({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-inter", // exposes CSS var if you want it
+  variable: "--font-inter",
 });
 
 export const metadata: Metadata = {
@@ -38,8 +38,8 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="scroll-smooth">
-      {/* Use inter.className to force Inter site‑wide */}
+    // ✅ Add data-scroll-behavior to opt into smooth scrolling across route transitions
+    <html lang="en" data-scroll-behavior="smooth" className="scroll-smooth">
       <body className={`${inter.className} antialiased bg-black text-white`}>
         {/* Skip link for keyboard users */}
         <a

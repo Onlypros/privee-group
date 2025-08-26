@@ -1,51 +1,106 @@
 // app/creative/page.tsx
-import Image from "next/image";
+import Link from "next/link";
+import EmailCTA from "../components/EmailCTA";
 
-type Photo = { src: string; title?: string; w: number; h: number };
+export const metadata = {
+  title: "Creative — PRIVÉE GROUP",
+  description:
+    "The studio arm of The Privée Group. We shape visual identity and storytelling through branding and photography.",
+  openGraph: {
+    title: "Creative — PRIVÉE GROUP",
+    description:
+      "The studio arm of The Privée Group. We shape visual identity and storytelling through branding and photography.",
+    url: "/creative",
+  },
+};
 
-const photos: Photo[] = [
-  { src: "/creative/cat1.png", title: "Cat One", w: 800, h: 600 },
-  { src: "/creative/cat2.png", title: "Cat Two", w: 800, h: 600 },
-  { src: "/creative/cat3.png", title: "Cat Three", w: 800, h: 600 },
-  { src: "/creative/cat4.png", title: "Cat Four", w: 800, h: 600 },
-  { src: "/creative/cat5.png", title: "Cat Five", w: 800, h: 600 },
-  { src: "/creative/cat6.png", title: "Cat Six", w: 800, h: 600 },
-];
-
-export default function Creative() {
+export default function CreativePage() {
   return (
-    <>
-      {/* gallery grid */}
-      <section className="px-6 md:px-10 lg:px-16 pb-16">
-        <h1 className="sr-only">Portfolio</h1>
-        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-          {photos.map((p) => (
-            <li key={p.src} className="group relative overflow-hidden bg-neutral-100">
-              <div className="relative w-full" style={{ aspectRatio: "4 / 5" }}>
-                <Image
-                  src={p.src}
-                  alt={p.title ?? "Portfolio image"}
-                  fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  className="object-cover transition-transform duration-300 group-hover:scale-105"
-                  priority
-                />
-              </div>
+    <main className="px-6">
+      {/* Hero */}
+      <section className="pt-20 pb-12 text-center">
+        <h1 className="text-3xl font-semibold tracking-wide md:text-4xl uppercase">
+          OUR <span className="font-serif italic">STUDIO</span>
+        </h1>
 
-              {p.title && (
-                <div
-                  className="pointer-events-none absolute inset-0 flex items-end
-                             bg-gradient-to-t from-black/50 via-transparent to-transparent
-                             opacity-0 group-hover:opacity-100 transition-opacity"
-                >
-                  <span className="text-white text-sm md:text-base p-3">{p.title}</span>
-                </div>
-              )}
-            </li>
-          ))}
+        <div className="mx-auto mt-6 max-w-xl">
+          <p className="text-sm italic leading-relaxed text-black md:text-[9px]">
+            The studio arm of The Privée Group.
+          </p>
+          <p className="mt-5 text-sm leading-relaxed text-black md:text-[9px]">
+            We shape visual identity and storytelling through branding and photography.
+          </p>
+        </div>
+      </section>
+
+      <hr className="mx-auto my-8 max-w-3xl border-black/10" />
+
+      {/* What We Do */}
+      <section className="mx-auto max-w-6xl py-10 text-center">
+        <h2 className="text-xl font-medium md:text-xs uppercase tracking-wide">
+          What We Do
+        </h2>
+
+        <div className="mt-8 grid grid-cols-1 gap-10 md:grid-cols-2">
+          <div className="flex flex-col items-center">
+            <h3 className="text-[12px] font-semibold md:text-sm tracking-wide uppercase">
+              Branding
+            </h3>
+            <p className="mx-auto mt-2 max-w-[34ch] text-sm leading-relaxed text-black md:text-[9px]">
+              Logos, identity systems, and brand materials that build recognition and clarity.
+            </p>
+          </div>
+
+          <div className="flex flex-col items-center">
+            <h3 className="text-[12px] font-semibold md:text-sm tracking-wide uppercase">
+              Photography
+            </h3>
+            <p className="mx-auto mt-2 max-w-[34ch] text-sm leading-relaxed text-black md:text-[9px]">
+              Editorial, portrait, lifestyle, and spaces. Visual work created for brands and projects.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <hr className="mx-auto my-8 max-w-3xl border-black/10" />
+
+      {/* Who It's For */}
+      <section className="mx-auto max-w-3xl py-10 text-center">
+        <h2 className="text-xl font-medium md:text-xs uppercase tracking-wide">
+          Who It’s For
+        </h2>
+        <ul className="mt-4 space-y-2 text-sm leading-snug text-black md:text-[9px]">
+          <li>Founders building distinct brands</li>
+          <li>Companies shaping lifestyle or real estate projects</li>
+          <li>Creators and organizations working across culture and industry</li>
         </ul>
       </section>
-    </>
+
+      <hr className="mx-auto my-8 max-w-3xl border-black/10" />
+
+      {/* Request Collaboration (matches Group pattern) */}
+      <section className="mx-auto max-w-3xl py-10 text-center">
+        <h2 className="text-xl font-medium md:text-xs uppercase tracking-wide">
+          Request Collaboration
+        </h2>
+        <p className="mt-3 text-sm leading-snug text-black md:text-[9px]">
+          Collaborations are reviewed privately.
+        </p>
+
+        <div className="mt-6 flex items-center justify-center gap-6">
+          <Link
+            href="/portal"
+            className="w-30 inline-block text-center tracking-widest border-1 border-black px-6 py-2 text-[10px] uppercase transition hover:bg-black hover:text-white"
+            aria-label="Open the Portal page"
+          >
+            Portal
+          </Link>
+
+          <EmailCTA />
+        </div>
+      </section>
+
+      <div className="h-12" />
+    </main>
   );
 }
-// Note: Header and footer are now in the GlobalNav and LuxuryFooter components

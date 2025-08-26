@@ -6,9 +6,9 @@ import { useEffect, useState } from "react";
 
 const links = [
   { href: "/creative", label: "CREATIVE" },
-  { href: "/mission", label: "MISSION" },
-  { href: "/thegroup", label: "OUR GROUP" },
-  { href: "/portal", label: "PORTAL" },
+  { href: "/mission",  label: "MISSION" },
+  { href: "/group",    label: "GROUP" },   // ensure this path matches your page
+  { href: "/portal",   label: "PORTAL" },
 ];
 
 export default function GlobalNav() {
@@ -36,53 +36,45 @@ export default function GlobalNav() {
     pathname === href || pathname.startsWith(`${href}/`);
 
   return (
-    <nav
-      aria-label="Primary"
-      className="fixed top-0 inset-x-0 z-[999] bg-black text-white"
-    >
-      {/* relative so the centered row can be absolutely centered */}
+    <nav aria-label="Primary" className="fixed top-0 inset-x-0 z-[999] bg-black text-white isolate">
+      {/* bar */}
       <div className="relative mx-auto max-w-6xl px-6 h-[var(--header-h)] flex items-center">
-        {/* Left: Brand */}
+        {/* brand */}
         <Link
           href="/"
-          className="text-sm font-semibold tracking-[0.18em] hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded"
+          className="text-sm font-semibold tracking-[0.18em] hover:text-gray-300 transition-colors
+                     focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded"
         >
           PRIVÉE GROUP
         </Link>
 
-        {/* Center: small, centered links (desktop only) */}
+        {/* desktop center links */}
         <div className="hidden sm:flex absolute left-1/2 -translate-x-1/2 items-center gap-4">
           {links.map((l) => (
             <Link
               key={l.href}
               href={l.href}
               aria-current={isActive(l.href) ? "page" : undefined}
-              className={`text-[7px] font-light tracking-[0.02em] leading-tight text-white/70 transition-colors ${
-                isActive(l.href) ? "text-white" : "hover:text-white"
-              }`}
+              className="text-[10px] font-light tracking-[0.02em] leading-tight
+                         text-white hover:text-gray-300 transition-colors
+                         focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded"
             >
               {l.label}
             </Link>
           ))}
         </div>
 
-        {/* Right: Mobile hamburger (phones only) */}
+        {/* hamburger (mobile only) */}
         <button
           type="button"
-          className="sm:hidden ml-auto inline-flex items-center justify-center p-2 text-sm hover:text-gray-300 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+          className="sm:hidden ml-auto inline-flex items-center justify-center p-2 text-sm hover:text-gray-300 transition-colors
+                     focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded"
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
           aria-controls="primary-menu"
           aria-label={open ? "Close menu" : "Open menu"}
         >
-          <svg
-            aria-hidden="true"
-            className="h-5 w-5"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-          >
+          <svg aria-hidden="true" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             {open ? (
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
             ) : (
@@ -92,29 +84,26 @@ export default function GlobalNav() {
         </button>
       </div>
 
-      {/* Backdrop (mobile only) */}
+      {/* backdrop (mobile only) */}
       <div
-        className={`sm:hidden fixed inset-0 ${
-          open ? "bg-black/50 z-[998]" : "pointer-events-none bg-transparent"
-        } transition-opacity duration-200`}
+        className={`sm:hidden fixed inset-0 ${open ? "bg-black/50 z-[998]" : "pointer-events-none bg-transparent"} transition-opacity duration-200`}
         style={{ opacity: open ? 1 : 0 }}
         onClick={() => setOpen(false)}
       />
 
-      {/* Drawer (mobile only) */}
+      {/* drawer (mobile only) — NO transforms/opacity/blur; always solid bg */}
       <div
         id="primary-menu"
-        className={`sm:hidden fixed top-[var(--header-h)] inset-x-0 z-[1000] origin-top bg-black/95 backdrop-blur transition-transform duration-200 ${
-          open ? "scale-y-100" : "scale-y-0 pointer-events-none"
-        }`}
-        style={{ transformOrigin: "top" }}
+        className={`sm:hidden fixed top-[var(--header-h)] inset-x-0 z-[1000] bg-black ${open ? "block" : "hidden"}`}
+        aria-hidden={!open}
       >
-        <div className="mx-auto max-w-6xl px-6 py-4 flex flex-col gap-3 text-sm">
+        <div className="mx-auto max-w-6xl px-6 py-4 flex flex-col gap-1">
           {links.map((l) => (
             <Link
               key={l.href}
               href={l.href}
-              className="block py-2 text-white/80 hover:text-white transition-colors"
+              className="block py-2 text-base bg-black text-white hover:text-gray-300 transition-colors
+                         focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded"
               onClick={() => setOpen(false)}
             >
               {l.label}
