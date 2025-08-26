@@ -4,19 +4,34 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const links = [
-  { href: "/creative", label: "CREATIVE" },
-  { href: "/mission",  label: "MISSION" },
-  { href: "/group",    label: "GROUP" },   // ensure this path matches your page
-  { href: "/portal",   label: "PORTAL" },
+type NavItem =
+  | { href: string; label: string }
+  | { label: string; href?: string; children: Array<{ href: string; label: string }> };
+
+const links: NavItem[] = [
+  {
+    label: "CREATIVE",
+    href: "/creative", // <-- make parent clickable
+    children: [
+      { href: "/branding", label: "BRANDING" },
+      { href: "/photography", label: "PHOTOGRAPHY" },
+    ],
+  },
+  { href: "/mission", label: "MISSION" },
+  { href: "/group", label: "GROUP" }, // ensure this path matches your page
+  { href: "/portal", label: "PORTAL" },
 ];
 
 export default function GlobalNav() {
   const pathname = usePathname();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false); // mobile drawer
+  const [creativeOpen, setCreativeOpen] = useState(false); // mobile accordion
 
   // close menu on route change
-  useEffect(() => setOpen(false), [pathname]);
+  useEffect(() => {
+    setOpen(false);
+    setCreativeOpen(false);
+  }, [pathname]);
 
   // lock scroll when open
   useEffect(() => {
@@ -27,7 +42,12 @@ export default function GlobalNav() {
 
   // close on Escape
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpen(false);
+        setCreativeOpen(false);
+      }
+    };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, []);
@@ -49,20 +69,71 @@ export default function GlobalNav() {
         </Link>
 
         {/* desktop center links */}
-        <div className="hidden sm:flex absolute left-1/2 -translate-x-1/2 items-center gap-4">
-          {links.map((l) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              aria-current={isActive(l.href) ? "page" : undefined}
-              className="text-[10px] font-light tracking-[0.02em] leading-tight
-                         text-white hover:text-gray-300 transition-colors
-                         focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded"
-            >
-              {l.label}
-            </Link>
-          ))}
-        </div>
+        <ul className="hidden sm:flex absolute left-1/2 -translate-x-1/2 items-center gap-4">
+          {links.map((item) => {
+            if ("children" in item) {
+              return (
+                <li key={item.label} className="relative group">
+                  {/* Parent is now a Link (clickable to /creative) */}
+                  <Link
+                    href={item.href ?? "/creative"}
+                    aria-haspopup="menu"
+                    className="text-[10px] font-light tracking-[0.02em] leading-tight
+                               hover:text-gray-300 transition-colors outline-none
+                               focus-visible:ring-2 focus-visible:ring-white/60 rounded"
+                  >
+                    {item.label}
+                  </Link>
+
+                  {/* Dropdown — black bg, white text, compact */}
+                  <div
+                    className="invisible opacity-0 group-hover:visible group-hover:opacity-100 transition
+                               absolute top-[calc(100%+10px)] left-1/2 -translate-x-1/2
+                               rounded-md bg-black text-white shadow-lg
+                               ring-1 ring-white/10 border border-white/5"
+                    role="menu"
+                  >
+                    <ul className="py-1">
+                      {item.children.map((c) => {
+                        const active = isActive(c.href);
+                        return (
+                          <li key={c.href}>
+                            <Link
+                              href={c.href}
+                              role="menuitem"
+                              className="relative block px-3 py-2 whitespace-nowrap
+                                         text-[10px] font-light tracking-[0.02em] leading-tight
+                                         hover:underline underline-offset-4 hover:opacity-80 transition"
+                            >
+                              {active && (
+                                <span className="absolute left-0 top-1/2 -translate-y-1/2 h-3.5 w-[3px] bg-white rounded-sm" />
+                              )}
+                              {c.label}
+                            </Link>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                </li>
+              );
+            }
+
+            return (
+              <li key={item.href}>
+                <Link
+                  href={item.href}
+                  aria-current={isActive(item.href) ? "page" : undefined}
+                  className="text-[10px] font-light tracking-[0.02em] leading-tight
+                             text-white hover:text-gray-300 transition-colors
+                             focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded"
+                >
+                  {item.label}
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
 
         {/* hamburger (mobile only) */}
         <button
@@ -91,24 +162,64 @@ export default function GlobalNav() {
         onClick={() => setOpen(false)}
       />
 
-      {/* drawer (mobile only) — NO transforms/opacity/blur; always solid bg */}
+      {/* drawer (mobile only) */}
       <div
         id="primary-menu"
         className={`sm:hidden fixed top-[var(--header-h)] inset-x-0 z-[1000] bg-black ${open ? "block" : "hidden"}`}
         aria-hidden={!open}
       >
         <div className="mx-auto max-w-6xl px-6 py-4 flex flex-col gap-1">
-          {links.map((l) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              className="block py-2 text-base bg-black text-white hover:text-gray-300 transition-colors
+          {/* CREATIVE accordion */}
+          <div>
+            <button
+              onClick={() => setCreativeOpen((v) => !v)}
+              className="w-full flex items-center justify-between py-2 text-base hover:text-gray-300
                          focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded"
-              onClick={() => setOpen(false)}
+              aria-expanded={creativeOpen}
+              aria-controls="creative-submenu"
             >
-              {l.label}
-            </Link>
-          ))}
+              <span>CREATIVE</span>
+              <span className={`transition ${creativeOpen ? "rotate-180" : ""}`}>▾</span>
+            </button>
+            {creativeOpen && (
+              <ul id="creative-submenu" className="pl-3 border-l border-white/10 space-y-1">
+                <li>
+                  <Link
+                    href="/branding"
+                    className={`block py-2 text-base hover:text-gray-300 ${isActive("/branding") ? "underline underline-offset-4" : ""}`}
+                    onClick={() => setOpen(false)}
+                  >
+                    Branding
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/photography"
+                    className={`block py-2 text-base hover:text-gray-300 ${isActive("/photography") ? "underline underline-offset-4" : ""}`}
+                    onClick={() => setOpen(false)}
+                  >
+                    Photography
+                  </Link>
+                </li>
+              </ul>
+            )}
+          </div>
+
+          {/* Flat links */}
+          {links
+            .filter((l): l is { href: string; label: string } => "href" in l)
+            .filter((l) => l.label !== "CREATIVE")
+            .map((l) => (
+              <Link
+                key={l.href}
+                href={l.href}
+                className="block py-2 text-base bg-black text-white hover:text-gray-300 transition-colors
+                           focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded"
+                onClick={() => setOpen(false)}
+              >
+                {l.label}
+              </Link>
+            ))}
         </div>
       </div>
     </nav>
