@@ -20,7 +20,6 @@ const links: NavItem[] = [
   },
   { href: "/mission", label: "MISSION" },
   { href: "/group", label: "GROUP" },
-  { href: "/selected-work", label: "WORK" },
   { href: "/portal", label: "PORTAL" },
 ];
 

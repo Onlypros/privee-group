@@ -20,67 +20,66 @@ export default function GroupPage() {
     <main className="px-6">
       {/* Hero */}
       <section className="pt-20 pb-12 text-center">
-        <h1 className="text-3xl font-semibold tracking-wide md:text-4xl uppercase">
-          OUR <span className="font-serif italic">GROUP</span>
+        <h1 className="tracking-wide uppercase text-4xl md:text-5xl font-semibold">
+          OUR <span className="font-serif italic normal-case">GROUP</span>
         </h1>
 
-        <div className="mx-auto mt-6 max-w-xl">
-          <p className="text-sm italic leading-relaxed text-black md:text-[9px]">
+        <div className="mx-auto mt-5 max-w-2xl">
+          <p className="italic leading-relaxed text-[var(--foreground)]/70 text-sm md:text-base">
             The Privée Group is a cultural house for creative work, mission, and collaboration.
           </p>
-          <p className="mt-5 text-sm leading-relaxed text-black md:text-[9px]">
-            We work with founders, organizations, and investors <br />
-            building with clarity, purpose, and long-term value.
+          <p className="mt-3 leading-relaxed text-sm md:text-base text-[var(--foreground)]/80">
+            We work with founders, organizations, and investors building with clarity, purpose, and long-term value.
           </p>
         </div>
       </section>
 
-      <hr className="mx-auto my-8 max-w-3xl border-black/10" />
+      <hr className="mx-auto my-8 max-w-5xl border-[color:var(--foreground)]/10" />
 
       {/* What We Do */}
-      <section className="mx-auto max-w-6xl py-10 text-center">
-        <h2 className="text-xl font-medium md:text-xs uppercase tracking-wide">
+      <section className="mx-auto max-w-5xl py-12 text-center">
+        <p className="tracking-widest uppercase text-[11px] md:text-xs text-[var(--foreground)]/70">
           What We Do
-        </h2>
+        </p>
 
-        <div className="mt-8 grid grid-cols-1 gap-10 md:grid-cols-3">
+        <div className="mt-8 grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-14">
           <div className="flex flex-col items-center">
-            <h3 className="text-[12px] font-semibold md:text-sm tracking-wide uppercase">
+            <h3 className="uppercase tracking-wide font-semibold text-sm md:text-base">
               Creative
             </h3>
-            <p className="mx-auto mt-2 max-w-[34ch] text-sm leading-relaxed text-black md:text-[9px]">
-              Branding, photography, and cultural work <br /> led through our studio.
+            <p className="mt-2 max-w-[38ch] leading-relaxed text-sm md:text-base text-[var(--foreground)]/80">
+              Branding, photography, and cultural work led through our studio.
             </p>
           </div>
 
           <div className="flex flex-col items-center">
-            <h3 className="text-[12px] font-semibold md:text-sm tracking-wide uppercase">
+            <h3 className="uppercase tracking-wide font-semibold text-sm md:text-base">
               Mission
             </h3>
-            <p className="mx-auto mt-2 max-w-[34ch] text-sm leading-relaxed text-black md:text-[9px]">
+            <p className="mt-2 max-w-[38ch] leading-relaxed text-sm md:text-base text-[var(--foreground)]/80">
               Partnerships with individuals and organizations serving people and purpose.
             </p>
           </div>
 
           <div className="flex flex-col items-center">
-            <h3 className="text-[12px] font-semibold md:text-sm tracking-wide uppercase">
+            <h3 className="uppercase tracking-wide font-semibold text-sm md:text-base">
               Collaborations
             </h3>
-            <p className="mx-auto mt-2 max-w-[34ch] text-sm leading-relaxed text-black md:text-[9px]">
+            <p className="mt-2 max-w-[38ch] leading-relaxed text-sm md:text-base text-[var(--foreground)]/80">
               Selective ventures with founders and investors aligned with long-term vision.
             </p>
           </div>
         </div>
       </section>
 
-      <hr className="mx-auto my-8 max-w-3xl border-black/10" />
+      <hr className="mx-auto my-8 max-w-5xl border-[color:var(--foreground)]/10" />
 
       {/* Who It's For */}
-      <section className="mx-auto max-w-3xl py-10 text-center">
-        <h2 className="text-xl font-medium md:text-xs uppercase tracking-wide">
+      <section className="mx-auto max-w-3xl py-12 text-center">
+        <p className="tracking-widest uppercase text-[11px] md:text-xs text-[var(--foreground)]/70">
           Who It’s For
-        </h2>
-        <ul className="mt-4 space-y-2 text-sm leading-snug text-black md:text-[9px]">
+        </p>
+        <ul className="mt-6 space-y-2 text-sm md:text-base leading-relaxed text-[var(--foreground)]/85">
           <li>Founders shaping meaningful companies</li>
           <li>Creators and teams building culture through design, art, or media</li>
           <li>Organizations rooted in purpose and community impact</li>
@@ -88,24 +87,25 @@ export default function GroupPage() {
         </ul>
       </section>
 
-      <hr className="mx-auto my-8 max-w-3xl border-black/10" />
+      <hr className="mx-auto my-8 max-w-5xl border-[color:var(--foreground)]/10" />
 
       {/* Request Collaboration */}
-      <section className="mx-auto max-w-3xl py-10 text-center">
-        <h2 className="text-xl font-medium md:text-xs uppercase tracking-wide">
+      <section className="mx-auto max-w-3xl py-12 text-center">
+        <p className="tracking-widest uppercase text-[11px] md:text-xs text-[var(--foreground)]/70">
           Request Collaboration
-        </h2>
-        <p className="mt-3 text-sm leading-snug text-black md:text-[9px]">
+        </p>
+        <p className="mt-3 text-sm md:text-base leading-relaxed text-[var(--foreground)]/75">
           Collaborations are reviewed privately.
         </p>
 
-        <div className="mt-6 flex items-center justify-center gap-6">
+        <div className="mt-6 flex items-center justify-center gap-4">
           <Link
             href="/portal"
-            className="w-30 inline-block text-center tracking-widest border border-black px-6 py-2 text-[10px] uppercase transition hover:bg-black hover:text-white"
+            className="inline-block border border-[color:var(--foreground)] px-5 py-2 text-xs md:text-sm tracking-widest
+                       hover:bg-[color:var(--foreground)] hover:text-[color:var(--background)] transition"
             aria-label="Open the Portal page"
           >
-            Portal
+            PORTAL
           </Link>
 
           <EmailCTA />
