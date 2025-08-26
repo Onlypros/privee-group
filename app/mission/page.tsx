@@ -83,7 +83,7 @@ export default function MissionPage() {
       {/* Who It's For */}
       <section className="mx-auto max-w-3xl py-10 text-center">
         <h2 className="text-xl font-medium md:text-xs uppercase tracking-wide">
-          Who It's For
+          Who It’s For
         </h2>
         <ul className="mt-4 space-y-2 text-sm leading-snug text-black md:text-[9px]">
           <li>Missionaries</li>
