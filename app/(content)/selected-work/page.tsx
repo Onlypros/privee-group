@@ -35,68 +35,77 @@ export default function SelectedWorkPage() {
 
       {/* Grid */}
       <section className="mx-auto max-w-6xl pb-16">
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-x-8 gap-y-8 md:grid-cols-2">
           {/* Row 1 */}
-          <div className="relative aspect-[4/3] overflow-hidden bg-neutral-200">
+          <figure className="relative aspect-[3/4] overflow-hidden bg-neutral-200">
             <Image
-              src="/creative/cat1.png"
+              src="/creative/puppy.jpg"
               alt="Selected work image 1"
               fill
-              className="object-cover"
               sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover object-center"
               priority
+              loading="eager"
             />
-          </div>
-          <div className="relative aspect-[4/3] overflow-hidden bg-neutral-200">
+          </figure>
+
+          <figure className="relative aspect-[3/4] overflow-hidden bg-neutral-200">
             <Image
               src="/creative/cat2.png"
               alt="Selected work image 2"
               fill
-              className="object-cover"
               sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover object-center"
               priority
+              loading="eager"
             />
-          </div>
+          </figure>
 
           {/* Row 2 */}
-          <div className="relative aspect-[4/3] overflow-hidden bg-neutral-200">
+          <figure className="relative aspect-[3/4] overflow-hidden bg-neutral-200">
             <Image
               src="/creative/cat3.png"
               alt="Selected work image 3"
               fill
-              className="object-cover"
               sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover object-[50%_40%]"
+              loading="lazy"
             />
-          </div>
-          <div className="relative aspect-[4/3] overflow-hidden bg-neutral-200">
+          </figure>
+
+          <figure className="relative aspect-[3/4] overflow-hidden bg-neutral-200">
             <Image
               src="/creative/cat4.png"
               alt="Selected work image 4"
               fill
-              className="object-cover"
               sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover object-center"
+              loading="lazy"
             />
-          </div>
+          </figure>
 
           {/* Row 3 */}
-          <div className="relative aspect-[4/3] overflow-hidden bg-neutral-200">
+          <figure className="relative aspect-[3/4] overflow-hidden bg-neutral-200">
             <Image
               src="/creative/cat5.png"
               alt="Selected work image 5"
               fill
-              className="object-cover"
               sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover object-center"
+              loading="lazy"
             />
-          </div>
-          <div className="relative aspect-[4/3] overflow-hidden bg-neutral-200">
+          </figure>
+
+          <figure className="relative aspect-[3/4] overflow-hidden bg-neutral-200">
             <Image
               src="/creative/cat6.png"
               alt="Selected work image 6"
               fill
-              className="object-cover"
               sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover object-center"
+              loading="lazy"
             />
-          </div>
+          </figure>
         </div>
       </section>
     </main>

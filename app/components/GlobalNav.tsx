@@ -1,9 +1,9 @@
-// app/components/GlobalNav.tsx
 "use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { useNavMenu } from "./NavMenuContext";
 
 type NavItem =
   | { href: string; label: string }
@@ -25,36 +25,75 @@ const links: NavItem[] = [
 
 export default function GlobalNav() {
   const pathname = usePathname();
+
+  // include menuOffset (needed to position the dropdown)
+  const { openMenu, openCreative, closeAll, setMenuOffset, menuOffset } = useNavMenu();
+
+  // local mobile drawer state
   const [open, setOpen] = useState(false);
   const [creativeOpen, setCreativeOpen] = useState(false);
   const drawerRef = useRef<HTMLDivElement | null>(null);
 
-  // Close on route change
+  // refs to measure alignment
+  const barRef = useRef<HTMLDivElement | null>(null);             // centered container
+  const creativeLinkRef = useRef<HTMLAnchorElement | null>(null); // CREATIVE link
+  const rafRef = useRef<number | null>(null);
+
+  // compute offset RELATIVE TO CONTAINER CENTER (not viewport)
+  const updateMenuOffset = () => {
+    const btn = creativeLinkRef.current;
+    const parent = barRef.current;
+    if (!btn || !parent) return;
+
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    rafRef.current = requestAnimationFrame(() => {
+      const b = btn.getBoundingClientRect();
+      const p = parent.getBoundingClientRect();
+      const btnCenterX = b.left + b.width / 2;
+      const parentCenterX = p.left + p.width / 2;
+      setMenuOffset(btnCenterX - parentCenterX);
+    });
+  };
+
+  // re-measure on resize
+  useEffect(() => {
+    const onResize = () => updateMenuOffset();
+    window.addEventListener("resize", onResize);
+    return () => {
+      window.removeEventListener("resize", onResize);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Close on route change (both desktop + mobile)
   useEffect(() => {
     setOpen(false);
     setCreativeOpen(false);
-  }, [pathname]);
+    closeAll();
+  }, [pathname, closeAll]);
 
-  // Lock scroll when drawer open
+  // Lock scroll when drawer open (mobile)
   useEffect(() => {
     const root = document.documentElement;
     root.classList.toggle("overflow-hidden", open);
     return () => root.classList.remove("overflow-hidden");
   }, [open]);
 
-  // Close on Escape
+  // Close on Escape (both)
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setOpen(false);
         setCreativeOpen(false);
+        closeAll();
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, []);
+  }, [closeAll]);
 
-  // Click outside (mobile)
+  // Click outside (mobile drawer)
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (!open) return;
@@ -74,9 +113,10 @@ export default function GlobalNav() {
       aria-label="Primary"
       className="fixed top-0 inset-x-0 z-[999] bg-black text-white isolate"
       style={{ height: "var(--header-h)", paddingTop: "env(safe-area-inset-top)" }}
+      onKeyDown={(e) => e.key === "Escape" && closeAll()}
     >
-      {/* Bar */}
-      <div className="relative mx-auto max-w-6xl px-6 h-full flex items-center">
+      {/* Bar (centered container that the dropdown uses too) */}
+      <div ref={barRef} className="relative mx-auto max-w-6xl px-6 h-full flex items-center">
         {/* Brand */}
         <Link
           href="/"
@@ -90,48 +130,27 @@ export default function GlobalNav() {
         <ul className="hidden sm:flex absolute left-1/2 -translate-x-1/2 items-center gap-5">
           {links.map((item) => {
             if ("children" in item) {
+              const active = isActive(item.href ?? "/creative");
               return (
-                <li key={item.label} className="relative group">
+                <li
+                  key={item.label}
+                  className="relative"
+                  onMouseEnter={() => { updateMenuOffset(); openCreative(); }}
+                  onFocusCapture={() => { updateMenuOffset(); openCreative(); }}
+                >
                   <Link
+                    ref={creativeLinkRef}
                     href={item.href ?? "/creative"}
                     aria-haspopup="menu"
+                    aria-expanded={openMenu === "creative"}
                     className={`text-[10px] font-light tracking-[0.02em] leading-tight transition-colors
                                 outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded
-                                ${isActive(item.href ?? "/creative") ? "underline underline-offset-4" : "hover:text-gray-300"}`}
+                                ${active ? "underline underline-offset-4" : "hover:text-gray-300"}`}
+                    onMouseEnter={updateMenuOffset}
+                    onFocus={updateMenuOffset}
                   >
                     {item.label}
                   </Link>
-
-                  {/* Dropdown */}
-                  <div
-                    className="invisible opacity-0 group-hover:visible group-hover:opacity-100 transition
-                               absolute top-[calc(100%+10px)] left-1/2 -translate-x-1/2
-                               rounded-md bg-black text-white shadow-lg
-                               ring-1 ring-white/10 border border-white/5 min-w-[180px]"
-                    role="menu"
-                  >
-                    <ul className="py-1">
-                      {item.children.map((c) => {
-                        const active = isActive(c.href);
-                        return (
-                          <li key={c.href}>
-                            <Link
-                              href={c.href}
-                              role="menuitem"
-                              className="relative block px-3 py-2 whitespace-nowrap
-                                         text-[10px] font-light tracking-[0.02em] leading-tight
-                                         hover:underline underline-offset-4 hover:opacity-80 transition"
-                            >
-                              {active && (
-                                <span className="absolute left-0 top-1/2 -translate-y-1/2 h-3.5 w-[3px] bg-white rounded-sm" />
-                              )}
-                              {c.label}
-                            </Link>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </div>
                 </li>
               );
             }
@@ -171,6 +190,35 @@ export default function GlobalNav() {
               )}
             </svg>
           </button>
+        </div>
+
+        {/* 🔽 CREATIVE dropdown panel (inside the SAME container) */}
+        <div
+          className={`absolute left-1/2 z-[1001] transition-opacity duration-100 ${
+            openMenu === "creative" ? "opacity-100" : "opacity-0 pointer-events-none"
+          }`}
+          style={{
+            // directly below the barRef container (header bar), with a small gap
+            top: "calc(100% + 8px)",
+            // center to container, then shift by measured menuOffset
+            transform: `translateX(calc(-50% + ${menuOffset}px))`,
+          }}
+          onMouseLeave={closeAll}
+        >
+          <div className="min-w-[200px] rounded-md bg-black text-white shadow-xl ring-1 ring-white/10 border border-white/10">
+            <ul className="py-2 text-sm uppercase tracking-widest">
+              <li>
+                <Link className="block px-4 py-2 hover:bg-white/10" href="/branding" onClick={closeAll}>
+                  Branding
+                </Link>
+              </li>
+              <li>
+                <Link className="block px-4 py-2 hover:bg-white/10" href="/photography" onClick={closeAll}>
+                  Photography
+                </Link>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
 

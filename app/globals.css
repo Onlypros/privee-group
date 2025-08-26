@@ -32,12 +32,8 @@
   --vhpx: 100vh; /* fallback until JS runs */
   /* Prefer dynamic viewport when supported */
 }
-@supports (height: 100svh) {
-  :root { --vhpx: 100svh; }
-}
-@supports (height: 100dvh) {
-  :root { --vhpx: 100dvh; } /* best when available */
-}
+@supports (height: 100svh) { :root { --vhpx: 100svh; } }
+@supports (height: 100dvh) { :root { --vhpx: 100dvh; } }
 
 /* Phones: if your mobile nav is a different height, adjust here */
 @media (max-width: 767px) {
@@ -62,13 +58,11 @@ html {
   scroll-behavior: smooth; /* global smooth scroll (honored unless reduced motion) */
 }
 
-/* Force a solid black page background to prevent any grey/white bands
-   from showing between hero and footer on any device */
-html, body { background: #000; }
+/* ⛔ was forcing every page to black — keep it disabled so pages can choose their own bg  */
+/* html, body { background: #000; } */
 
 body {
   margin: 0;
-  /* text color still uses your token */
   color: var(--foreground);
   font-family: var(--font-sans); /* Inter everywhere */
   line-height: 1.5;
@@ -76,16 +70,12 @@ body {
 }
 
 /* Media defaults */
-img, video, canvas, svg {
-  display: block;
-  max-width: 100%;
-  height: auto;
-}
+img, video, canvas, svg { display: block; max-width: 100%; height: auto; }
 
 /* Links */
 a { color: inherit; text-decoration: none; }
 
-/* ✅ FIX: only underline real text links, not button-style CTAs */
+/* ✅ only underline real text links, not button-style CTAs */
 .prose a:hover,
 .richtext a:hover,
 p a:hover,
@@ -97,8 +87,7 @@ li a:hover {
 /* Utility to hard-lock scroll if you ever need it */
 .nav-no-scroll { overflow: hidden; }
 
-/* Optional helper if you want to guarantee nav sits above hero media:
-   add className="site-nav" on your nav component (or just use Tailwind z-50) */
+/* Optional helper if you want to guarantee nav sits above hero media */
 .site-nav { position: fixed; inset-inline: 0; top: 0; z-index: 50; }
 
 /* ---------- Scroll cue animation (subtle, luxury) ---------- */

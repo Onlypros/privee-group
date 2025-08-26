@@ -16,7 +16,7 @@ export default function PortalLoginButton({ className = "" }: Props) {
         "hover:!bg-black hover:!text-white",
         className,
       ].join(" ")}
-      aria-label="Enter partner portal (login required)"
+      aria-label="Enter"
     >
       Enter Portal (login required)
     </Link>

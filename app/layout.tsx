@@ -2,9 +2,17 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+
 import GlobalNav from "./components/GlobalNav";
 import LuxuryFooter from "./components/LuxuryFooter";
 import VHFix from "./components/VHFix";
+
+// ✅ Keep: provides shared state for the dropdown
+import { NavMenuProvider } from "./components/NavMenuContext";
+
+// ❌ Remove/disable: second dropdown path (caused duplication/conflicts)
+// import HeaderStack from "./components/HeaderStack";
+// import CreativePanel from "./components/CreativePanel";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -44,10 +52,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className="h-full scroll-smooth" data-scroll-behavior="smooth">
       <body
         className={`${inter.className} antialiased h-full min-h-dvh bg-[var(--background)] text-[var(--foreground)]`}
-        style={{
-          paddingTop: "env(safe-area-inset-top)",
-          paddingBottom: "env(safe-area-inset-bottom)",
-        }}
+        // ❌ Remove/disable: double safe-area padding (nav already handles safe-area)
+        // style={{
+        //   paddingTop: "env(safe-area-inset-top)",
+        //   paddingBottom: "env(safe-area-inset-bottom)",
+        // }}
       >
         {/* Mobile viewport height fixer (sets --vhpx) */}
         <VHFix />
@@ -60,10 +69,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Skip to content
         </a>
 
-        {/* Fixed global nav on top */}
-        <GlobalNav />
+        {/* ✅ Single dropdown path: context + GlobalNav only */}
+        <NavMenuProvider>
+          {/* Fixed global nav on top */}
+          <GlobalNav />
+          {/* ❌ Disabled: duplicate sticky panel route */}
+          {/*
+          <HeaderStack>
+            <CreativePanel />
+          </HeaderStack>
+          */}
+        </NavMenuProvider>
 
-        {/* Render page content directly (no page-shell here) */}
+        {/* Page content */}
         <main id="main">{children}</main>
 
         {/* Global footer */}
