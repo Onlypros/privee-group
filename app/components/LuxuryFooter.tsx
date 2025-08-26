@@ -42,9 +42,7 @@ export default function LuxuryFooter() {
             >
               MISSION
             </Link>
-            <ul className="mt-3 space-y-1.5 text-[9px] text-white/80">
-              {/* add sub-links later if needed */}
-            </ul>
+            <ul className="mt-3 space-y-1.5 text-[9px] text-white/80">{/* sub-links later */}</ul>
           </div>
 
           {/* OUR GROUP */}
@@ -55,21 +53,18 @@ export default function LuxuryFooter() {
             >
               OUR GROUP
             </Link>
-            {/* sub-links later if needed */}
+            {/* sub-links later */}
           </div>
         </div>
 
         {/* Divider */}
-        <div className="mt-12 border-t border-white/10" />
+        <hr className="mt-12 border-t border-white/10" />
 
         {/* Bottom copyright */}
         <div className="mt-8 flex justify-center">
-          <div className="flex items-center gap-3 text-[10px] tracking-[0.14em] text-white/70">
-            <span
-              aria-hidden="true"
-              className="inline-block h-2.5 w-2.5 rounded-full border border-white/50"
-            />
-            <span>© {year} THE PRIVÉE GROUP</span>
+          <div className="text-center text-[10px] tracking-[0.14em] text-white/70">
+            {/* dot removed */}
+            © {year} THE PRIVÉE GROUP
           </div>
         </div>
       </div>
