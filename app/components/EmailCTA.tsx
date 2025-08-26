@@ -1,4 +1,3 @@
-// app/components/EmailCTA.tsx
 "use client";
 
 import { useEffect, useRef, useState } from "react";
@@ -20,27 +19,20 @@ export default function EmailCTA() {
       setCopied(true);
       setTimeout(() => setCopied(false), 1600);
     } catch {
-      // Fallback: select text if clipboard blocked (rare)
       alert(`Email: ${TO}`);
     }
   }
 
   function tryMailto() {
-    // Reset help state
     setMailHelp(false);
-
-    // Attempt to open the default mail app
     window.location.href = `mailto:${TO}`;
 
-    // If user has no handler configured, nothing will happen.
-    // Show a helper after ~1.5s.
     if (mailAttemptRef.current) window.clearTimeout(mailAttemptRef.current);
     mailAttemptRef.current = window.setTimeout(() => {
       setMailHelp(true);
     }, 1500);
   }
 
-  // Clear timer when modal closes
   useEffect(() => {
     return () => {
       if (mailAttemptRef.current) window.clearTimeout(mailAttemptRef.current);
@@ -51,13 +43,13 @@ export default function EmailCTA() {
     <>
       {/* Single visible button */}
       <button
-  onClick={() => setOpen(true)}
-  className="w-30 tracking-widest border-1 border-black px-6 py-2 text-[10px] uppercase transition hover:bg-black hover:text-white"
-  aria-haspopup="dialog"
-  aria-expanded={open}
->
-  Email
-</button>
+        onClick={() => setOpen(true)}
+        className="w-30 inline-flex items-center justify-center tracking-widest font-normal hover:font-bold border-1 border-black px-6 py-2 text-[10px] uppercase transition bg-transparent text-black hover:bg-black hover:text-white"
+        aria-haspopup="dialog"
+        aria-expanded={open}
+      >
+        Email
+      </button>
 
       {open && (
         <div
@@ -72,7 +64,7 @@ export default function EmailCTA() {
           >
             <h3 className="text-base font-semibold">How would you like to email us?</h3>
             <p className="mt-2 text-xs text-black/70">
-              Choose Gmail (works in‑browser), your mail app, or copy our address.
+              Choose Gmail (works in-browser), your mail app, or copy our address.
             </p>
 
             <div className="mt-4 grid gap-2">
@@ -84,16 +76,6 @@ export default function EmailCTA() {
               >
                 Email via Gmail
               </a>
-
-              {/* Outlook Web alternative if you want it */}
-              {/* <a
-                href={outlookHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full border border-black/30 px-4 py-2 text-sm text-center transition hover:border-black"
-              >
-                Email via Outlook Web
-              </a> */}
 
               <button
                 onClick={tryMailto}
@@ -112,11 +94,15 @@ export default function EmailCTA() {
 
             {mailHelp && (
               <div className="mt-3 rounded-lg bg-black/5 p-3 text-xs leading-relaxed text-black/80">
-                It looks like no default mail app is set on this device.  
+                It looks like no default mail app is set on this device.
                 You can either:
                 <ul className="mt-1 list-disc pl-5">
-                  <li>Use <span className="font-medium">Email via Gmail</span> above (opens in browser), or</li>
-                  <li>Tap <span className="font-medium">Copy</span> and paste the address into any email app.</li>
+                  <li>
+                    Use <span className="font-medium">Email via Gmail</span> above (opens in browser), or
+                  </li>
+                  <li>
+                    Tap <span className="font-medium">Copy</span> and paste the address into any email app.
+                  </li>
                 </ul>
               </div>
             )}

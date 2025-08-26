@@ -1,6 +1,6 @@
 // app/creative/page.tsx
-import Link from "next/link";
-import EmailCTA from "../components/EmailCTA";
+import EmailCTA from "../../components/EmailCTA";
+import PortalButton from "../../components/PortalButton";
 
 export const metadata = {
   title: "Creative — PRIVÉE GROUP",
@@ -16,7 +16,7 @@ export const metadata = {
 
 export default function CreativePage() {
   return (
-    <main className="px-6">
+    <main className="px-6 bg-white text-black min-h-screen">
       {/* Hero */}
       <section className="pt-20 pb-12 text-center">
         <h1 className="text-3xl font-semibold tracking-wide md:text-4xl uppercase">
@@ -24,10 +24,10 @@ export default function CreativePage() {
         </h1>
 
         <div className="mx-auto mt-6 max-w-xl">
-          <p className="text-sm italic leading-relaxed text-black md:text-[9px]">
+          <p className="text-sm italic leading-relaxed md:text-[9px]">
             The studio arm of The Privée Group.
           </p>
-          <p className="mt-5 text-sm leading-relaxed text-black md:text-[9px]">
+          <p className="mt-5 text-sm leading-relaxed md:text-[9px]">
             We shape visual identity and storytelling through branding and photography.
           </p>
         </div>
@@ -46,7 +46,7 @@ export default function CreativePage() {
             <h3 className="text-[12px] font-semibold md:text-sm tracking-wide uppercase">
               Branding
             </h3>
-            <p className="mx-auto mt-2 max-w-[34ch] text-sm leading-relaxed text-black md:text-[9px]">
+            <p className="mx-auto mt-2 max-w-[34ch] text-sm leading-relaxed md:text-[9px]">
               Logos, identity systems, and brand materials that build recognition and clarity.
             </p>
           </div>
@@ -55,7 +55,7 @@ export default function CreativePage() {
             <h3 className="text-[12px] font-semibold md:text-sm tracking-wide uppercase">
               Photography
             </h3>
-            <p className="mx-auto mt-2 max-w-[34ch] text-sm leading-relaxed text-black md:text-[9px]">
+            <p className="mx-auto mt-2 max-w-[34ch] text-sm leading-relaxed md:text-[9px]">
               Editorial, portrait, lifestyle, and spaces. Visual work created for brands and projects.
             </p>
           </div>
@@ -69,7 +69,7 @@ export default function CreativePage() {
         <h2 className="text-xl font-medium md:text-xs uppercase tracking-wide">
           Who It’s For
         </h2>
-        <ul className="mt-4 space-y-2 text-sm leading-snug text-black md:text-[9px]">
+        <ul className="mt-4 space-y-2 text-sm leading-snug md:text-[9px]">
           <li>Founders building distinct brands</li>
           <li>Companies shaping lifestyle or real estate projects</li>
           <li>Creators and organizations working across culture and industry</li>
@@ -78,24 +78,17 @@ export default function CreativePage() {
 
       <hr className="mx-auto my-8 max-w-3xl border-black/10" />
 
-      {/* Request Collaboration (matches Group pattern) */}
+      {/* Request Collaboration */}
       <section className="mx-auto max-w-3xl py-10 text-center">
         <h2 className="text-xl font-medium md:text-xs uppercase tracking-wide">
           Request Collaboration
         </h2>
-        <p className="mt-3 text-sm leading-snug text-black md:text-[9px]">
+        <p className="mt-3 text-sm leading-snug md:text-[9px]">
           Collaborations are reviewed privately.
         </p>
 
         <div className="mt-6 flex items-center justify-center gap-6">
-          <Link
-            href="/portal"
-            className="w-30 inline-block text-center tracking-widest border-1 border-black px-6 py-2 text-[10px] uppercase transition hover:bg-black hover:text-white"
-            aria-label="Open the Portal page"
-          >
-            Portal
-          </Link>
-
+          <PortalButton />
           <EmailCTA />
         </div>
       </section>

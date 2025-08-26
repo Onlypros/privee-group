@@ -1,6 +1,6 @@
-// app/mission/page.tsx
-import Link from "next/link";
-import EmailCTA from "../components/EmailCTA";
+// app/(content)/mission/page.tsx
+import EmailCTA from "../../components/EmailCTA";
+import PortalButton from "../../components/PortalButton";
 
 export const metadata = {
   title: "Mission — PRIVÉE GROUP",
@@ -16,7 +16,7 @@ export const metadata = {
 
 export default function MissionPage() {
   return (
-    <main className="px-6">
+    <main className="px-6 bg-white text-black min-h-screen">
       {/* Hero */}
       <section className="pt-20 pb-12 text-center">
         <h1 className="text-3xl font-semibold tracking-wide md:text-4xl uppercase">
@@ -25,10 +25,10 @@ export default function MissionPage() {
 
         <div className="mx-auto mt-6 max-w-xl">
           {/* body size: 14px mobile, 9px desktop */}
-          <p className="text-sm italic leading-relaxed text-black md:text-[9px]">
+          <p className="text-sm italic leading-relaxed md:text-[9px]">
             Creative production and brand collaboration in service of mission-led work.
           </p>
-          <p className="mt-5 text-sm leading-relaxed text-black md:text-[9px]">
+          <p className="mt-5 text-sm leading-relaxed md:text-[9px]">
             Privée Missions partners with missionaries, founders, and purpose-driven
             ventures <span className="hidden md:inline"><br /></span> to support stories
             and projects that reflect responsibility, intention, and cultural depth.
@@ -50,7 +50,7 @@ export default function MissionPage() {
             <h3 className="text-[12px] font-semibold md:text-sm tracking-wide uppercase">
               Partnerships
             </h3>
-            <p className="mx-auto mt-2 max-w-[34ch] text-sm leading-relaxed text-black md:text-[9px]">
+            <p className="mx-auto mt-2 max-w-[34ch] text-sm leading-relaxed md:text-[9px]">
               We collaborate with individuals and organizations doing work that serves
               <br /> people, communities, and purpose.
             </p>
@@ -60,7 +60,7 @@ export default function MissionPage() {
             <h3 className="text-[12px] font-semibold md:text-sm tracking-wide uppercase">
               Storytelling
             </h3>
-            <p className="mx-auto mt-2 max-w-[34ch] text-sm leading-relaxed text-black md:text-[9px]">
+            <p className="mx-auto mt-2 max-w-[34ch] text-sm leading-relaxed md:text-[9px]">
               We help clarify visual direction, refine brand tone, and support media that
               communicates mission with authenticity and care.
             </p>
@@ -70,7 +70,7 @@ export default function MissionPage() {
             <h3 className="text-[12px] font-semibold md:text-sm tracking-wide uppercase">
               Projects
             </h3>
-            <p className="mx-auto mt-2 max-w-[34ch] text-sm leading-relaxed text-black md:text-[9px]">
+            <p className="mx-auto mt-2 max-w-[34ch] text-sm leading-relaxed md:text-[9px]">
               We develop creative projects and collaborations with ventures rooted in
               sustainability, healing, and social impact.
             </p>
@@ -85,7 +85,7 @@ export default function MissionPage() {
         <h2 className="text-xl font-medium md:text-xs uppercase tracking-wide">
           Who It’s For
         </h2>
-        <ul className="mt-4 space-y-2 text-sm leading-snug text-black md:text-[9px]">
+        <ul className="mt-4 space-y-2 text-sm leading-snug md:text-[9px]">
           <li>Missionaries</li>
           <li>Faith-rooted and values-based founders</li>
           <li>Eco-luxury and purpose-driven brands</li>
@@ -100,7 +100,7 @@ export default function MissionPage() {
         <h2 className="text-xl font-medium md:text-xs uppercase tracking-wide">
           Our Belief
         </h2>
-        <div className="mx-auto mt-4 max-w-xl text-center text-black italic">
+        <div className="mx-auto mt-4 max-w-xl italic">
           <p className="text-sm leading-snug md:text-[9px]">
             We are here for the mission, not the noise.
           </p>
@@ -114,21 +114,12 @@ export default function MissionPage() {
         <h2 className="text-xl font-medium md:text-xs uppercase tracking-wide">
           Request Collaboration
         </h2>
-        <p className="mt-3 text-sm leading-snug text-black md:text-[9px]">
+        <p className="mt-3 text-sm leading-snug md:text-[9px]">
           Collaborations are reviewed privately.
         </p>
 
         <div className="mt-6 flex items-center justify-center gap-6">
-          {/* PORTAL — match Email button exactly */}
-          <Link
-            href="/portal"
-            className="w-30 inline-block text-center tracking-widest border-1 border-black px-6 py-2 text-[10px] uppercase transition hover:bg-black hover:text-white"
-            aria-label="Open the Portal page"
-          >
-            Portal
-          </Link>
-
-          {/* EMAIL — same visual box */}
+          <PortalButton />
           <EmailCTA />
         </div>
       </section>

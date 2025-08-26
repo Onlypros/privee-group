@@ -4,10 +4,15 @@ import Image from "next/image";
 export default function Home() {
   return (
     <main className="relative bg-black">
-      <section className="relative w-full overflow-hidden min-h-[calc(100vh-var(--header-h))] flex items-center justify-center">
+      <section
+        data-hero="full"
+        className="relative w-full overflow-hidden flex items-center justify-center"
+        style={{ height: "calc(var(--vhpx) - var(--header-h))" }}
+      >
         {/* Background video */}
         <video
           src="/video/herovideo1.mp4"
+          poster="/creative/hero-poster.jpg"  // optional: fallback image
           autoPlay
           muted
           loop
@@ -31,11 +36,7 @@ export default function Home() {
           />
         </div>
 
-        {/* Soft fade into the footer */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-b from-transparent to-black/70 z-20"
-        />
+        {/* Removed the old fade bar that created a black strip */}
       </section>
     </main>
   );

@@ -9,18 +9,18 @@ export default function LuxuryFooter() {
       className="bg-black text-white"
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }} // iOS safe area
     >
-      <div className="mx-auto w-full max-w-6xl px-6 py-12">
+      <div className="mx-auto w-full max-w-6xl px-6 pt-3 pb-5">
         {/* Top grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-12">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 text-center sm:text-left">
           {/* CREATIVE */}
-          <div>
+          <div className="sm:justify-self-start">
             <Link
               href="/creative"
               className="text-[11px] tracking-[0.14em] font-semibold text-white/90 hover:opacity-80"
             >
               CREATIVE
             </Link>
-            <ul className="mt-3 space-y-1.5 text-[9px] text-white/80">
+            <ul className="mt-2 space-y-1 text-[9px] text-white/80">
               <li>
                 <Link href="/branding" className="hover:opacity-80">
                   BRANDING
@@ -35,35 +35,32 @@ export default function LuxuryFooter() {
           </div>
 
           {/* MISSION */}
-          <div>
+          <div className="sm:justify-self-center">
             <Link
               href="/mission"
               className="text-[11px] tracking-[0.14em] font-semibold text-white/90 hover:opacity-80"
             >
               MISSION
             </Link>
-            <ul className="mt-3 space-y-1.5 text-[9px] text-white/80">{/* sub-links later */}</ul>
           </div>
 
           {/* OUR GROUP */}
-          <div>
+          <div className="sm:justify-self-end">
             <Link
               href="/group"
               className="text-[11px] tracking-[0.14em] font-semibold text-white/90 hover:opacity-80"
             >
               OUR GROUP
             </Link>
-            {/* sub-links later */}
           </div>
         </div>
 
         {/* Divider */}
-        <hr className="mt-12 border-t border-white/10" />
+        <hr className="mt-4 border-t border-white/10" />
 
         {/* Bottom copyright */}
-        <div className="mt-8 flex justify-center">
+        <div className="mt-2 flex justify-center">
           <div className="text-center text-[10px] tracking-[0.14em] text-white/70">
-            {/* dot removed */}
             © {year} THE PRIVÉE GROUP
           </div>
         </div>
