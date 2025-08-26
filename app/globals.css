@@ -16,14 +16,18 @@
 
   /* Fonts: use Inter from layout.tsx site-wide */
   --font-sans: var(--font-inter), Helvetica, Arial, sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
 }
 
-/* Light / Dark vars */
+/* ---- Light / Dark vars ---- */
 :root {
   --background: #ffffff;
   --foreground: #171717;
   --header-h: 64px; /* used by <main className="pt-[var(--header-h)]"> */
+
+  /* Hint native controls (inputs/scrollbars) */
+  color-scheme: light dark;
 }
 @media (prefers-color-scheme: dark) {
   :root {
@@ -32,20 +36,36 @@
   }
 }
 
-/* Base */
+/* ---- Base ---- */
 *, ::before, ::after { box-sizing: border-box; }
+
 html {
+  /* ✅ lock rem baseline so prod == local */
+  font-size: 16px;
   -webkit-text-size-adjust: 100%;
-  /* ✅ keep smooth scrolling globally */
-  scroll-behavior: smooth;
+  text-size-adjust: 100%;
+  scroll-behavior: smooth; /* global smooth scroll (honored unless reduced motion) */
 }
+
 body {
   margin: 0;
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans); /* <- Inter applied everywhere */
+  font-family: var(--font-sans); /* Inter everywhere */
   line-height: 1.5;
+  overflow-x: hidden; /* avoid accidental sideways scroll on small screens */
 }
+
+/* Media defaults */
+img, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Links (subtle; rely on Tailwind for more) */
+a { color: inherit; text-decoration: none; }
+a:hover { text-decoration: underline; text-underline-offset: 3px; }
 
 /* Utility to hard-lock scroll if you ever need it */
 .nav-no-scroll { overflow: hidden; }
@@ -56,19 +76,15 @@ body {
 
 /* ---------- Scroll cue animation (subtle, luxury) ---------- */
 @keyframes caretFloat {
-  0%   { transform: translateY(0);    opacity: .55; }
-  50%  { transform: translateY(6px);  opacity: 1; }
-  100% { transform: translateY(0);    opacity: .55; }
+  0%   { transform: translateY(0);   opacity: .55; }
+  50%  { transform: translateY(6px); opacity: 1;   }
+  100% { transform: translateY(0);   opacity: .55; }
 }
 .scroll-caret { animation: caretFloat 2.2s ease-in-out infinite; }
 
 /* ---------- Reduced-motion & media fallbacks ---------- */
-/* If user prefers reduced motion, hide autoplay video, stop cue animations,
-   and turn off smooth scroll for accessibility. */
 @media (prefers-reduced-motion: reduce) {
-  html[data-scroll-behavior="smooth"] {
-    scroll-behavior: auto !important;
-  }
+  html { scroll-behavior: auto !important; }
   .hero-video { display: none !important; }
   .hero-image { display: block !important; }
   .scroll-caret { animation: none !important; }

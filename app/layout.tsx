@@ -8,7 +8,7 @@ import LuxuryFooter from "./components/LuxuryFooter";
 const inter = Inter({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-inter",
+  variable: "--font-inter", // available in CSS if you want to target var(--font-inter)
 });
 
 export const metadata: Metadata = {
@@ -31,17 +31,33 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#000000",
   width: "device-width",
   initialScale: 1,
+  maximumScale: 1,
+  viewportFit: "cover",          // respect iOS safe areas
+  themeColor: "#000000",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    // ✅ Add data-scroll-behavior to opt into smooth scrolling across route transitions
-    <html lang="en" data-scroll-behavior="smooth" className="scroll-smooth">
-      <body className={`${inter.className} antialiased bg-black text-white`}>
-        {/* Skip link for keyboard users */}
+    <html
+      lang="en"
+      className="h-full scroll-smooth"
+      data-scroll-behavior="smooth"
+    >
+      <body
+        className={`
+          ${inter.className}
+          antialiased h-full min-h-dvh
+          bg-[var(--background)] text-[var(--foreground)]
+        `}
+        // iOS safe-area padding for the fixed nav/footer
+        style={{
+          paddingTop: "env(safe-area-inset-top)",
+          paddingBottom: "env(safe-area-inset-bottom)",
+        }}
+      >
+        {/* Skip to content for keyboard/screen readers */}
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-white focus:px-3 focus:py-2 focus:text-black"
@@ -49,14 +65,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Skip to content
         </a>
 
+        {/* Fixed global nav on top; height controlled by --header-h */}
         <GlobalNav />
 
-        {/* pad content so it isn’t under the fixed nav (uses --header-h from globals.css) */}
-        <main id="main" className="pt-[var(--header-h)] min-h-[calc(100svh-var(--header-h))]">
-          {children}
-        </main>
-
-        <LuxuryFooter />
+        {/* Content: pad below fixed header; make page stretch to footer */}
+        <div className="min-h-dvh flex flex-col pt-[var(--header-h)]">
+          <main id="main" className="flex-1">
+            {children}
+          </main>
+          <LuxuryFooter />
+        </div>
       </body>
     </html>
   );
