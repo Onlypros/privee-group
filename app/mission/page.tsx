@@ -1,71 +1,139 @@
 // app/mission/page.tsx
-"use client";
-
-import { useEffect, useState } from "react";
 import Link from "next/link";
+import EmailCTA from "../components/EmailCTA";
 
-const PASSWORD = "privee2025"; // change this
+export const metadata = {
+  title: "Mission — PRIVÉE GROUP",
+  description:
+    "What Privée Missions is, what we believe, the projects we take on, and why it matters.",
+  openGraph: {
+    title: "Mission — PRIVÉE GROUP",
+    description:
+      "What Privée Missions is, what we believe, the projects we take on, and why it matters.",
+    url: "/mission",
+  },
+};
 
-export default function Mission() {
-  const [authed, setAuthed] = useState(false);
-  const [input, setInput] = useState("");
-
-  useEffect(() => {
-    const ok = window.localStorage.getItem("privee_mission_ok") === "1";
-    if (ok) setAuthed(true);
-  }, []);
-
-  function submit(e: React.FormEvent) {
-    e.preventDefault();
-    if (input === PASSWORD) {
-      setAuthed(true);
-      window.localStorage.setItem("privee_mission_ok", "1");
-    } else {
-      alert("Wrong password");
-    }
-  }
-
-  if (!authed) {
-    return (
-      <main className="min-h-screen flex flex-col">
-        <header className="w-full px-6 py-4 flex justify-between">
-          <Link href="/" className="font-semibold tracking-wide">PRIVEE GROUP</Link>
-        </header>
-        <section className="flex-1 flex items-center justify-center">
-          <form onSubmit={submit} className="border p-6 w-full max-w-sm">
-            <h1 className="text-xl font-medium">Enter password</h1>
-            <input
-              type="password"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              className="mt-4 w-full border px-3 py-2 outline-none focus:ring-1 focus:ring-black"
-              placeholder="Password"
-            />
-            <button
-              className="mt-4 w-full border border-black px-4 py-2 hover:bg-black hover:text-white transition"
-              type="submit"
-            >
-              Continue
-            </button>
-          </form>
-        </section>
-      </main>
-    );
-  }
-
+export default function MissionPage() {
   return (
-    <main className="min-h-screen flex flex-col">
-      <header className="w-full px-6 py-4 flex justify-between">
-        <Link href="/" className="font-semibold tracking-wide">PRIVEE GROUP</Link>
-      </header>
-      <section className="flex-1 flex items-center justify-center p-6 text-center">
-        <div>
-          <h1 className="text-3xl md:text-4xl">Mission (private draft)</h1>
-          <p className="mt-4 text-neutral-600 max-w-xl">
-            Coming soon. This area is currently password-protected while we shape the concept.
+    <main className="px-6">
+      {/* Hero */}
+      <section className="pt-20 pb-12 text-center">
+        <h1 className="text-3xl font-semibold tracking-wide md:text-4xl uppercase">
+          OUR <span className="font-serif italic">MISSION</span>
+        </h1>
+
+        <div className="mx-auto mt-6 max-w-xl">
+          {/* body size: 14px mobile, 9px desktop */}
+          <p className="text-sm italic leading-relaxed text-black md:text-[9px]">
+            Creative production and brand collaboration in service of mission-led work.
+          </p>
+          <p className="mt-5 text-sm leading-relaxed text-black md:text-[9px]">
+            Privée Missions partners with missionaries, founders, and purpose-driven
+            ventures <span className="hidden md:inline"><br /></span> to support stories
+            and projects that reflect responsibility, intention, and cultural depth.
           </p>
         </div>
       </section>
+
+      <hr className="mx-auto my-8 max-w-3xl border-black/10" />
+
+      {/* What We Do */}
+      <section className="mx-auto max-w-6xl py-10 text-center">
+        <h2 className="text-xl font-medium md:text-xs uppercase tracking-wide">
+          What We Do
+        </h2>
+
+        {/* Mobile: 1 col; Desktop: 3 cols */}
+        <div className="mt-8 grid grid-cols-1 gap-10 md:grid-cols-3">
+          <div className="flex flex-col items-center">
+            <h3 className="text-[12px] font-semibold md:text-sm tracking-wide uppercase">
+              Partnerships
+            </h3>
+            <p className="mx-auto mt-2 max-w-[34ch] text-sm leading-relaxed text-black md:text-[9px]">
+              We collaborate with individuals and organizations doing work that serves
+              <br /> people, communities, and purpose.
+            </p>
+          </div>
+
+          <div className="flex flex-col items-center">
+            <h3 className="text-[12px] font-semibold md:text-sm tracking-wide uppercase">
+              Storytelling
+            </h3>
+            <p className="mx-auto mt-2 max-w-[34ch] text-sm leading-relaxed text-black md:text-[9px]">
+              We help clarify visual direction, refine brand tone, and support media that
+              communicates mission with authenticity and care.
+            </p>
+          </div>
+
+          <div className="flex flex-col items-center">
+            <h3 className="text-[12px] font-semibold md:text-sm tracking-wide uppercase">
+              Projects
+            </h3>
+            <p className="mx-auto mt-2 max-w-[34ch] text-sm leading-relaxed text-black md:text-[9px]">
+              We develop creative projects and collaborations with ventures rooted in
+              sustainability, healing, and social impact.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <hr className="mx-auto my-8 max-w-3xl border-black/10" />
+
+      {/* Who It's For */}
+      <section className="mx-auto max-w-3xl py-10 text-center">
+        <h2 className="text-xl font-medium md:text-xs uppercase tracking-wide">
+          Who It's For
+        </h2>
+        <ul className="mt-4 space-y-2 text-sm leading-snug text-black md:text-[9px]">
+          <li>Missionaries</li>
+          <li>Faith-rooted and values-based founders</li>
+          <li>Eco-luxury and purpose-driven brands</li>
+          <li>Projects that serve communities, not trends</li>
+        </ul>
+      </section>
+
+      <hr className="mx-auto my-8 max-w-3xl border-black/10" />
+
+      {/* Our Belief */}
+      <section className="mx-auto max-w-3xl py-10 text-center">
+        <h2 className="text-xl font-medium md:text-xs uppercase tracking-wide">
+          Our Belief
+        </h2>
+        <div className="mx-auto mt-4 max-w-xl text-center text-black italic">
+          <p className="text-sm leading-snug md:text-[9px]">
+            We are here for the mission, not the noise.
+          </p>
+        </div>
+      </section>
+
+      <hr className="mx-auto my-8 max-w-3xl border-black/10" />
+
+      {/* Request Collaboration */}
+      <section className="mx-auto max-w-3xl py-10 text-center">
+        <h2 className="text-xl font-medium md:text-xs uppercase tracking-wide">
+          Request Collaboration
+        </h2>
+        <p className="mt-3 text-sm leading-snug text-black md:text-[9px]">
+          Collaborations are reviewed privately.
+        </p>
+
+        <div className="mt-6 flex items-center justify-center gap-6">
+          {/* PORTAL — match Email button exactly */}
+          <Link
+            href="/portal"
+            className="w-30 inline-block text-center tracking-widest border-1 border-black px-6 py-2 text-[10px] uppercase transition hover:bg-black hover:text-white"
+            aria-label="Open the Portal page"
+          >
+            Portal
+          </Link>
+
+          {/* EMAIL — same visual box */}
+          <EmailCTA />
+        </div>
+      </section>
+
+      <div className="h-12" />
     </main>
   );
 }

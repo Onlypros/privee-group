@@ -1,44 +1,55 @@
 // app/page.tsx
-import Link from "next/link";
+import Image from "next/image";
 
 export default function Home() {
   return (
-    <main className="min-h-screen flex flex-col items-center justify-between">
-      <header className="w-full px-6 py-4 flex justify-between">
-        <div className="font-semibold tracking-wide">PRIVEE GROUP</div>
-        <nav className="space-x-6 text-sm">
-          <Link href="/creative" className="hover:opacity-70">Creative</Link>
-          <Link href="/mission" className="hover:opacity-70">Mission</Link>
-        </nav>
-      </header>
+    // negate the global header padding just for the homepage
+    <main className="relative min-h-screen -mt-[var(--header-h)]">
+      <section className="relative w-full overflow-hidden min-h-screen flex items-center justify-center">
+        {/* Background video */}
+        <video
+          src="/video/herovideo1.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none"
+        />
 
-      <section className="flex-1 w-full flex items-center justify-center text-center px-6">
-        <div>
-          <h1 className="text-5xl md:text-7xl font-semibold tracking-tight">Privee Group</h1>
-          <p className="mt-4 text-base md:text-lg text-neutral-600">
-            Photography & creative direction
-          </p>
-          <div className="mt-8 flex items-center justify-center gap-4">
-            <Link
-              href="/creative"
-              className="px-5 py-2 border border-black hover:bg-black hover:text-white transition"
-            >
-              View Creative
-            </Link>
-            <Link href="/mission" className="px-5 py-2 underline underline-offset-4">
-              Mission
-            </Link>
-          </div>
+        {/* Overlay for readability */}
+        <div className="absolute inset-0 bg-black/40 z-10" aria-hidden="true" />
+
+        {/* Centered logo */}
+        <div className="relative z-20 flex items-center justify-center">
+          <Image
+            src="/creative/vectorlogo.png"
+            alt="PRIVÉE GROUP"
+            width={800}
+            height={1200}
+            priority
+            className="w-[260px] md:w-[420px] h-auto"
+          />
         </div>
+
+        {/* Scroll cue (optional) */}
+        {/*
+        <a
+          href="#mission"
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center text-white/70 hover:text-white transition"
+        >
+          <span className="mb-1 text-[11px] tracking-[0.2em]">SCROLL</span>
+          <span className="scroll-caret text-2xl">⌄</span>
+        </a>
+        */}
+
+        {/* Soft fade into the footer */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute bottom-0 left-0 right-0 h-24
+                     bg-gradient-to-b from-transparent to-black/70 z-20"
+        />
       </section>
-
-      <footer className="w-full px-6 py-4 text-xs text-neutral-500 flex justify-between">
-        <span>© {new Date().getFullYear()} Privee Group</span>
-        <div className="space-x-4">
-          <a href="#" className="hover:opacity-70">Instagram</a>
-          <a href="#" className="hover:opacity-70">Email</a>
-        </div>
-      </footer>
     </main>
   );
 }
