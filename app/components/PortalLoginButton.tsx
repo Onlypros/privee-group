@@ -21,6 +21,7 @@ export default function PortalLoginButton({ className = "" }: Props) {
   return (
     <Link
       href="/portal/private"
+      prefetch={false} // 👈 added this line stops auto login on page load
       className={outlined}
       aria-label="Enter private portal"
     >
