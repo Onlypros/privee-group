@@ -4,8 +4,6 @@ import { useEffect, useRef, useState } from "react";
 
 const TO = "hello@priveegroup.co";
 const gmailHref = `https://mail.google.com/mail/?view=cm&to=${encodeURIComponent(TO)}`;
-// Optional: Outlook Web
-// const outlookHref = `https://outlook.office.com/mail/deeplink/compose?to=${encodeURIComponent(TO)}`;
 
 export default function EmailCTA() {
   const [open, setOpen] = useState(false);
@@ -44,11 +42,21 @@ export default function EmailCTA() {
       {/* Single visible button */}
       <button
         onClick={() => setOpen(true)}
-        className="w-30 inline-flex items-center justify-center tracking-widest font-normal hover:font-bold border-1 border-black px-6 py-2 text-[10px] uppercase transition bg-transparent text-black hover:bg-black hover:text-white"
+        className={[
+          "inline-flex items-center justify-center select-none",
+          "uppercase tracking-widest no-underline",
+          "border border-black text-black bg-transparent rounded-none",
+          "px-5 py-2 text-[11px] md:text-sm",
+          "min-h-[44px] min-w-[112px]",
+          "transition-all duration-150",
+          "hover:font-semibold hover:border-2", // only bold + thicker border
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2",
+          "active:opacity-90",
+        ].join(" ")}
         aria-haspopup="dialog"
         aria-expanded={open}
       >
-        Email
+        EMAIL
       </button>
 
       {open && (
@@ -72,7 +80,14 @@ export default function EmailCTA() {
                 href={gmailHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full border border-black px-4 py-2 text-sm text-center transition hover:bg-black hover:text-white"
+                className={[
+                  "inline-flex items-center justify-center select-none",
+                  "uppercase tracking-widest no-underline",
+                  "border border-black text-black bg-transparent rounded-none",
+                  "px-5 py-2 text-sm",
+                  "transition-all duration-150",
+                  "hover:font-semibold hover:border-2",
+                ].join(" ")}
               >
                 Email via Gmail
               </a>

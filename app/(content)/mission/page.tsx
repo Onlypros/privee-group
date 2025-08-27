@@ -18,17 +18,17 @@ export default function MissionPage() {
   return (
     <main className="px-6 bg-white text-black min-h-screen">
       {/* Hero */}
-      <section className="pt-20 pb-10">
-        <div className="mx-auto w-full max-w-4xl text-center">
+      <section className="pt-20 pb-10 text-center">
+        <div className="mx-auto w-full max-w-4xl">
           <h1 className="text-5xl md:text-6xl leading-tight font-semibold tracking-wide uppercase">
             OUR <span className="font-serif italic">MISSION</span>
           </h1>
 
           <div className="mx-auto mt-4 max-w-3xl">
-            <p className="text-base md:text-lg leading-relaxed text-left text-black/80">
+            <p className="text-base md:text-lg leading-relaxed text-black/80">
               Creative production and brand collaboration in service of mission-led work.
             </p>
-            <p className="mt-3 text-base md:text-lg leading-relaxed text-left text-black/80">
+            <p className="mt-3 text-base md:text-lg leading-relaxed text-black/80">
               Privée Missions partners with missionaries, founders, and purpose-driven
               ventures to support stories and projects that reflect responsibility,
               intention, and cultural depth.
@@ -40,15 +40,15 @@ export default function MissionPage() {
       <hr className="mx-auto my-12 w-full max-w-4xl border-black/10" />
 
       {/* What We Do */}
-      <section className="py-12 md:py-16">
-        <div className="mx-auto w-full max-w-5xl px-0 text-center">
+      <section className="py-12 md:py-16 text-center">
+        <div className="mx-auto w-full max-w-5xl">
           <h2 className="text-xl md:text-2xl font-medium uppercase tracking-wide">
             What We Do
           </h2>
 
           {/* Mobile: 1 col; Desktop: 3 cols */}
           <div className="mt-8 grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-12 text-sm md:text-base leading-relaxed">
-            <div className="flex flex-col items-start text-left">
+            <div className="flex flex-col items-center">
               <h3 className="text-sm md:text-base font-semibold tracking-wide uppercase">
                 Partnerships
               </h3>
@@ -58,7 +58,7 @@ export default function MissionPage() {
               </p>
             </div>
 
-            <div className="flex flex-col items-start text-left">
+            <div className="flex flex-col items-center">
               <h3 className="text-sm md:text-base font-semibold tracking-wide uppercase">
                 Storytelling
               </h3>
@@ -68,7 +68,7 @@ export default function MissionPage() {
               </p>
             </div>
 
-            <div className="flex flex-col items-start text-left">
+            <div className="flex flex-col items-center">
               <h3 className="text-sm md:text-base font-semibold tracking-wide uppercase">
                 Projects
               </h3>
@@ -84,12 +84,12 @@ export default function MissionPage() {
       <hr className="mx-auto my-12 w-full max-w-5xl border-black/10" />
 
       {/* Who It's For */}
-      <section className="py-12 md:py-16">
-        <div className="mx-auto w-full max-w-4xl px-0 text-center">
+      <section className="py-12 md:py-16 text-center">
+        <div className="mx-auto w-full max-w-4xl">
           <h2 className="text-xl md:text-2xl font-medium uppercase tracking-wide">
             Who It’s For
           </h2>
-          <ul className="mt-4 space-y-2 text-base md:text-lg leading-relaxed text-left mx-auto max-w-3xl">
+          <ul className="mt-4 space-y-2 text-base md:text-lg leading-relaxed mx-auto max-w-3xl">
             <li>Missionaries</li>
             <li>Faith-rooted and values-based founders</li>
             <li>Eco-luxury and purpose-driven brands</li>
@@ -101,13 +101,13 @@ export default function MissionPage() {
       <hr className="mx-auto my-12 w-full max-w-4xl border-black/10" />
 
       {/* Our Belief */}
-      <section className="py-12 md:py-16">
-        <div className="mx-auto w-full max-w-4xl px-0 text-center">
+      <section className="py-12 md:py-16 text-center">
+        <div className="mx-auto w-full max-w-4xl">
           <h2 className="text-xl md:text-2xl font-medium uppercase tracking-wide">
             Our Belief
           </h2>
           <div className="mx-auto mt-4 max-w-3xl italic">
-            <p className="text-base md:text-lg leading-relaxed text-left text-black/80">
+            <p className="text-base md:text-lg leading-relaxed text-black/80">
               We are here for the mission, not the noise.
             </p>
           </div>
@@ -117,8 +117,8 @@ export default function MissionPage() {
       <hr className="mx-auto my-12 w-full max-w-4xl border-black/10" />
 
       {/* Request Collaboration */}
-      <section className="py-12 md:py-16">
-        <div className="mx-auto w-full max-w-4xl px-0 text-center">
+      <section className="py-12 md:py-16 text-center">
+        <div className="mx-auto w-full max-w-4xl">
           <h2 className="text-xl md:text-2xl font-medium uppercase tracking-wide">
             Request Collaboration
           </h2>
