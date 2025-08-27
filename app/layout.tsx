@@ -5,6 +5,7 @@ import "./globals.css";
 import GlobalNav from "./components/GlobalNav";
 import LuxuryFooter from "./components/LuxuryFooter";
 import VHFix from "./components/VHFix";
+import HeaderSizer from "./components/HeaderSizer";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -42,13 +43,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className="h-full scroll-smooth" data-scroll-behavior="smooth">
-      <body
-        className={`${inter.className} antialiased h-full min-h-dvh bg-[var(--background)] text-[var(--foreground)]`}
-        style={{
-          paddingTop: "env(safe-area-inset-top)",
-          paddingBottom: "env(safe-area-inset-bottom)",
-        }}
-      >
+      <body className={`${inter.className} antialiased h-full min-h-dvh bg-[var(--background)] text-[var(--foreground)] flex flex-col min-h-screen`}>
         {/* Mobile viewport height fixer (sets --vhpx) */}
         <VHFix />
 
@@ -62,9 +57,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         {/* Fixed global nav on top */}
         <GlobalNav />
+        <HeaderSizer />
 
         {/* Render page content directly (no page-shell here) */}
-        <main id="main">{children}</main>
+        <main id="main" className="flex-1 flex flex-col">{children}</main>
 
         {/* Global footer */}
         <LuxuryFooter />

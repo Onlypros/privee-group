@@ -48,7 +48,7 @@ export default function SelectedWorkPage() {
 
           <figure className="relative aspect-[3/4] overflow-hidden bg-neutral-200">
             <Image
-              src="/creative/cat2.png"
+              src="/creative/hallway.jpg"
               alt="Selected work image 2"
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
@@ -72,7 +72,7 @@ export default function SelectedWorkPage() {
 
           <figure className="relative aspect-[3/4] overflow-hidden bg-neutral-200">
             <Image
-              src="/creative/cat4.png"
+              src="/creative/lounge.jpg"
               alt="Selected work image 4"
               fill
               sizes="(max-width: 768px) 100vw, 50vw"

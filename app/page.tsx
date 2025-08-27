@@ -3,22 +3,33 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <main className="relative bg-black">
+    <div className="relative bg-black flex-1 flex flex-col min-h-0">
       <section
         data-hero="full"
-        className="relative w-full overflow-hidden flex items-center justify-center"
-        style={{ height: "calc(var(--vhpx) - var(--header-h))" }}
+        className="relative w-full overflow-hidden flex items-center justify-center flex-1 min-h-0"
+        style={{
+          flex: 1,
+          minHeight: 0,
+        }}
       >
         {/* Background video */}
         <video
           src="/video/herovideo1.mp4"
-          poster="/creative/hero-poster.jpg"  // optional: fallback image
+          poster="/creative/hero-poster.jpg"
           autoPlay
           muted
           loop
           playsInline
           preload="auto"
-          className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none"
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            position: "absolute",
+            inset: 0,
+            zIndex: 0,
+            pointerEvents: "none",
+          }}
         />
 
         {/* Overlay for readability */}
@@ -35,9 +46,7 @@ export default function Home() {
             className="w-[200px] md:w-[320px] lg:w-[360px] h-auto"
           />
         </div>
-
-        {/* Removed the old fade bar that created a black strip */}
       </section>
-    </main>
+    </div>
   );
 }
