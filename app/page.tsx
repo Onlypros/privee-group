@@ -15,7 +15,7 @@ export default function Home() {
         {/* Background video */}
         <video
           src="/video/herovideo1.mp4"
-          poster="/creative/hero-poster.jpg"
+          // poster="/creative/hero-poster.jpg"
           autoPlay
           muted
           loop

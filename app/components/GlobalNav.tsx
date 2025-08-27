@@ -27,13 +27,24 @@ export default function GlobalNav() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [creativeOpen, setCreativeOpen] = useState(false);
-  const drawerRef = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
+  const drawerRef = useRef<HTMLDivElement | null>(null);
+  const menuButtonRef = useRef<HTMLButtonElement | null>(null);
+
+  // Close + return focus
+  function closeMenu() {
     setOpen(false);
     setCreativeOpen(false);
+    menuButtonRef.current?.focus();
+  }
+
+  // Close on route change
+  useEffect(() => {
+    if (open || creativeOpen) closeMenu();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
+  // Lock <html> scroll
   useEffect(() => {
     const root = document.documentElement;
     if (open) root.classList.add("overflow-hidden");
@@ -41,25 +52,32 @@ export default function GlobalNav() {
     return () => root.classList.remove("overflow-hidden");
   }, [open]);
 
+  // ESC to close
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        setOpen(false);
-        setCreativeOpen(false);
-      }
+      if (e.key === "Escape") closeMenu();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
+  // Click outside
   useEffect(() => {
     const onDown = (e: MouseEvent) => {
       if (!open) return;
       const el = drawerRef.current;
-      if (el && !el.contains(e.target as Node)) setOpen(false);
+      if (el && !el.contains(e.target as Node)) closeMenu();
     };
     document.addEventListener("mousedown", onDown);
     return () => document.removeEventListener("mousedown", onDown);
+  }, [open]);
+
+  // Toggle inert correctly
+  useEffect(() => {
+    const el = drawerRef.current;
+    if (!el) return;
+    if (open) el.removeAttribute("inert");
+    else el.setAttribute("inert", "");
   }, [open]);
 
   const isActive = (href: string) =>
@@ -69,33 +87,36 @@ export default function GlobalNav() {
     <nav
       id="site-nav"
       aria-label="Primary"
-      className="fixed top-0 inset-x-0 z-[999] bg-black text-white"
+      className="sticky top-0 z-[999] w-full bg-black text-white"
       style={{ paddingTop: "env(safe-area-inset-top)" }}
     >
-      {/* Header bar (fixed height) */}
-      <div className="relative mx-auto max-w-6xl px-6 h-14 flex items-center">
+      {/* Header bar */}
+      <div className="mx-auto max-w-6xl px-6 min-h-14 flex items-center gap-6">
         {/* Brand */}
         <Link
           href="/"
-          className="text-sm font-semibold tracking-[0.18em] hover:text-gray-300 transition-colors
+          className="self-center text-sm font-semibold tracking-[0.18em] hover:text-gray-300 transition-colors
                      focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded"
         >
           PRIVÉE GROUP
         </Link>
 
         {/* Desktop links */}
-        <ul className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center gap-7">
+        <ul className="hidden md:flex flex-1 justify-center items-start gap-7">
           {links.map((item) => {
             if ("children" in item) {
               return (
-                <li key={item.label} className="relative group">
+                <li
+                  key={item.label}
+                  className="group grid grid-rows-[auto,0fr] transition-[grid-template-rows] duration-200 ease-out"
+                >
                   <Link
                     href={item.href ?? "/creative"}
                     aria-haspopup="menu"
-                    /* ADDED px-3 so the parent text column equals submenu item padding */
-                    className={`inline-flex items-center gap-1 px-3 text-[10px] font-light tracking-[0.02em] leading-tight transition-colors
+                    className={`inline-flex items-center gap-1 px-3 text-[11px] font-light tracking-[0.02em] leading-tight
+                                text-white hover:text-neutral-200 transition-colors
                                 outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded
-                                ${isActive(item.href ?? "/creative") ? "underline underline-offset-4" : "hover:text-gray-300"}`}
+                                ${isActive(item.href ?? "/creative") ? "underline underline-offset-4" : ""}`}
                   >
                     {item.label}
                     <svg
@@ -109,50 +130,51 @@ export default function GlobalNav() {
                     </svg>
                   </Link>
 
-                  {/* Hover dropdown */}
-                  <div
-                    role="menu"
-                    /* CHANGED positioning: left-0 top-full mt-2 (no centering transform) */
-                    className="invisible opacity-0 group-hover:visible group-hover:opacity-100 transition
-                               absolute left-0 top-full mt-2
-                               rounded-md bg-black text-white shadow-lg
-                               ring-1 ring-white/10 border border-white/5 min-w-[180px]"
-                  >
-                    <ul className="py-1">
-                      {item.children.map((c) => {
-                        const active = isActive(c.href);
-                        return (
-                          <li key={c.href}>
-                            <Link
-                              href={c.href}
-                              role="menuitem"
-                              /* submenu items already have px-3 → matches the parent link's px-3 */
-                              className="relative block px-3 py-2 whitespace-nowrap
-                                         text-[10px] font-light tracking-[0.02em] leading-tight
-                                         hover:underline underline-offset-4 hover:opacity-80 transition"
-                            >
-                              {active && (
-                                <span className="absolute left-0 top-1/2 -translate-y-1/2 h-3.5 w-[3px] bg-white rounded-sm" />
-                              )}
-                              {c.label}
-                            </Link>
-                          </li>
-                        );
-                      })}
-                    </ul>
+                  {/* In-flow dropdown */}
+                  <div className="overflow-hidden row-start-2">
+                    <div
+                      role="menu"
+                      className="mt-2 rounded-md bg-black text-white shadow-lg ring-1 ring-white/10 border border-white/5
+                                 max-h-0 group-hover:max-h-60 transition-[max-height] duration-200 ease-out"
+                    >
+                      <ul className="py-1">
+                        {item.children.map((c) => {
+                          const active = isActive(c.href);
+                          return (
+                            <li key={c.href}>
+                              <Link
+                                href={c.href}
+                                role="menuitem"
+                                className="relative block px-3 py-2 whitespace-nowrap
+                                           text-[11px] font-light tracking-[0.02em] leading-tight
+                                           text-white bg-black
+                                           hover:text-neutral-200 hover:underline underline-offset-4
+                                           transition-colors"
+                              >
+                                {active && (
+                                  <span className="absolute left-0 top-1/2 -translate-y-1/2 h-3.5 w-[3px] bg-white rounded-sm" />
+                                )}
+                                {c.label}
+                              </Link>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </div>
                   </div>
                 </li>
               );
             }
 
             return (
-              <li key={item.href}>
+              <li key={item.href} className="grid grid-rows-1">
                 <Link
                   href={item.href}
                   aria-current={isActive(item.href) ? "page" : undefined}
-                  className={`text-[10px] font-light tracking-[0.02em] leading-tight transition-colors
+                  className={`text-[11px] font-light tracking-[0.02em] leading-tight
+                              text-white hover:text-neutral-200 transition-colors
                               focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded
-                              ${isActive(item.href) ? "underline underline-offset-4" : "hover:text-gray-300"}`}
+                              ${isActive(item.href) ? "underline underline-offset-4" : ""}`}
                 >
                   {item.label}
                 </Link>
@@ -162,8 +184,9 @@ export default function GlobalNav() {
         </ul>
 
         {/* Mobile hamburger */}
-        <div className="ml-auto md:hidden">
+        <div className="ml-auto md:hidden self-center">
           <button
+            ref={menuButtonRef}
             type="button"
             onClick={() => setOpen((v) => !v)}
             aria-expanded={open}
@@ -194,7 +217,7 @@ export default function GlobalNav() {
       <div
         className={`md:hidden fixed inset-0 ${open ? "bg-black/50 z-[998]" : "pointer-events-none bg-transparent"} transition-opacity duration-200`}
         style={{ opacity: open ? 1 : 0 }}
-        onClick={() => setOpen(false)}
+        onClick={closeMenu}
       />
 
       {/* Mobile drawer */}
@@ -205,6 +228,7 @@ export default function GlobalNav() {
         className={`md:hidden fixed top-14 inset-x-0 z-[1000] bg-black ${open ? "block" : "hidden"}`}
       >
         <div className="mx-auto max-w-6xl px-6 py-4 flex flex-col gap-1">
+          {/* CREATIVE accordion */}
           <div>
             <button
               onClick={() => setCreativeOpen((v) => !v)}
@@ -222,7 +246,7 @@ export default function GlobalNav() {
                   <Link
                     href="/branding"
                     className={`block py-2 text-base hover:text-gray-300 ${isActive("/branding") ? "underline underline-offset-4" : ""}`}
-                    onClick={() => setOpen(false)}
+                    onClick={closeMenu}
                   >
                     Branding
                   </Link>
@@ -231,7 +255,7 @@ export default function GlobalNav() {
                   <Link
                     href="/photography"
                     className={`block py-2 text-base hover:text-gray-300 ${isActive("/photography") ? "underline underline-offset-4" : ""}`}
-                    onClick={() => setOpen(false)}
+                    onClick={closeMenu}
                   >
                     Photography
                   </Link>
@@ -240,6 +264,7 @@ export default function GlobalNav() {
             )}
           </div>
 
+          {/* Flat links */}
           {links
             .filter((l): l is { href: string; label: string } => "href" in l)
             .filter((l) => l.label !== "CREATIVE")
@@ -247,7 +272,7 @@ export default function GlobalNav() {
               <Link
                 key={l.href}
                 href={l.href}
-                onClick={() => setOpen(false)}
+                onClick={closeMenu}
                 className="block py-2 text-base bg-black text-white hover:text-gray-300 transition-colors
                            focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded"
               >
