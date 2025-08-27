@@ -13,6 +13,12 @@ export const metadata = {
   },
 };
 
+// CHANGED: Centralized sizes so each image fetches only what's needed.
+// - On phones: 100vw
+// - In your 2-col 1152px container: ~50vw (≈576px)
+// - Hard cap 576px avoids oversize fetches on very wide screens
+const SIZES = '(max-width: 768px) 100vw, (max-width: 1152px) 50vw, 576px';
+
 export default function SelectedWorkPage() {
   return (
     <main className="px-6 bg-white text-black min-h-screen">
@@ -38,25 +44,29 @@ export default function SelectedWorkPage() {
           {/* Row 1 */}
           <figure className="relative aspect-[3/4] overflow-hidden bg-neutral-200">
             <Image
+              // CHANGED: revert to existing JPG to prevent 404
               src="/creative/hallway-1152.jpg"
-              alt="Selected work image 1"
+              // CHANGED: descriptive alt for a11y/SEO
+              alt="Long hotel hallway with dramatic lighting and a figure centered"
               fill
-              sizes="(max-width: 768px) 100vw, 50vw"
+              sizes={SIZES}
               className="object-cover object-center"
+              // CHANGED: keep only first image as priority (LCP)
               priority
-              loading="eager"
+              fetchPriority="high"
+              // NOTE: removed blurDataURL since you don't have blur files yet
             />
           </figure>
 
           <figure className="relative aspect-[3/4] overflow-hidden bg-neutral-200">
             <Image
               src="/creative/girl-1152.jpg"
-              alt="Selected work image 2"
+              alt="Portrait in soft window light, subject facing camera"
               fill
-              sizes="(max-width: 768px) 100vw, 50vw"
+              sizes={SIZES}
               className="object-cover object-center"
-              priority
-              loading="eager"
+              // Default lazy loading (no priority/eager) to avoid network dogpile
+              decoding="async"
             />
           </figure>
 
@@ -64,22 +74,22 @@ export default function SelectedWorkPage() {
           <figure className="relative aspect-[3/4] overflow-hidden bg-neutral-200">
             <Image
               src="/creative/lounge2-1152.jpg"
-              alt="Selected work image 3"
+              alt="Lounge interior with warm ambient lighting and velvet seating"
               fill
-              sizes="(max-width: 768px) 100vw, 50vw"
-              className="object-cover object-[50%_40%]"
-              loading="lazy"
+              sizes={SIZES}
+              className="object-cover object-[50%_40%]" // keep your framing tweak
+              decoding="async"
             />
           </figure>
 
           <figure className="relative aspect-[3/4] overflow-hidden bg-neutral-200">
             <Image
               src="/creative/puppy-1152.jpg"
-              alt="Selected work image 4"
+              alt="Small puppy looking up while sitting on lounge seating"
               fill
-              sizes="(max-width: 768px) 100vw, 50vw"
+              sizes={SIZES}
               className="object-cover object-center"
-              loading="lazy"
+              decoding="async"
             />
           </figure>
 
@@ -87,22 +97,22 @@ export default function SelectedWorkPage() {
           <figure className="relative aspect-[3/4] overflow-hidden bg-neutral-200">
             <Image
               src="/creative/lobby-1152.jpg"
-              alt="Selected work image 5"
+              alt="Grand lobby with chandelier and plush seating"
               fill
-              sizes="(max-width: 768px) 100vw, 50vw"
+              sizes={SIZES}
               className="object-cover object-center"
-              loading="lazy"
+              decoding="async"
             />
           </figure>
 
           <figure className="relative aspect-[3/4] overflow-hidden bg-neutral-200">
             <Image
               src="/creative/girl2-1152.jpg"
-              alt="Selected work image 6"
+              alt="Candid portrait with motion blur in dim light"
               fill
-              sizes="(max-width: 768px) 100vw, 50vw"
+              sizes={SIZES}
               className="object-cover object-center"
-              loading="lazy"
+              decoding="async"
             />
           </figure>
         </div>
