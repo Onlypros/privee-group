@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 type NavItem =
   | { href: string; label: string }
@@ -11,37 +11,36 @@ type NavItem =
 const links: NavItem[] = [
   {
     label: "CREATIVE",
-    href: "/creative",
+    href: "/creative", // <-- make parent clickable
     children: [
       { href: "/branding", label: "BRANDING" },
       { href: "/photography", label: "PHOTOGRAPHY" },
     ],
   },
   { href: "/mission", label: "MISSION" },
-  { href: "/group", label: "GROUP" },
+  { href: "/group", label: "GROUP" }, // ensure this path matches your page
   { href: "/portal", label: "PORTAL" },
 ];
 
 export default function GlobalNav() {
   const pathname = usePathname();
-  const [open, setOpen] = useState(false);
-  const [creativeOpen, setCreativeOpen] = useState(false);
-  const drawerRef = useRef<HTMLDivElement | null>(null);
+  const [open, setOpen] = useState(false); // mobile drawer
+  const [creativeOpen, setCreativeOpen] = useState(false); // mobile accordion
 
-  // Close on route change
+  // close menu on route change
   useEffect(() => {
     setOpen(false);
     setCreativeOpen(false);
   }, [pathname]);
 
-  // Lock scroll when drawer open
+  // lock scroll when open
   useEffect(() => {
     const root = document.documentElement;
     root.classList.toggle("overflow-hidden", open);
     return () => root.classList.remove("overflow-hidden");
   }, [open]);
 
-  // Close on Escape
+  // close on Escape
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -53,32 +52,14 @@ export default function GlobalNav() {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  // Click outside (mobile)
-  useEffect(() => {
-    const handler = (e: MouseEvent) => {
-      if (!open) return;
-      if (drawerRef.current && !drawerRef.current.contains(e.target as Node)) {
-        setOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
-  }, [open]);
-
   const isActive = (href: string) =>
-    pathname === href || (href !== "/" && pathname.startsWith(href + "/"));
+    pathname === href || pathname.startsWith(`${href}/`);
 
   return (
-    <nav
-      id="site-nav"
-      aria-label="Primary"
-      className="fixed top-0 inset-x-0 z-[999] bg-black text-white isolate"
-      // no explicit height here (HeaderSizer measures natural height)
-      style={{ paddingTop: "env(safe-area-inset-top)" }}
-    >
-      {/* Bar */}
-      <div className="relative mx-auto max-w-6xl px-6 flex items-center">
-        {/* Brand */}
+    <nav aria-label="Primary" className="fixed top-0 inset-x-0 z-[999] bg-black text-white isolate">
+      {/* bar */}
+      <div className="relative mx-auto max-w-6xl px-6 h-[var(--header-h)] flex items-center">
+        {/* brand */}
         <Link
           href="/"
           className="text-sm font-semibold tracking-[0.18em] hover:text-gray-300 transition-colors
@@ -87,28 +68,29 @@ export default function GlobalNav() {
           PRIVÉE GROUP
         </Link>
 
-        {/* Desktop links (centered) */}
-        <ul className="hidden sm:flex absolute left-1/2 -translate-x-1/2 items-center gap-5">
+        {/* desktop center links */}
+        <ul className="hidden sm:flex absolute left-1/2 -translate-x-1/2 items-center gap-4">
           {links.map((item) => {
             if ("children" in item) {
               return (
                 <li key={item.label} className="relative group">
+                  {/* Parent is now a Link (clickable to /creative) */}
                   <Link
                     href={item.href ?? "/creative"}
                     aria-haspopup="menu"
-                    className={`text-[10px] font-light tracking-[0.02em] leading-tight transition-colors
-                                outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded
-                                ${isActive(item.href ?? "/creative") ? "underline underline-offset-4" : "hover:text-gray-300"}`}
+                    className="text-[10px] font-light tracking-[0.02em] leading-tight
+                               hover:text-gray-300 transition-colors outline-none
+                               focus-visible:ring-2 focus-visible:ring-white/60 rounded"
                   >
                     {item.label}
                   </Link>
 
-                  {/* Dropdown */}
+                  {/* Dropdown — black bg, white text, compact */}
                   <div
                     className="invisible opacity-0 group-hover:visible group-hover:opacity-100 transition
                                absolute top-[calc(100%+10px)] left-1/2 -translate-x-1/2
                                rounded-md bg-black text-white shadow-lg
-                               ring-1 ring-white/10 border border-white/5 min-w-[180px]"
+                               ring-1 ring-white/10 border border-white/5"
                     role="menu"
                   >
                     <ul className="py-1">
@@ -142,9 +124,9 @@ export default function GlobalNav() {
                 <Link
                   href={item.href}
                   aria-current={isActive(item.href) ? "page" : undefined}
-                  className={`text-[10px] font-light tracking-[0.02em] leading-tight transition-colors
-                              focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded
-                              ${isActive(item.href) ? "underline underline-offset-4" : "hover:text-gray-300"}`}
+                  className="text-[10px] font-light tracking-[0.02em] leading-tight
+                             text-white hover:text-gray-300 transition-colors
+                             focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded"
                 >
                   {item.label}
                 </Link>
@@ -153,39 +135,36 @@ export default function GlobalNav() {
           })}
         </ul>
 
-        {/* Mobile Hamburger */}
-        <div className="ml-auto sm:hidden">
-          <button
-            type="button"
-            className="inline-flex items-center justify-center p-2 text-sm hover:text-gray-300 transition-colors
-                       focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded"
-            onClick={() => setOpen((v) => !v)}
-            aria-expanded={open}
-            aria-controls="primary-menu"
-            aria-label={open ? "Close menu" : "Open menu"}
-          >
-            <svg aria-hidden="true" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              {open ? (
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-              ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4 7h16M4 12h16M4 17h16" />
-              )}
-            </svg>
-          </button>
-        </div>
+        {/* hamburger (mobile only) */}
+        <button
+          type="button"
+          className="sm:hidden ml-auto inline-flex items-center justify-center p-2 text-sm hover:text-gray-300 transition-colors
+                     focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded"
+          onClick={() => setOpen((v) => !v)}
+          aria-expanded={open}
+          aria-controls="primary-menu"
+          aria-label={open ? "Close menu" : "Open menu"}
+        >
+          <svg aria-hidden="true" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            {open ? (
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            ) : (
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 7h16M4 12h16M4 17h16" />
+            )}
+          </svg>
+        </button>
       </div>
 
-      {/* Mobile Backdrop */}
+      {/* backdrop (mobile only) */}
       <div
         className={`sm:hidden fixed inset-0 ${open ? "bg-black/50 z-[998]" : "pointer-events-none bg-transparent"} transition-opacity duration-200`}
         style={{ opacity: open ? 1 : 0 }}
         onClick={() => setOpen(false)}
       />
 
-      {/* Mobile Drawer */}
+      {/* drawer (mobile only) */}
       <div
         id="primary-menu"
-        ref={drawerRef}
         className={`sm:hidden fixed top-[var(--header-h)] inset-x-0 z-[1000] bg-black ${open ? "block" : "hidden"}`}
         aria-hidden={!open}
       >
