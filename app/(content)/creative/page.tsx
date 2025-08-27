@@ -25,10 +25,10 @@ export default function CreativePage() {
           </h1>
 
           <div className="mx-auto mt-4 max-w-3xl">
-            <p className="text-base md:text-lg leading-relaxed text-black/80">
+            <p className="text-base md:text-lg leading-relaxed text-black">
               The studio arm of The Privée Group.
             </p>
-            <p className="mt-3 text-base md:text-lg leading-relaxed text-black/80">
+            <p className="mt-3 text-base md:text-lg leading-relaxed text-black">
               We shape visual identity and storytelling through branding and photography.
             </p>
           </div>
@@ -90,7 +90,7 @@ export default function CreativePage() {
           <h2 className="text-xl md:text-2xl font-medium uppercase tracking-wide">
             Request Collaboration
           </h2>
-          <p className="mt-3 text-base md:text-lg leading-relaxed text-black/80">
+          <p className="mt-3 text-base md:text-lg leading-relaxed text-black">
             Collaborations are reviewed privately.
           </p>
 

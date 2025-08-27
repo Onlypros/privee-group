@@ -26,10 +26,10 @@ export default function PhotographyPage() {
           </h1>
 
           <div className="mx-auto mt-4 max-w-3xl">
-            <p className="text-base md:text-lg leading-relaxed text-black/80">
+            <p className="text-base md:text-lg leading-relaxed text-black">
               PRIVÉE GROUP documents culture and identity through images.
             </p>
-            <p className="mt-3 text-base md:text-lg leading-relaxed text-black/80">
+            <p className="mt-3 text-base md:text-lg leading-relaxed text-black">
               Work spanning editorial, portraiture, lifestyle, movement, and environments.
             </p>
           </div>
@@ -104,7 +104,7 @@ export default function PhotographyPage() {
       {/* Archive Section */}
       <section className="py-12 md:py-16 text-center">
         <div className="mx-auto w-full max-w-4xl">
-          <p className="text-base md:text-lg leading-relaxed text-black/80">
+          <p className="text-base md:text-lg leading-relaxed text-black">
             Selected work is available in our archive.
           </p>
           <div className="mt-6 flex items-center justify-center">
@@ -138,7 +138,7 @@ export default function PhotographyPage() {
           <h2 className="text-xl md:text-2xl font-medium uppercase tracking-wide">
             Request Collaboration
           </h2>
-          <p className="mt-3 text-base md:text-lg leading-relaxed text-black/80">
+          <p className="mt-3 text-base md:text-lg leading-relaxed text-black">
             Collaborations are reviewed privately.
           </p>
 

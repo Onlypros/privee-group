@@ -13,7 +13,7 @@ export default function PortalPage() {
         PARTNER <span className="font-serif italic normal-case">PORTAL</span>
       </h1>
 
-      <p className="mt-6 text-base md:text-lg text-black/80 max-w-xl leading-relaxed">
+      <p className="mt-6 text-base md:text-lg text-black max-w-xl leading-relaxed">
         Exclusive access for partners, clients, and investors. Click below to enter.
       </p>
 

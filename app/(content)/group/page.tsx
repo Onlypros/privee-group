@@ -26,10 +26,10 @@ export default function GroupPage() {
           </h1>
 
           <div className="mx-auto mt-4 max-w-3xl">
-            <p className="text-base md:text-lg leading-relaxed text-black/80">
+            <p className="text-base md:text-lg leading-relaxed text-black">
               The Privée Group is a cultural house for creative work, mission, and collaboration.
             </p>
-            <p className="mt-3 text-base md:text-lg leading-relaxed text-black/80">
+            <p className="mt-3 text-base md:text-lg leading-relaxed text-black">
               We work with founders, organizations, and investors building with clarity, purpose, and long-term value.
             </p>
           </div>
@@ -101,7 +101,7 @@ export default function GroupPage() {
           <h2 className="text-xl md:text-2xl font-medium uppercase tracking-wide">
             Request Collaboration
           </h2>
-          <p className="mt-3 text-base md:text-lg leading-relaxed text-black/80">
+          <p className="mt-3 text-base md:text-lg leading-relaxed text-black">
             Collaborations are reviewed privately.
           </p>
 

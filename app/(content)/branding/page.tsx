@@ -25,10 +25,10 @@ export default function BrandingPage() {
           </h1>
 
           <div className="mx-auto mt-4 max-w-3xl">
-            <p className="text-base md:text-lg leading-relaxed text-black/80">
+            <p className="text-base md:text-lg leading-relaxed text-black">
               Branding defined by precision, clarity, and consistency across digital and print.
             </p>
-            <p className="mt-3 text-base md:text-lg leading-relaxed text-black/80">
+            <p className="mt-3 text-base md:text-lg leading-relaxed text-black">
               Visual identity, logos, and print design for founders and teams
               <span className="hidden md:inline"><br /></span>
               who value clarity, restraint, and long-term brand equity.
@@ -103,7 +103,7 @@ export default function BrandingPage() {
           <h2 className="text-xl md:text-2xl font-medium uppercase tracking-wide">
             Request Collaboration
           </h2>
-          <p className="mt-3 text-base md:text-lg leading-relaxed text-black/80">
+          <p className="mt-3 text-base md:text-lg leading-relaxed text-black">
             Collaborations are reviewed privately.
           </p>
 

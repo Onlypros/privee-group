@@ -25,10 +25,10 @@ export default function MissionPage() {
           </h1>
 
           <div className="mx-auto mt-4 max-w-3xl">
-            <p className="text-base md:text-lg leading-relaxed text-black/80">
+            <p className="text-base md:text-lg leading-relaxed text-black">
               Creative production and brand collaboration in service of mission-led work.
             </p>
-            <p className="mt-3 text-base md:text-lg leading-relaxed text-black/80">
+            <p className="mt-3 text-base md:text-lg leading-relaxed text-black">
               Privée Missions partners with missionaries, founders, and purpose-driven
               ventures to support stories and projects that reflect responsibility,
               intention, and cultural depth.
@@ -81,7 +81,8 @@ export default function MissionPage() {
         </div>
       </section>
 
-      <hr className="mx-auto my-12 w-full max-w-5xl border-black/10" />
+      {/* Keep divider width consistent with other pages */}
+      <hr className="mx-auto my-12 w-full max-w-4xl border-black/10" />
 
       {/* Who It's For */}
       <section className="py-12 md:py-16 text-center">
@@ -107,7 +108,7 @@ export default function MissionPage() {
             Our Belief
           </h2>
           <div className="mx-auto mt-4 max-w-3xl italic">
-            <p className="text-base md:text-lg leading-relaxed text-black/80">
+            <p className="text-base md:text-lg leading-relaxed text-black">
               We are here for the mission, not the noise.
             </p>
           </div>
@@ -122,7 +123,7 @@ export default function MissionPage() {
           <h2 className="text-xl md:text-2xl font-medium uppercase tracking-wide">
             Request Collaboration
           </h2>
-          <p className="mt-3 text-base md:text-lg leading-relaxed text-black/80">
+          <p className="mt-3 text-base md:text-lg leading-relaxed text-black">
             Collaborations are reviewed privately.
           </p>
 

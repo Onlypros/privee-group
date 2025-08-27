@@ -23,7 +23,7 @@ export default function SelectedWorkPage() {
             SELECTED WORK
           </h1>
           <div className="mx-auto mt-4 max-w-3xl">
-            <p className="text-base md:text-lg leading-relaxed text-black/80">
+            <p className="text-base md:text-lg leading-relaxed text-black">
               A curated selection of photographic work.
             </p>
           </div>
