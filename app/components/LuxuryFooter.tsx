@@ -56,12 +56,12 @@ export default function LuxuryFooter() {
         </div>
 
         {/* Divider */}
-        <hr className="mt-4 border-t border-white/10" />
+        <hr className="mt-6 border-t border-white/10" />
 
         {/* Bottom copyright */}
         <div className="mt-2 flex justify-center">
           <div className="text-center text-[10px] tracking-[0.14em] text-white/70">
-            © {year} THE PRIVÉE GROUP
+            © {year} PRIVÉE GROUP
           </div>
         </div>
       </div>

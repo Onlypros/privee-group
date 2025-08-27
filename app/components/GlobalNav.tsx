@@ -217,11 +217,11 @@ export default function GlobalNav() {
               <span className={`transition ${creativeOpen ? "rotate-180" : ""}`}>▾</span>
             </button>
             {creativeOpen && (
-              <ul id="creative-submenu" className="pl-3 border-l border-white/10 space-y-1">
+              <ul id="creative-submenu" className="pl-0 border-l-0 space-y-1">
                 <li>
                   <Link
                     href="/branding"
-                    className={`block py-2 text-base hover:text-gray-300 ${isActive("/branding") ? "underline underline-offset-4" : ""}`}
+                    className={`block py-2 text-sm hover:text-gray-300 ${isActive("/branding") ? "underline underline-offset-4" : ""}`}
                     onClick={() => setOpen(false)}
                   >
                     Branding
@@ -230,7 +230,7 @@ export default function GlobalNav() {
                 <li>
                   <Link
                     href="/photography"
-                    className={`block py-2 text-base hover:text-gray-300 ${isActive("/photography") ? "underline underline-offset-4" : ""}`}
+                    className={`block py-2 text-sm hover:text-gray-300 ${isActive("/photography") ? "underline underline-offset-4" : ""}`}
                     onClick={() => setOpen(false)}
                   >
                     Photography
