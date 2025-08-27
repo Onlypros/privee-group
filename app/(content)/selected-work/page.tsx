@@ -38,7 +38,7 @@ export default function SelectedWorkPage() {
           {/* Row 1 */}
           <figure className="relative aspect-[3/4] overflow-hidden bg-neutral-200">
             <Image
-              src="/creative/puppy-1152.jpg"
+              src="/creative/hallway-1152.jpg"
               alt="Selected work image 1"
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
@@ -50,7 +50,7 @@ export default function SelectedWorkPage() {
 
           <figure className="relative aspect-[3/4] overflow-hidden bg-neutral-200">
             <Image
-              src="/creative/hallway-1152.jpg"
+              src="/creative/girl-1152.jpg"
               alt="Selected work image 2"
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
@@ -63,7 +63,7 @@ export default function SelectedWorkPage() {
           {/* Row 2 */}
           <figure className="relative aspect-[3/4] overflow-hidden bg-neutral-200">
             <Image
-              src="/creative/lobby-1152.jpg"
+              src="/creative/lounge2-1152.jpg"
               alt="Selected work image 3"
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
@@ -74,7 +74,7 @@ export default function SelectedWorkPage() {
 
           <figure className="relative aspect-[3/4] overflow-hidden bg-neutral-200">
             <Image
-              src="/creative/lounge2-1152.jpg"
+              src="/creative/puppy-1152.jpg"
               alt="Selected work image 4"
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
@@ -86,7 +86,7 @@ export default function SelectedWorkPage() {
           {/* Row 3 */}
           <figure className="relative aspect-[3/4] overflow-hidden bg-neutral-200">
             <Image
-              src="/creative/cat1-1152.jpg"
+              src="/creative/lobby-1152.jpg"
               alt="Selected work image 5"
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
@@ -97,7 +97,7 @@ export default function SelectedWorkPage() {
 
           <figure className="relative aspect-[3/4] overflow-hidden bg-neutral-200">
             <Image
-              src="/creative/girl-1152.jpg"
+              src="/creative/girl2-1152.jpg"
               alt="Selected work image 6"
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
