@@ -29,13 +29,11 @@ export default function GlobalNav() {
   const [creativeOpen, setCreativeOpen] = useState(false);
   const drawerRef = useRef<HTMLDivElement | null>(null);
 
-  // Close menus on route change
   useEffect(() => {
     setOpen(false);
     setCreativeOpen(false);
   }, [pathname]);
 
-  // Lock <html> scroll when drawer open
   useEffect(() => {
     const root = document.documentElement;
     if (open) root.classList.add("overflow-hidden");
@@ -43,7 +41,6 @@ export default function GlobalNav() {
     return () => root.classList.remove("overflow-hidden");
   }, [open]);
 
-  // Close on Escape
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -55,7 +52,6 @@ export default function GlobalNav() {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  // Click outside (mobile)
   useEffect(() => {
     const onDown = (e: MouseEvent) => {
       if (!open) return;
@@ -96,12 +92,12 @@ export default function GlobalNav() {
                   <Link
                     href={item.href ?? "/creative"}
                     aria-haspopup="menu"
-                    className={`inline-flex items-center gap-1 text-[10px] font-light tracking-[0.02em] leading-tight transition-colors
+                    /* ADDED px-3 so the parent text column equals submenu item padding */
+                    className={`inline-flex items-center gap-1 px-3 text-[10px] font-light tracking-[0.02em] leading-tight transition-colors
                                 outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded
                                 ${isActive(item.href ?? "/creative") ? "underline underline-offset-4" : "hover:text-gray-300"}`}
                   >
                     {item.label}
-                    {/* Chevron */}
                     <svg
                       className="h-3 w-3 transition-transform group-hover:rotate-180"
                       viewBox="0 0 24 24"
@@ -116,8 +112,9 @@ export default function GlobalNav() {
                   {/* Hover dropdown */}
                   <div
                     role="menu"
+                    /* CHANGED positioning: left-0 top-full mt-2 (no centering transform) */
                     className="invisible opacity-0 group-hover:visible group-hover:opacity-100 transition
-                               absolute top-[calc(100%+10px)] left-1/2 -translate-x-1/2
+                               absolute left-0 top-full mt-2
                                rounded-md bg-black text-white shadow-lg
                                ring-1 ring-white/10 border border-white/5 min-w-[180px]"
                   >
@@ -129,6 +126,7 @@ export default function GlobalNav() {
                             <Link
                               href={c.href}
                               role="menuitem"
+                              /* submenu items already have px-3 → matches the parent link's px-3 */
                               className="relative block px-3 py-2 whitespace-nowrap
                                          text-[10px] font-light tracking-[0.02em] leading-tight
                                          hover:underline underline-offset-4 hover:opacity-80 transition"
@@ -199,7 +197,7 @@ export default function GlobalNav() {
         onClick={() => setOpen(false)}
       />
 
-      {/* Mobile drawer (always below 56px header) */}
+      {/* Mobile drawer */}
       <div
         id="primary-menu"
         ref={drawerRef}
@@ -207,7 +205,6 @@ export default function GlobalNav() {
         className={`md:hidden fixed top-14 inset-x-0 z-[1000] bg-black ${open ? "block" : "hidden"}`}
       >
         <div className="mx-auto max-w-6xl px-6 py-4 flex flex-col gap-1">
-          {/* CREATIVE accordion */}
           <div>
             <button
               onClick={() => setCreativeOpen((v) => !v)}
@@ -243,7 +240,6 @@ export default function GlobalNav() {
             )}
           </div>
 
-          {/* Flat links */}
           {links
             .filter((l): l is { href: string; label: string } => "href" in l)
             .filter((l) => l.label !== "CREATIVE")
