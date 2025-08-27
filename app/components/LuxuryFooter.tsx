@@ -7,13 +7,13 @@ export default function LuxuryFooter() {
   return (
     <footer
       className="bg-black text-white"
-      style={{ paddingBottom: "env(safe-area-inset-bottom)" }} // iOS safe area
+      style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
     >
       <div className="mx-auto w-full max-w-6xl px-6 pt-3 pb-5">
-        {/* Top grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 text-center sm:text-left">
-          {/* CREATIVE */}
-          <div className="sm:justify-self-start">
+        {/* Top flex row (always horizontal, even on mobile) */}
+        <div className="flex justify-between items-start text-center sm:text-left">
+          {/* CREATIVE (left) */}
+          <div className="text-left">
             <Link
               href="/creative"
               className="text-[11px] tracking-[0.14em] font-semibold text-white/90 hover:opacity-80"
@@ -34,8 +34,8 @@ export default function LuxuryFooter() {
             </ul>
           </div>
 
-          {/* MISSION */}
-          <div className="sm:justify-self-center">
+          {/* MISSION (center) */}
+          <div className="text-center">
             <Link
               href="/mission"
               className="text-[11px] tracking-[0.14em] font-semibold text-white/90 hover:opacity-80"
@@ -44,8 +44,8 @@ export default function LuxuryFooter() {
             </Link>
           </div>
 
-          {/* OUR GROUP */}
-          <div className="sm:justify-self-end">
+          {/* GROUP (right) */}
+          <div className="text-right">
             <Link
               href="/group"
               className="text-[11px] tracking-[0.14em] font-semibold text-white/90 hover:opacity-80"
