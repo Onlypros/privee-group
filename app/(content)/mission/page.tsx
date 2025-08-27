@@ -25,7 +25,7 @@ export default function MissionPage() {
 
         <div className="mx-auto mt-6 max-w-xl">
           {/* body size: 14px mobile, 9px desktop */}
-          <p className="text-sm italic leading-relaxed md:text-[9px]">
+          <p className="text-sm leading-relaxed md:text-[9px]">
             Creative production and brand collaboration in service of mission-led work.
           </p>
           <p className="mt-5 text-sm leading-relaxed md:text-[9px]">

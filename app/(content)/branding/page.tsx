@@ -26,7 +26,7 @@ export default function BrandingPage() {
 
         <div className="mx-auto mt-6 max-w-xl">
           {/* body size: 14px mobile, 9px desktop */}
-          <p className="text-sm italic leading-relaxed md:text-[9px]">
+          <p className="text-sm leading-relaxed md:text-[9px]">
             Branding defined by precision, clarity, and consistency across digital and print.
           </p>
           <p className="mt-5 text-sm leading-relaxed md:text-[9px]">

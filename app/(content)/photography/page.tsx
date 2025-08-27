@@ -25,7 +25,7 @@ export default function PhotographyPage() {
         </h1>
 
         <div className="mx-auto mt-6 max-w-xl">
-          <p className="text-sm italic leading-relaxed md:text-[9px]">
+          <p className="text-sm leading-relaxed md:text-[9px]">
             PRIVÉE GROUP documents culture and identity through images.
           </p>
           <p className="mt-5 text-sm leading-relaxed md:text-[9px]">

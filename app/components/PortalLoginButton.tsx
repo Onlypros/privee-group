@@ -9,16 +9,17 @@ export default function PortalLoginButton({ className = "" }: Props) {
       href="/portal/private"
       className={[
         "inline-flex items-center justify-center",
-        "tracking-widest font-normal hover:font-bold",
-        "border-1 border-black px-6 py-2 text-[10px] md:text-sm uppercase",
-        "transition no-underline hover:no-underline",
+        "tracking-widest px-6 py-2 text-[10px] md:text-sm uppercase",
+        "border border-black font-normal no-underline",
         "!bg-transparent !text-black",
-        "hover:!bg-black hover:!text-white",
+        "transition-all duration-150",
+        "hover:font-bold hover:bg-black hover:text-white",
+        "hover:border-2", // <- thicker border on hover, stays black
         className,
       ].join(" ")}
-      aria-label="Enter partner portal (login required)"
+      aria-label="Enter"
     >
-      Enter Portal (login required)
+      Enter
     </Link>
   );
 }
