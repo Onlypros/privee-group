@@ -34,8 +34,7 @@ export default function Home() {
         <video
           ref={videoRef}
           src="/video/herovideo1.mp4"
-          // ✅ FIX: static PNG poster so Lighthouse always sees a poster attribute
-          poster="/creative/hero-poster.png"
+          poster="/creative/hero-poster.webp"
           autoPlay
           muted
           loop
