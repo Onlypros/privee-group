@@ -1,62 +1,56 @@
-// app/components/HeaderSizer.tsx
+
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
-export default function HeaderSizer() {
+type HeaderSizerProps = {
+  /** If your header is not this component itself, point to it (e.g. "#site-header") */
+  targetSelector?: string;
+  /** CSS var to write (default: --header-h) */
+  varName?: string;
+};
+
+/**
+ * Measures the header height and writes it to a CSS variable.
+ * Avoids `any` to satisfy @typescript-eslint/no-explicit-any.
+ */
+export default function HeaderSizer({
+  targetSelector,
+  varName = "--header-h",
+}: HeaderSizerProps) {
+  const hostRef = useRef<HTMLDivElement | null>(null);
+
   useEffect(() => {
-    const el = document.getElementById("site-nav");
+    const el: HTMLElement | null =
+      targetSelector
+        ? document.querySelector<HTMLElement>(targetSelector)
+        : hostRef.current;
+
     if (!el) return;
 
-    let raf: number | null = null;
-    let t: number | null = null;
-    let last = -1;
-
-    const commit = (h: number) => {
-      // Prevent wild values (e.g., during iOS UI transitions)
-      const clamped = Math.max(40, Math.min(120, Math.round(h)));
-      if (clamped !== last) {
-        document.documentElement.style.setProperty("--header-h", `${clamped}px`);
-        last = clamped;
-      }
+    const setVar = () => {
+      const h = Math.round(el.getBoundingClientRect().height);
+      document.documentElement.style.setProperty(varName, `${h}px`);
     };
 
-    const measure = () => {
-      const rect = el.getBoundingClientRect();
-      commit(rect.height);
-    };
+    setVar();
 
-    const schedule = () => {
-      if (raf) cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(measure); // measure after layout/paint
-    };
+    const ro = new ResizeObserver((entries: ResizeObserverEntry[]) => {
+      // Only respond to our element
+      if (entries.some((e) => e.target === el)) setVar();
+    });
 
-    // Initial after paint
-    schedule();
-    // Once more shortly after mount (fonts/safe-area settle)
-    t = window.setTimeout(schedule, 60);
-
-    // Re-run on element size changes
-    const ro = new ResizeObserver(schedule);
     ro.observe(el);
 
-    // Re-run on viewport changes
-    window.addEventListener("resize", schedule);
-    window.addEventListener("orientationchange", schedule);
-
-    // Re-run when web fonts finish loading (if supported)
-    if ((document as any).fonts?.ready) {
-      (document as any).fonts.ready.then(schedule).catch(() => {});
-    }
+    const onResize = () => setVar();
+    window.addEventListener("resize", onResize);
 
     return () => {
-      if (raf) cancelAnimationFrame(raf);
-      if (t) clearTimeout(t);
       ro.disconnect();
-      window.removeEventListener("resize", schedule);
-      window.removeEventListener("orientationchange", schedule);
+      window.removeEventListener("resize", onResize);
     };
-  }, []);
+  }, [targetSelector, varName]);
 
-  return null;
+  // If you’re selecting the real header via `targetSelector`, this renders nothing visible.
+  return <div ref={hostRef} style={{ display: "contents" }} data-header-sizer />;
 }
