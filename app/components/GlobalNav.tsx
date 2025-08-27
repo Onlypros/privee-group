@@ -27,24 +27,15 @@ export default function GlobalNav() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [creativeOpen, setCreativeOpen] = useState(false);
-
   const drawerRef = useRef<HTMLDivElement | null>(null);
-  const menuButtonRef = useRef<HTMLButtonElement | null>(null);
 
-  // Close + return focus
-  function closeMenu() {
+  // Close menus on route change
+  useEffect(() => {
     setOpen(false);
     setCreativeOpen(false);
-    menuButtonRef.current?.focus();
-  }
-
-  // Close on route change
-  useEffect(() => {
-    if (open || creativeOpen) closeMenu();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
-  // Lock <html> scroll
+  // Lock <html> scroll when drawer open
   useEffect(() => {
     const root = document.documentElement;
     if (open) root.classList.add("overflow-hidden");
@@ -52,32 +43,27 @@ export default function GlobalNav() {
     return () => root.classList.remove("overflow-hidden");
   }, [open]);
 
-  // ESC to close
+  // Close on Escape
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") closeMenu();
+      if (e.key === "Escape") {
+        setOpen(false);
+        setCreativeOpen(false);
+      }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  // Click outside
+  // Click outside (mobile)
   useEffect(() => {
     const onDown = (e: MouseEvent) => {
       if (!open) return;
       const el = drawerRef.current;
-      if (el && !el.contains(e.target as Node)) closeMenu();
+      if (el && !el.contains(e.target as Node)) setOpen(false);
     };
     document.addEventListener("mousedown", onDown);
     return () => document.removeEventListener("mousedown", onDown);
-  }, [open]);
-
-  // Toggle inert correctly
-  useEffect(() => {
-    const el = drawerRef.current;
-    if (!el) return;
-    if (open) el.removeAttribute("inert");
-    else el.setAttribute("inert", "");
   }, [open]);
 
   const isActive = (href: string) =>
@@ -87,38 +73,35 @@ export default function GlobalNav() {
     <nav
       id="site-nav"
       aria-label="Primary"
-      className="sticky top-0 z-[999] w-full bg-black text-white"
+      className="fixed top-0 inset-x-0 z-[999] bg-black text-white"
       style={{ paddingTop: "env(safe-area-inset-top)" }}
     >
-      {/* Header bar */}
-      <div className="mx-auto max-w-6xl px-6 min-h-14 flex items-center gap-6">
+      {/* Header bar (fixed height) */}
+      <div className="relative mx-auto max-w-6xl px-6 h-14 flex items-center">
         {/* Brand */}
         <Link
           href="/"
-          className="self-center text-sm font-semibold tracking-[0.18em] hover:text-gray-300 transition-colors
+          className="text-sm font-semibold tracking-[0.18em] hover:text-gray-300 transition-colors
                      focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded"
         >
           PRIVÉE GROUP
         </Link>
 
         {/* Desktop links */}
-        <ul className="hidden md:flex flex-1 justify-center items-start gap-7">
+        <ul className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center gap-7">
           {links.map((item) => {
             if ("children" in item) {
               return (
-                <li
-                  key={item.label}
-                  className="group grid grid-rows-[auto,0fr] transition-[grid-template-rows] duration-200 ease-out"
-                >
+                <li key={item.label} className="relative group">
                   <Link
                     href={item.href ?? "/creative"}
                     aria-haspopup="menu"
-                    className={`inline-flex items-center gap-1 px-3 text-[11px] font-light tracking-[0.02em] leading-tight
-                                text-white hover:text-neutral-200 transition-colors
+                    className={`inline-flex items-center gap-1 text-[10px] font-light tracking-[0.02em] leading-tight transition-colors
                                 outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded
-                                ${isActive(item.href ?? "/creative") ? "underline underline-offset-4" : ""}`}
+                                ${isActive(item.href ?? "/creative") ? "underline underline-offset-4" : "hover:text-gray-300"}`}
                   >
                     {item.label}
+                    {/* Chevron */}
                     <svg
                       className="h-3 w-3 transition-transform group-hover:rotate-180"
                       viewBox="0 0 24 24"
@@ -130,51 +113,48 @@ export default function GlobalNav() {
                     </svg>
                   </Link>
 
-                  {/* In-flow dropdown */}
-                  <div className="overflow-hidden row-start-2">
-                    <div
-                      role="menu"
-                      className="mt-2 rounded-md bg-black text-white shadow-lg ring-1 ring-white/10 border border-white/5
-                                 max-h-0 group-hover:max-h-60 transition-[max-height] duration-200 ease-out"
-                    >
-                      <ul className="py-1">
-                        {item.children.map((c) => {
-                          const active = isActive(c.href);
-                          return (
-                            <li key={c.href}>
-                              <Link
-                                href={c.href}
-                                role="menuitem"
-                                className="relative block px-3 py-2 whitespace-nowrap
-                                           text-[11px] font-light tracking-[0.02em] leading-tight
-                                           text-white bg-black
-                                           hover:text-neutral-200 hover:underline underline-offset-4
-                                           transition-colors"
-                              >
-                                {active && (
-                                  <span className="absolute left-0 top-1/2 -translate-y-1/2 h-3.5 w-[3px] bg-white rounded-sm" />
-                                )}
-                                {c.label}
-                              </Link>
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    </div>
+                  {/* Hover dropdown */}
+                  <div
+                    role="menu"
+                    className="invisible opacity-0 group-hover:visible group-hover:opacity-100 transition
+                               absolute top-[calc(100%+10px)] left-1/2 -translate-x-1/2
+                               rounded-md bg-black text-white shadow-lg
+                               ring-1 ring-white/10 border border-white/5 min-w-[180px]"
+                  >
+                    <ul className="py-1">
+                      {item.children.map((c) => {
+                        const active = isActive(c.href);
+                        return (
+                          <li key={c.href}>
+                            <Link
+                              href={c.href}
+                              role="menuitem"
+                              className="relative block px-3 py-2 whitespace-nowrap
+                                         text-[10px] font-light tracking-[0.02em] leading-tight
+                                         hover:underline underline-offset-4 hover:opacity-80 transition"
+                            >
+                              {active && (
+                                <span className="absolute left-0 top-1/2 -translate-y-1/2 h-3.5 w-[3px] bg-white rounded-sm" />
+                              )}
+                              {c.label}
+                            </Link>
+                          </li>
+                        );
+                      })}
+                    </ul>
                   </div>
                 </li>
               );
             }
 
             return (
-              <li key={item.href} className="grid grid-rows-1">
+              <li key={item.href}>
                 <Link
                   href={item.href}
                   aria-current={isActive(item.href) ? "page" : undefined}
-                  className={`text-[11px] font-light tracking-[0.02em] leading-tight
-                              text-white hover:text-neutral-200 transition-colors
+                  className={`text-[10px] font-light tracking-[0.02em] leading-tight transition-colors
                               focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded
-                              ${isActive(item.href) ? "underline underline-offset-4" : ""}`}
+                              ${isActive(item.href) ? "underline underline-offset-4" : "hover:text-gray-300"}`}
                 >
                   {item.label}
                 </Link>
@@ -184,9 +164,8 @@ export default function GlobalNav() {
         </ul>
 
         {/* Mobile hamburger */}
-        <div className="ml-auto md:hidden self-center">
+        <div className="ml-auto md:hidden">
           <button
-            ref={menuButtonRef}
             type="button"
             onClick={() => setOpen((v) => !v)}
             aria-expanded={open}
@@ -217,10 +196,10 @@ export default function GlobalNav() {
       <div
         className={`md:hidden fixed inset-0 ${open ? "bg-black/50 z-[998]" : "pointer-events-none bg-transparent"} transition-opacity duration-200`}
         style={{ opacity: open ? 1 : 0 }}
-        onClick={closeMenu}
+        onClick={() => setOpen(false)}
       />
 
-      {/* Mobile drawer */}
+      {/* Mobile drawer (always below 56px header) */}
       <div
         id="primary-menu"
         ref={drawerRef}
@@ -246,7 +225,7 @@ export default function GlobalNav() {
                   <Link
                     href="/branding"
                     className={`block py-2 text-base hover:text-gray-300 ${isActive("/branding") ? "underline underline-offset-4" : ""}`}
-                    onClick={closeMenu}
+                    onClick={() => setOpen(false)}
                   >
                     Branding
                   </Link>
@@ -255,7 +234,7 @@ export default function GlobalNav() {
                   <Link
                     href="/photography"
                     className={`block py-2 text-base hover:text-gray-300 ${isActive("/photography") ? "underline underline-offset-4" : ""}`}
-                    onClick={closeMenu}
+                    onClick={() => setOpen(false)}
                   >
                     Photography
                   </Link>
@@ -272,7 +251,7 @@ export default function GlobalNav() {
               <Link
                 key={l.href}
                 href={l.href}
-                onClick={closeMenu}
+                onClick={() => setOpen(false)}
                 className="block py-2 text-base bg-black text-white hover:text-gray-300 transition-colors
                            focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded"
               >
