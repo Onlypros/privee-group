@@ -1,4 +1,3 @@
-// app/components/GlobalNav.tsx
 "use client";
 
 import Link from "next/link";
@@ -71,12 +70,14 @@ export default function GlobalNav() {
 
   return (
     <nav
+      id="site-nav"
       aria-label="Primary"
       className="fixed top-0 inset-x-0 z-[999] bg-black text-white isolate"
-      style={{ height: "var(--header-h)", paddingTop: "env(safe-area-inset-top)" }}
+      // no explicit height here (HeaderSizer measures natural height)
+      style={{ paddingTop: "env(safe-area-inset-top)" }}
     >
       {/* Bar */}
-      <div className="relative mx-auto max-w-6xl px-6 h-full flex items-center">
+      <div className="relative mx-auto max-w-6xl px-6 flex items-center">
         {/* Brand */}
         <Link
           href="/"
@@ -185,7 +186,7 @@ export default function GlobalNav() {
       <div
         id="primary-menu"
         ref={drawerRef}
-        className={`sm:hidden fixed top-[calc(var(--header-h)+env(safe-area-inset-top))] inset-x-0 z-[1000] bg-black ${open ? "block" : "hidden"}`}
+        className={`sm:hidden fixed top-[var(--header-h)] inset-x-0 z-[1000] bg-black ${open ? "block" : "hidden"}`}
         aria-hidden={!open}
       >
         <div className="mx-auto max-w-6xl px-6 py-4 flex flex-col gap-1">
