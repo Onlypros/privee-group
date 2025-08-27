@@ -50,7 +50,7 @@ export default function LuxuryFooter() {
               href="/group"
               className="text-[11px] tracking-[0.14em] font-semibold text-white/90 hover:opacity-80"
             >
-              OUR GROUP
+              GROUP
             </Link>
           </div>
         </div>

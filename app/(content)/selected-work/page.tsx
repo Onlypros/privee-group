@@ -18,17 +18,19 @@ export default function SelectedWorkPage() {
     <main className="px-6 bg-white text-black min-h-screen">
       {/* Hero */}
       <section className="pt-20 pb-10 text-center">
-        <h1 className="mt-2 text-3xl font-semibold tracking-wide md:text-4xl uppercase">
-          SELECTED WORK
-        </h1>
-        <div className="mx-auto mt-6 max-w-xl">
-          <p className="text-sm leading-relaxed md:text-[9px]">
-            A curated selection of photographic work.
-          </p>
+        <div className="mx-auto w-full max-w-4xl">
+          <h1 className="text-5xl md:text-6xl leading-tight font-semibold tracking-wide uppercase">
+            SELECTED WORK
+          </h1>
+          <div className="mx-auto mt-4 max-w-3xl">
+            <p className="text-base md:text-lg leading-relaxed text-black/80">
+              A curated selection of photographic work.
+            </p>
+          </div>
         </div>
       </section>
 
-      <hr className="mx-auto my-8 max-w-3xl border-black/10" />
+      <hr className="mx-auto my-12 w-full max-w-4xl border-black/10" />
 
       {/* Grid */}
       <section className="mx-auto max-w-6xl pb-16">
