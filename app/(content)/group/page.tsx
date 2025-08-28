@@ -1,116 +1,92 @@
 // app/group/page.tsx
-import EmailCTA from "../../components/EmailCTA";
-import PortalButton from "../../components/PortalButton";
+// Refactor notes:
+// - Hero → <PageHeader topPad="roomy">.
+// - Dividers → <Divider />.
+// - “What We Do” → <FeatureGrid cols={3}>.
+// - “Who It’s For” → <AudienceList>.
+// - Final CTA → <RequestCollab>.
 
-export const metadata = {
+import { seo } from "@/app/lib/seo";
+import PageHeader from "../../components/PageHeader";
+import Section from "../../components/Section";
+import Container from "../../components/Container";
+import Divider from "../../components/Divider";
+import { FeatureGrid, FeatureItem } from "../../components/FeatureGrid";
+import AudienceList from "../../components/AudienceList";
+import RequestCollab from "../../components/RequestCollab";
+
+export const metadata = seo({
   title: "Our Group — PRIVÉE GROUP",
   description:
     "The Privée Group is a cultural house for creative work, mission, and collaboration.",
-  openGraph: {
-    title: "Our Group — PRIVÉE GROUP",
-    description:
-      "The Privée Group is a cultural house for creative work, mission, and collaboration.",
-    url: "/group",
-    type: "website",
-  },
-};
+  path: "/group",
+  type: "website",
+});
 
 export default function GroupPage() {
   return (
     <main className="px-6 bg-white text-black min-h-screen">
-      {/* Hero */}
-      <section className="pt-20 pb-10 text-center">
-        <div className="mx-auto w-full max-w-4xl">
-          <h1 className="text-5xl md:text-6xl leading-tight font-semibold tracking-wide uppercase">
+      <PageHeader
+        topPad="roomy"
+        title={
+          <>
             OUR <span className="font-serif italic normal-case">GROUP</span>
-          </h1>
-
-          <div className="mx-auto mt-4 max-w-3xl">
-            <p className="text-base md:text-lg leading-relaxed text-black">
+          </>
+        }
+        lead={
+          <>
+            <p>
               The Privée Group is a cultural house for creative work, mission, and collaboration.
             </p>
-            <p className="mt-3 text-base md:text-lg leading-relaxed text-black">
+            <p>
               We work with founders, organizations, and investors building with clarity, purpose, and long-term value.
             </p>
-          </div>
-        </div>
-      </section>
+          </>
+        }
+      />
 
-      <hr className="mx-auto my-12 w-full max-w-4xl border-black/10" />
+      <Divider />
 
       {/* What We Do */}
-      <section className="py-12 md:py-16 text-center">
-        <div className="mx-auto w-full max-w-5xl">
+      <Section padY="md" className="text-center">
+        <Container size="md">
           <h2 className="text-xl md:text-2xl font-medium uppercase tracking-wide">
             What We Do
           </h2>
 
-          <div className="mt-8 grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-12 text-sm md:text-base leading-relaxed">
-            <div className="flex flex-col items-center">
-              <h3 className="text-sm md:text-base font-semibold tracking-wide uppercase">
-                Creative
-              </h3>
-              <p className="mt-2 max-w-[38ch]">
-                Branding, photography, and cultural work led through our studio.
-              </p>
-            </div>
+          <FeatureGrid cols={3}>
+            <FeatureItem title="Creative">
+              Branding, photography, and cultural work led through our studio.
+            </FeatureItem>
 
-            <div className="flex flex-col items-center">
-              <h3 className="text-sm md:text-base font-semibold tracking-wide uppercase">
-                Mission
-              </h3>
-              <p className="mt-2 max-w-[38ch]">
-                Partnerships with individuals and organizations serving people and purpose.
-              </p>
-            </div>
+            <FeatureItem title="Mission">
+              Partnerships with individuals and organizations serving people and purpose.
+            </FeatureItem>
 
-            <div className="flex flex-col items-center">
-              <h3 className="text-sm md:text-base font-semibold tracking-wide uppercase">
-                Collaborations
-              </h3>
-              <p className="mt-2 max-w-[38ch]">
-                Selective ventures with founders and investors aligned with long-term vision.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+            <FeatureItem title="Collaborations">
+              Selective ventures with founders and investors aligned with long-term vision.
+            </FeatureItem>
+          </FeatureGrid>
+        </Container>
+      </Section>
 
-      <hr className="mx-auto my-12 w-full max-w-4xl border-black/10" />
+      <Divider />
 
-      {/* Who It's For */}
-      <section className="py-12 md:py-16 text-center">
-        <div className="mx-auto w-full max-w-4xl">
-          <h2 className="text-xl md:text-2xl font-medium uppercase tracking-wide">
-            Who It’s For
-          </h2>
-          <ul className="mt-4 space-y-2 text-base md:text-lg leading-relaxed mx-auto max-w-3xl">
-            <li>Founders shaping meaningful companies</li>
-            <li>Creators and teams building culture through design, art, or media</li>
-            <li>Organizations rooted in purpose and community impact</li>
-            <li>Investors seeking curated, long-term collaborations</li>
-          </ul>
-        </div>
-      </section>
+      {/* Who It’s For */}
+      <AudienceList
+        title="Who It’s For"
+        items={[
+          "Founders shaping meaningful companies",
+          "Creators and teams building culture through design, art, or media",
+          "Organizations rooted in purpose and community impact",
+          "Investors seeking curated, long-term collaborations",
+        ]}
+      />
 
-      <hr className="mx-auto my-12 w-full max-w-4xl border-black/10" />
+      <Divider />
 
       {/* Request Collaboration */}
-      <section className="py-12 md:py-16 text-center">
-        <div className="mx-auto w-full max-w-4xl">
-          <h2 className="text-xl md:text-2xl font-medium uppercase tracking-wide">
-            Request Collaboration
-          </h2>
-          <p className="mt-3 text-base md:text-lg leading-relaxed text-black">
-            Collaborations are reviewed privately.
-          </p>
-
-          <div className="mt-6 flex items-center justify-center gap-6">
-            <PortalButton />
-            <EmailCTA />
-          </div>
-        </div>
-      </section>
+      <RequestCollab />
 
       <div className="h-12" />
     </main>

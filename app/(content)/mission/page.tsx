@@ -1,138 +1,106 @@
 // app/(content)/mission/page.tsx
-import EmailCTA from "../../components/EmailCTA";
-import PortalButton from "../../components/PortalButton";
+// Refactor notes:
+// - Hero → <PageHeader topPad="roomy"> (desktop whitespace, safe on mobile).
+// - Dividers → <Divider /> (keeps the original max-w-4xl look).
+// - “What We Do” → <FeatureGrid cols={3}>.
+// - “Who It’s For” → <AudienceList>.
+// - “Our Belief” → <AudienceQuote>.
+// - Final CTA → <RequestCollab>.
 
-export const metadata = {
+import { seo } from "@/app/lib/seo";
+import PageHeader from "../../components/PageHeader";
+import Section from "../../components/Section";
+import Container from "../../components/Container";
+import Divider from "../../components/Divider";
+import { FeatureGrid, FeatureItem } from "../../components/FeatureGrid";
+import AudienceList from "../../components/AudienceList";
+import AudienceQuote from "../../components/AudienceQuote";
+import RequestCollab from "../../components/RequestCollab";
+
+export const metadata = seo({
   title: "Mission — PRIVÉE GROUP",
   description:
     "What Privée Missions is, what we believe, the projects we take on, and why it matters.",
-  openGraph: {
-    title: "Mission — PRIVÉE GROUP",
-    description:
-      "What Privée Missions is, what we believe, the projects we take on, and why it matters.",
-    url: "/mission",
-  },
-};
+  path: "/mission",
+});
 
 export default function MissionPage() {
   return (
     <main className="px-6 bg-white text-black min-h-screen">
       {/* Hero */}
-      <section className="pt-20 pb-10 text-center">
-        <div className="mx-auto w-full max-w-4xl">
-          <h1 className="text-5xl md:text-6xl leading-tight font-semibold tracking-wide uppercase">
+      <PageHeader
+        topPad="roomy"
+        title={
+          <>
             OUR <span className="font-serif italic">MISSION</span>
-          </h1>
-
-          <div className="mx-auto mt-4 max-w-3xl">
-            <p className="text-base md:text-lg leading-relaxed text-black">
+          </>
+        }
+        lead={
+          <>
+            <p>
               Creative production and brand collaboration in service of mission-led work.
             </p>
-            <p className="mt-3 text-base md:text-lg leading-relaxed text-black">
+            <p>
               Privée Missions partners with missionaries, founders, and purpose-driven
               ventures to support stories and projects that reflect responsibility,
               intention, and cultural depth.
             </p>
-          </div>
-        </div>
-      </section>
+          </>
+        }
+      />
 
-      <hr className="mx-auto my-12 w-full max-w-4xl border-black/10" />
+      <Divider />
 
       {/* What We Do */}
-      <section className="py-12 md:py-16 text-center">
-        <div className="mx-auto w-full max-w-5xl">
+      <Section padY="md" className="text-center">
+        <Container size="md">
           <h2 className="text-xl md:text-2xl font-medium uppercase tracking-wide">
             What We Do
           </h2>
 
-          {/* Mobile: 1 col; Desktop: 3 cols */}
-          <div className="mt-8 grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-12 text-sm md:text-base leading-relaxed">
-            <div className="flex flex-col items-center">
-              <h3 className="text-sm md:text-base font-semibold tracking-wide uppercase">
-                Partnerships
-              </h3>
-              <p className="mt-2 max-w-[34ch]">
-                We collaborate with individuals and organizations doing work that serves
-                people, communities, and purpose.
-              </p>
-            </div>
+          <FeatureGrid cols={3}>
+            <FeatureItem title="Partnerships">
+              We collaborate with individuals and organizations doing work that serves
+              people, communities, and purpose.
+            </FeatureItem>
 
-            <div className="flex flex-col items-center">
-              <h3 className="text-sm md:text-base font-semibold tracking-wide uppercase">
-                Storytelling
-              </h3>
-              <p className="mt-2 max-w-[34ch]">
-                We help clarify visual direction, refine brand tone, and support media
-                that communicates mission with authenticity and care.
-              </p>
-            </div>
+            <FeatureItem title="Storytelling">
+              We help clarify visual direction, refine brand tone, and support media
+              that communicates mission with authenticity and care.
+            </FeatureItem>
 
-            <div className="flex flex-col items-center">
-              <h3 className="text-sm md:text-base font-semibold tracking-wide uppercase">
-                Projects
-              </h3>
-              <p className="mt-2 max-w-[34ch]">
-                We develop creative projects and collaborations with ventures rooted in
-                sustainability, healing, and social impact.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+            <FeatureItem title="Projects">
+              We develop creative projects and collaborations with ventures rooted in
+              sustainability, healing, and social impact.
+            </FeatureItem>
+          </FeatureGrid>
+        </Container>
+      </Section>
 
-      {/* Keep divider width consistent with other pages */}
-      <hr className="mx-auto my-12 w-full max-w-4xl border-black/10" />
+      <Divider />
 
       {/* Who It's For */}
-      <section className="py-12 md:py-16 text-center">
-        <div className="mx-auto w-full max-w-4xl">
-          <h2 className="text-xl md:text-2xl font-medium uppercase tracking-wide">
-            Who It’s For
-          </h2>
-          <ul className="mt-4 space-y-2 text-base md:text-lg leading-relaxed mx-auto max-w-3xl">
-            <li>Missionaries</li>
-            <li>Faith-rooted and values-based founders</li>
-            <li>Eco-luxury and purpose-driven brands</li>
-            <li>Projects that serve communities, not trends</li>
-          </ul>
-        </div>
-      </section>
+      <AudienceList
+        title="Who It’s For"
+        items={[
+          "Missionaries",
+          "Faith-rooted and values-based founders",
+          "Eco-luxury and purpose-driven brands",
+          "Projects that serve communities, not trends",
+        ]}
+      />
 
-      <hr className="mx-auto my-12 w-full max-w-4xl border-black/10" />
+      <Divider />
 
       {/* Our Belief */}
-      <section className="py-12 md:py-16 text-center">
-        <div className="mx-auto w-full max-w-4xl">
-          <h2 className="text-xl md:text-2xl font-medium uppercase tracking-wide">
-            Our Belief
-          </h2>
-          <div className="mx-auto mt-4 max-w-3xl italic">
-            <p className="text-base md:text-lg leading-relaxed text-black">
-              We are here for the mission, not the noise.
-            </p>
-          </div>
-        </div>
-      </section>
+      <AudienceQuote title="Our Belief">
+        We are here for the mission, not the noise.
+      </AudienceQuote>
 
-      <hr className="mx-auto my-12 w-full max-w-4xl border-black/10" />
+      <Divider />
 
       {/* Request Collaboration */}
-      <section className="py-12 md:py-16 text-center">
-        <div className="mx-auto w-full max-w-4xl">
-          <h2 className="text-xl md:text-2xl font-medium uppercase tracking-wide">
-            Request Collaboration
-          </h2>
-          <p className="mt-3 text-base md:text-lg leading-relaxed text-black">
-            Collaborations are reviewed privately.
-          </p>
-
-          <div className="mt-6 flex items-center justify-center gap-6">
-            <PortalButton />
-            <EmailCTA />
-          </div>
-        </div>
-      </section>
+      <RequestCollab />
 
       <div className="h-12" />
     </main>

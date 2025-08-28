@@ -1,37 +1,37 @@
-// app/(content)/mission/page.tsx
+// app/branding/page.tsx
 import EmailCTA from "../../components/EmailCTA";
 import PortalButton from "../../components/PortalButton";
 
 export const metadata = {
-  title: "Mission — PRIVÉE GROUP",
+  title: "Branding — PRIVÉE GROUP",
   description:
-    "What Privée Missions is, what we believe, the projects we take on, and why it matters.",
+    "Brand identity systems, creative direction, and guidelines that make your story feel inevitable.",
   openGraph: {
-    title: "Mission — PRIVÉE GROUP",
+    title: "Branding — PRIVÉE GROUP",
     description:
-      "What Privée Missions is, what we believe, the projects we take on, and why it matters.",
-    url: "/mission",
+      "Brand identity systems, creative direction, and guidelines that make your story feel inevitable.",
+    url: "/branding",
   },
 };
 
-export default function MissionPage() {
+export default function BrandingPage() {
   return (
     <main className="px-6 bg-white text-black min-h-screen">
       {/* Hero */}
       <section className="pt-20 pb-10 text-center">
         <div className="mx-auto w-full max-w-4xl">
           <h1 className="text-5xl md:text-6xl leading-tight font-semibold tracking-wide uppercase">
-            OUR <span className="font-serif italic">MISSION</span>
+            OUR <span className="font-serif italic">BRANDING</span>
           </h1>
 
           <div className="mx-auto mt-4 max-w-3xl">
             <p className="text-base md:text-lg leading-relaxed text-black">
-              Creative production and brand collaboration in service of mission-led work.
+              Branding defined by precision, clarity, and consistency across digital and print.
             </p>
             <p className="mt-3 text-base md:text-lg leading-relaxed text-black">
-              Privée Missions partners with missionaries, founders, and purpose-driven
-              ventures to support stories and projects that reflect responsibility,
-              intention, and cultural depth.
+              Visual identity, logos, and print design for founders and teams
+              <span className="hidden md:inline"><br /></span>
+              who value clarity, restraint, and long-term brand equity.
             </p>
           </div>
         </div>
@@ -50,38 +50,34 @@ export default function MissionPage() {
           <div className="mt-8 grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-12 text-sm md:text-base leading-relaxed">
             <div className="flex flex-col items-center">
               <h3 className="text-sm md:text-base font-semibold tracking-wide uppercase">
-                Partnerships
+                Visual Identity
               </h3>
-              <p className="mt-2 max-w-[34ch]">
-                We collaborate with individuals and organizations doing work that serves
-                people, communities, and purpose.
+              <p className="mx-auto mt-2 max-w-[34ch]">
+                Logos, brand marks, color systems, and typography that define a brand’s look and recognition.
               </p>
             </div>
 
             <div className="flex flex-col items-center">
               <h3 className="text-sm md:text-base font-semibold tracking-wide uppercase">
-                Storytelling
+                Print Collateral
               </h3>
-              <p className="mt-2 max-w-[34ch]">
-                We help clarify visual direction, refine brand tone, and support media
-                that communicates mission with authenticity and care.
+              <p className="mx-auto mt-2 max-w-[34ch]">
+                Business cards, stationery, packaging, and other crafted brand artifacts.
               </p>
             </div>
 
             <div className="flex flex-col items-center">
               <h3 className="text-sm md:text-base font-semibold tracking-wide uppercase">
-                Projects
+                Digital Assets
               </h3>
-              <p className="mt-2 max-w-[34ch]">
-                We develop creative projects and collaborations with ventures rooted in
-                sustainability, healing, and social impact.
+              <p className="mx-auto mt-2 max-w-[34ch]">
+                Social profiles, templates, and on-brand systems that keep your presence consistent online.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Keep divider width consistent with other pages */}
       <hr className="mx-auto my-12 w-full max-w-4xl border-black/10" />
 
       {/* Who It's For */}
@@ -91,27 +87,11 @@ export default function MissionPage() {
             Who It’s For
           </h2>
           <ul className="mt-4 space-y-2 text-base md:text-lg leading-relaxed mx-auto max-w-3xl">
-            <li>Missionaries</li>
-            <li>Faith-rooted and values-based founders</li>
-            <li>Eco-luxury and purpose-driven brands</li>
-            <li>Projects that serve communities, not trends</li>
+            <li>Founders building long-term brands</li>
+            <li>Companies seeking refined visual identity</li>
+            <li>Teams needing logos, wordmarks, and brand assets</li>
+            <li>Partners requiring luxury print collateral</li>
           </ul>
-        </div>
-      </section>
-
-      <hr className="mx-auto my-12 w-full max-w-4xl border-black/10" />
-
-      {/* Our Belief */}
-      <section className="py-12 md:py-16 text-center">
-        <div className="mx-auto w-full max-w-4xl">
-          <h2 className="text-xl md:text-2xl font-medium uppercase tracking-wide">
-            Our Belief
-          </h2>
-          <div className="mx-auto mt-4 max-w-3xl italic">
-            <p className="text-base md:text-lg leading-relaxed text-black">
-              We are here for the mission, not the noise.
-            </p>
-          </div>
         </div>
       </section>
 

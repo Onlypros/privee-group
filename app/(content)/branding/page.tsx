@@ -1,119 +1,98 @@
 // app/branding/page.tsx
-import EmailCTA from "../../components/EmailCTA";
-import PortalButton from "../../components/PortalButton";
+// Refactor notes:
+// - Replaced repeated hero markup with <PageHeader topPad="roomy"> to satisfy client whitespace on desktop while keeping mobile sane.
+// - Centralized section spacing via <Section> and widths via <Container>.
+// - Standardized dividers via <Divider />.
+// - “What We Do” converted to <FeatureGrid>/<FeatureItem> (3 columns).
+// - “Who It’s For” converted to <AudienceList>.
+// - Final CTA converted to <RequestCollab> (uses existing PortalButton + EmailCTA under the hood).
+// - Kept the trailing <div className="h-12" /> spacer to maintain exact page rhythm.
 
-export const metadata = {
+import { seo } from "@/app/lib/seo";
+import PageHeader from "../../components/PageHeader";
+import Section from "../../components/Section";
+import Container from "../../components/Container";
+import Divider from "../../components/Divider";
+import { FeatureGrid, FeatureItem } from "../../components/FeatureGrid";
+import AudienceList from "../../components/AudienceList";
+import RequestCollab from "../../components/RequestCollab";
+
+export const metadata = seo({
   title: "Branding — PRIVÉE GROUP",
   description:
     "Brand identity systems, creative direction, and guidelines that make your story feel inevitable.",
-  openGraph: {
-    title: "Branding — PRIVÉE GROUP",
-    description:
-      "Brand identity systems, creative direction, and guidelines that make your story feel inevitable.",
-    url: "/branding",
-  },
-};
+  path: "/branding",
+});
 
 export default function BrandingPage() {
   return (
     <main className="px-6 bg-white text-black min-h-screen">
-      {/* Hero */}
-      <section className="pt-20 pb-10 text-center">
-        <div className="mx-auto w-full max-w-4xl">
-          <h1 className="text-5xl md:text-6xl leading-tight font-semibold tracking-wide uppercase">
+      {/* Hero header: title + lead, with desktop-luxury spacing */}
+      <PageHeader
+        topPad="roomy" // desktop pt-36, mobile remains safe
+        title={
+          <>
             OUR <span className="font-serif italic">BRANDING</span>
-          </h1>
-
-          <div className="mx-auto mt-4 max-w-3xl">
-            <p className="text-base md:text-lg leading-relaxed text-black">
+          </>
+        }
+        lead={
+          <>
+            <p>
               Branding defined by precision, clarity, and consistency across digital and print.
             </p>
-            <p className="mt-3 text-base md:text-lg leading-relaxed text-black">
+            <p>
               Visual identity, logos, and print design for founders and teams
               <span className="hidden md:inline"><br /></span>
               who value clarity, restraint, and long-term brand equity.
             </p>
-          </div>
-        </div>
-      </section>
+          </>
+        }
+      />
 
-      <hr className="mx-auto my-12 w-full max-w-4xl border-black/10" />
+      <Divider />
 
       {/* What We Do */}
-      <section className="py-12 md:py-16 text-center">
-        <div className="mx-auto w-full max-w-5xl">
+      <Section padY="md" className="text-center">
+        <Container size="md">
           <h2 className="text-xl md:text-2xl font-medium uppercase tracking-wide">
             What We Do
           </h2>
 
-          {/* Mobile: 1 col; Desktop: 3 cols */}
-          <div className="mt-8 grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-12 text-sm md:text-base leading-relaxed">
-            <div className="flex flex-col items-center">
-              <h3 className="text-sm md:text-base font-semibold tracking-wide uppercase">
-                Visual Identity
-              </h3>
-              <p className="mx-auto mt-2 max-w-[34ch]">
-                Logos, brand marks, color systems, and typography that define a brand’s look and recognition.
-              </p>
-            </div>
+          <FeatureGrid cols={3}>
+            <FeatureItem title="Visual Identity">
+              Logos, brand marks, color systems, and typography that define a brand’s look and recognition.
+            </FeatureItem>
 
-            <div className="flex flex-col items-center">
-              <h3 className="text-sm md:text-base font-semibold tracking-wide uppercase">
-                Print Collateral
-              </h3>
-              <p className="mx-auto mt-2 max-w-[34ch]">
-                Business cards, stationery, packaging, and other crafted brand artifacts.
-              </p>
-            </div>
+            <FeatureItem title="Print Collateral">
+              Business cards, stationery, packaging, and other crafted brand artifacts.
+            </FeatureItem>
 
-            <div className="flex flex-col items-center">
-              <h3 className="text-sm md:text-base font-semibold tracking-wide uppercase">
-                Digital Assets
-              </h3>
-              <p className="mx-auto mt-2 max-w-[34ch]">
-                Social profiles, templates, and on-brand systems that keep your presence consistent online.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+            <FeatureItem title="Digital Assets">
+              Social profiles, templates, and on-brand systems that keep your presence consistent online.
+            </FeatureItem>
+          </FeatureGrid>
+        </Container>
+      </Section>
 
-      <hr className="mx-auto my-12 w-full max-w-4xl border-black/10" />
+      <Divider />
 
-      {/* Who It's For */}
-      <section className="py-12 md:py-16 text-center">
-        <div className="mx-auto w-full max-w-4xl">
-          <h2 className="text-xl md:text-2xl font-medium uppercase tracking-wide">
-            Who It’s For
-          </h2>
-          <ul className="mt-4 space-y-2 text-base md:text-lg leading-relaxed mx-auto max-w-3xl">
-            <li>Founders building long-term brands</li>
-            <li>Companies seeking refined visual identity</li>
-            <li>Teams needing logos, wordmarks, and brand assets</li>
-            <li>Partners requiring luxury print collateral</li>
-          </ul>
-        </div>
-      </section>
+      {/* Who It’s For */}
+      <AudienceList
+        title="Who It’s For"
+        items={[
+          "Founders building long-term brands",
+          "Companies seeking refined visual identity",
+          "Teams needing logos, wordmarks, and brand assets",
+          "Partners requiring luxury print collateral",
+        ]}
+      />
 
-      <hr className="mx-auto my-12 w-full max-w-4xl border-black/10" />
+      <Divider />
 
       {/* Request Collaboration */}
-      <section className="py-12 md:py-16 text-center">
-        <div className="mx-auto w-full max-w-4xl">
-          <h2 className="text-xl md:text-2xl font-medium uppercase tracking-wide">
-            Request Collaboration
-          </h2>
-          <p className="mt-3 text-base md:text-lg leading-relaxed text-black">
-            Collaborations are reviewed privately.
-          </p>
+      <RequestCollab />
 
-          <div className="mt-6 flex items-center justify-center gap-6">
-            <PortalButton />
-            <EmailCTA />
-          </div>
-        </div>
-      </section>
-
+      {/* Preserve tiny end spacer from original page */}
       <div className="h-12" />
     </main>
   );

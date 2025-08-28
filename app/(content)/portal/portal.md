@@ -1,17 +1,10 @@
 // app/(content)/portal/page.tsx
-// Refactor notes:
-// - Keeps the vertically centered layout (unique to this page).
-// - Uses same H1 styling as other pages for consistency.
-// - No behavior changes: PortalLoginButton still links to /portal/private with prefetch={false}.
-
-import { seo } from "@/app/lib/seo";
 import PortalLoginButton from "../../components/PortalLoginButton";
 
-export const metadata = seo({
+export const metadata = {
   title: "Partner Portal — PRIVÉE GROUP",
   description: "Partners, clients, and investors.",
-  path: "/portal",
-});
+};
 
 export default function PortalPage() {
   return (
