@@ -2,10 +2,11 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import GlobalNav from "./components/GlobalNav";
-import LuxuryFooter from "./components/LuxuryFooter";
-import VHFix from "./components/VHFix";
-import HeaderSizer from "./components/HeaderSizer";
+
+import GlobalNav from "./components/GlobalNav";       // server-first
+import LuxuryFooter from "./components/LuxuryFooter"; // server-first
+import VHFix from "./components/VHFix";               // "use client" inside
+import HeaderSizer from "./components/HeaderSizer";   // "use client" inside
 
 const inter = Inter({
   subsets: ["latin"],
@@ -14,14 +15,14 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.priveegroup.co"),
   title: "Privee Group",
   description: "Photography & Creative Direction",
-  metadataBase: new URL("https://www.priveegroup.com"),
   icons: { icon: "/favicon.ico", apple: "/apple-touch-icon.png" },
   openGraph: {
     title: "Privee Group",
     description: "Photography & Creative Direction",
-    url: "https://www.priveegroup.com",
+    url: "https://www.priveegroup.co",
     siteName: "Privee Group",
     type: "website",
   },
@@ -42,12 +43,13 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="h-full scroll-smooth" data-scroll-behavior="smooth">
-      <body className={`${inter.className} antialiased h-full min-h-dvh bg-[var(--background)] text-[var(--foreground)] flex flex-col min-h-screen`}>
-        {/* Mobile viewport height fixer (sets --vhpx) */}
+    <html lang="en" className={`${inter.variable} scroll-smooth`} data-scroll-behavior="smooth">
+      <body className="antialiased min-h-dvh bg-[var(--background)] text-[var(--foreground)] flex flex-col">
+        {/* tiny client helpers; hydrate after paint; keep them simple */}
         <VHFix />
+        <HeaderSizer />
 
-        {/* Skip link */}
+        {/* a11y */}
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-white focus:px-3 focus:py-2 focus:text-black"
@@ -55,14 +57,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Skip to content
         </a>
 
-        {/* Fixed global nav on top */}
         <GlobalNav />
-        <HeaderSizer />
 
-        {/* Render page content directly (no page-shell here) */}
-        <main id="main" className="flex-1 flex flex-col">{children}</main>
+        <main id="main" className="flex-1 flex flex-col">
+          {children}
+        </main>
 
-        {/* Global footer */}
         <LuxuryFooter />
       </body>
     </html>
