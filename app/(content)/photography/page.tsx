@@ -21,7 +21,8 @@ export default function PhotographyPage() {
       {/* Hero */}
       <section className="pt-36 pb-10 text-center">
         <div className="mx-auto w-full max-w-4xl">
-          <h1 className="text-5xl md:text-6xl leading-tight font-semibold tracking-wide uppercase">
+          {/* CHANGED: use heading-xl */}
+          <h1 className="heading-xl">
             OUR <span className="font-serif italic">PHOTOGRAPHY</span>
           </h1>
 
@@ -48,9 +49,8 @@ export default function PhotographyPage() {
           <div className="mt-8 grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-12 text-sm md:text-base leading-relaxed">
             {/* Editorial */}
             <div className="flex flex-col items-center">
-              <h3 className="text-sm md:text-base font-semibold tracking-wide uppercase">
-                Editorial
-              </h3>
+              {/* CHANGED: h3 to heading-xl */}
+              <h3 className="heading-xl">Editorial</h3>
               <p className="mx-auto mt-2 max-w-[42ch]">
                 Campaigns, publications, cultural projects.
               </p>
@@ -58,9 +58,7 @@ export default function PhotographyPage() {
 
             {/* Portraiture */}
             <div className="flex flex-col items-center">
-              <h3 className="text-sm md:text-base font-semibold tracking-wide uppercase">
-                Portraiture
-              </h3>
+              <h3 className="heading-xl">Portraiture</h3>
               <p className="mx-auto mt-2 max-w-[42ch]">
                 Individuals, groups, teams.
               </p>
@@ -68,9 +66,7 @@ export default function PhotographyPage() {
 
             {/* Lifestyle & Spaces */}
             <div className="flex flex-col items-center">
-              <h3 className="text-sm md:text-base font-semibold tracking-wide uppercase">
-                Lifestyle &amp; Spaces
-              </h3>
+              <h3 className="heading-xl">Lifestyle &amp; Spaces</h3>
               <p className="mx-auto mt-2 max-w-[42ch]">
                 Design, interiors, environments.
               </p>
@@ -78,9 +74,7 @@ export default function PhotographyPage() {
 
             {/* Pets */}
             <div className="flex flex-col items-center">
-              <h3 className="text-sm md:text-base font-semibold tracking-wide uppercase">
-                Pets
-              </h3>
+              <h3 className="heading-xl">Pets</h3>
               <p className="mx-auto mt-2 max-w-[42ch]">
                 Pets captured for personal keepsakes and brand work.
               </p>
@@ -88,9 +82,7 @@ export default function PhotographyPage() {
 
             {/* Movement (full width on desktop) */}
             <div className="flex flex-col items-center md:col-span-2">
-              <h3 className="text-sm md:text-base font-semibold tracking-wide uppercase">
-                Movement
-              </h3>
+              <h3 className="heading-xl">Movement</h3>
               <p className="mx-auto mt-2 max-w-[42ch]">
                 Dance, fitness, martial arts.
               </p>
@@ -104,7 +96,8 @@ export default function PhotographyPage() {
       {/* Archive Section */}
       <section className="py-12 md:py-16 text-center">
         <div className="mx-auto w-full max-w-4xl">
-          <p className="text-base md:text-lg leading-relaxed text-black">
+          {/* CHANGED: p to heading-xl */}
+          <p className="heading-xl">
             Selected work is available in our archive.
           </p>
           <div className="mt-6 flex items-center justify-center">

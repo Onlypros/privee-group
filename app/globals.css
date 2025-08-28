@@ -121,3 +121,10 @@ li a:hover {
 body:has(section[data-hero="full"]) .page-shell {
   padding-top: 0 !important;
 }
+
+@layer components {
+  .heading-xl {
+    @apply text-5xl md:text-6xl leading-tight font-semibold tracking-wide uppercase;
+  }
+}
+
