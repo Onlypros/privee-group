@@ -24,6 +24,10 @@ const links: NavItem[] = [
 ];
 
 export default function GlobalNav() {
+  // State to control desktop CREATIVE dropdown open/close
+  const [creativeDropdownOpen, setCreativeDropdownOpen] = useState(false);
+  // Ref to store the close timeout id
+  const creativeDropdownTimeout = useRef<NodeJS.Timeout | null>(null);
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [creativeOpen, setCreativeOpen] = useState(false);
@@ -88,18 +92,33 @@ export default function GlobalNav() {
           {links.map((item) => {
             if ("children" in item) {
               return (
-                <li key={item.label} className="relative group">
+                <li
+                  key={item.label}
+                  className="relative"
+                  // When mouse enters trigger or dropdown, open dropdown and clear any close timeout
+                  onMouseEnter={() => {
+                    if (creativeDropdownTimeout.current) {
+                      clearTimeout(creativeDropdownTimeout.current);
+                    }
+                    setCreativeDropdownOpen(true);
+                  }}
+                  // When mouse leaves trigger or dropdown, start a short timeout to close dropdown
+                  onMouseLeave={() => {
+                    creativeDropdownTimeout.current = setTimeout(() => {
+                      setCreativeDropdownOpen(false);
+                    }, 180); // 180ms delay before closing
+                  }}
+                >
                   <Link
                     href={item.href ?? "/creative"}
                     aria-haspopup="menu"
-                    /* ADDED: px-3 so trigger matches submenu item padding, keeps visual alignment */
                     className={`inline-flex items-center gap-1 px-3 text-[10px] font-light tracking-[0.02em] leading-tight transition-colors
                                 outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded
                                 ${isActive(item.href ?? "/creative") ? "underline underline-offset-4" : "hover:text-gray-300"}`}
                   >
                     {item.label}
                     <svg
-                      className="h-3 w-3 transition-transform group-hover:rotate-180"
+                      className={`h-3 w-3 transition-transform ${creativeDropdownOpen ? "rotate-180" : ""}`}
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="currentColor"
@@ -109,45 +128,34 @@ export default function GlobalNav() {
                     </svg>
                   </Link>
 
-                  {/* Hover dropdown */}
-                  <div
-                    role="menu"
-                    /* CHANGED: remove fixed/min width; let box hug content with w-max + min-w-0.
-                       This eliminates the extra black space to the right. */
-                    /* CHANGED: remove container horizontal padding; give padding to items only. */
-                    /* ADDED: pointer-events to avoid hover flicker during fade. */
-                    className="invisible opacity-0 pointer-events-none group-hover:visible group-hover:opacity-100 group-hover:pointer-events-auto
-                               transition-opacity duration-150
-                               absolute left-0 top-full mt-2
-                               rounded-md bg-black text-white shadow-lg
-                               ring-1 ring-white/10 border border-white/5
-                               w-max min-w-0"   // CHANGED
-                  >
-                    {/* CHANGED: py only; no px on the box so width = widest text + item padding */}
-                    <ul className="py-1">
-                      {item.children.map((c) => {
-                        const active = isActive(c.href);
-                        return (
-                          <li key={c.href}>
-                            <Link
-                              href={c.href}
-                              role="menuitem"
-                              /* CHANGED: block -> inline-flex + whitespace-nowrap so link only
-                                 occupies its text + padding; no container stretching. */
-                              className="relative inline-flex px-3 py-2 whitespace-nowrap
-                                         text-[9px] font-light tracking-[0.02em] leading-tight
-                                         hover:underline underline-offset-4 hover:opacity-80 transition"
-                            >
-                              {active && (
-                                <span className="absolute left-0 top-1/2 -translate-y-1/2 h-3.5 w-[3px] bg-white rounded-sm" />
-                              )}
-                              {c.label}
-                            </Link>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </div>
+                  {/* Dropdown: visible if creativeDropdownOpen is true */}
+                  {creativeDropdownOpen && (
+                    <div
+                      role="menu"
+                      // Keep dropdown open if mouse is over it (see onMouseEnter/onMouseLeave above)
+                      className="transition-opacity duration-150 absolute left-0 top-full mt-2 rounded-md bg-black text-white shadow-lg ring-1 ring-white/10 border border-white/5 w-max min-w-0 z-50"
+                    >
+                      <ul className="py-1">
+                        {item.children.map((c) => {
+                          const active = isActive(c.href);
+                          return (
+                            <li key={c.href}>
+                              <Link
+                                href={c.href}
+                                role="menuitem"
+                                className="relative inline-flex px-3 py-2 whitespace-nowrap text-[9px] font-light tracking-[0.02em] leading-tight hover:underline underline-offset-4 hover:opacity-80 transition"
+                              >
+                                {active && (
+                                  <span className="absolute left-0 top-1/2 -translate-y-1/2 h-3.5 w-[3px] bg-white rounded-sm" />
+                                )}
+                                {c.label}
+                              </Link>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </div>
+                  )}
                 </li>
               );
             }
