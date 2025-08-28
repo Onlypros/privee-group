@@ -1,64 +1,76 @@
 // app/lib/seo.ts
 // Purpose: Generate consistent Next.js Metadata objects with minimal boilerplate.
-// Why: Your pages repeat the same structure (title/description/openGraph/url).
-// Usage: export const metadata = seo({ title: "...", description: "...", path: "/route" });
 
 import type { Metadata } from "next";
 
-/**
- * Site defaults that rarely change.
- * NOTE: metadataBase is already set in app/layout.tsx → we don't repeat it here.
- */
+/** ---- Site constants ---- */
 const SITE = {
   name: "Privee Group",
   defaultDesc: "Photography & Creative Direction",
   twitterCard: "summary_large_image" as const,
 };
 
-/**
- * Input options for building page metadata.
- * - title: Page title (required)
- * - description: Page description (recommended)
- * - path: Route path starting with "/" (recommended for canonical/og:url)
- * - type: OpenGraph type (defaults to "website")
- */
+/** Allowed OG types per Next.js Metadata typing */
+type AllowedOGType =
+  | "website"
+  | "article"
+  | "profile"
+  | "book"
+  | "music.song"
+  | "music.album"
+  | "music.playlist"
+  | "music.radio_station"
+  | "video.movie"
+  | "video.episode"
+  | "video.tv_show"
+  | "video.other";
+
+/** Reuse Next’s image type to stay future-proof */
+type OGImages = NonNullable<NonNullable<Metadata["openGraph"]>["images"]>;
+
+/** Input options for building page metadata. */
 type SEOInput = {
   title: string;
   description?: string;
-  path?: `/${string}`; // e.g., "/photography"
-  type?: "website" | "article" | "profile" | "book" | "music.song" | string;
-  // If/when you add OG images, you can extend this with: images?: Metadata["openGraph"]["images"];
+  /** Route path starting with "/", e.g. "/photography" */
+  path?: `/${string}`;
+  /** Defaults to "website" */
+  type?: AllowedOGType;
+  /** Optional OG/Twitter images (absolute URLs or objects) */
+  images?: OGImages;
 };
 
-/**
- * Build a Metadata object for a page. Safe defaults; easy to extend later.
- */
-export function seo({ title, description, path, type = "website" }: SEOInput): Metadata {
-  // Prefer the page description; fall back to a sane site default.
+/** Build a Metadata object for a page. */
+export function seo({
+  title,
+  description,
+  path,
+  type = "website",
+  images,
+}: SEOInput): Metadata {
   const desc = description ?? SITE.defaultDesc;
 
   return {
     title,
     description: desc,
-    // Canonical URL (relative). Next merges with metadataBase from layout.tsx
-    alternates: path
-      ? { canonical: path }
-      : undefined,
+
+    // If app/layout.tsx sets metadataBase (recommended), a relative canonical is fine.
+    alternates: path ? { canonical: path } : undefined,
 
     openGraph: {
       title,
       description: desc,
-      type,
-      url: path, // relative is fine; Next will resolve with metadataBase
+      type,          // ✅ strictly typed union (no plain string)
+      url: path,     // Next will resolve against metadataBase if set
       siteName: SITE.name,
-      // images: images, // add when you have OG images
+      images,        // optional
     },
 
     twitter: {
       card: SITE.twitterCard,
       title,
       description: desc,
-      // images: images, // mirror OG when added
+      images,        // mirror OG when provided
     },
   };
 }
