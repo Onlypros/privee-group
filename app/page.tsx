@@ -33,13 +33,17 @@ export default function Home() {
         {/* Background video */}
         <video
           ref={videoRef}
-          src="/video/herovideo1-optimized.mp4"
+          src="/video/Herovideo1-optimized.mp4"
           poster="/creative/hero-poster.webp"
           autoPlay
           muted
           loop
           playsInline
-          preload="auto"
+          // CHANGED: avoid eager video download; the poster paints instantly,
+          // and only metadata is fetched up-front (better mobile Perf).
+          preload="metadata"
+          // NEW: mark decorative bg as not announced by AT
+          aria-hidden="true"
           style={{
             width: "100%",
             height: "100%",
@@ -61,10 +65,13 @@ export default function Home() {
 
           <Image
             src="/creative/nothelogo.png"
-            alt=""
+            // CHANGED: meaningful alt for a11y/SEO (logo is content here)
+            alt="PRIVÉE GROUP logo"
             width={800}
             height={1200}
             priority
+            // CHANGED: tell Next the real rendered sizes so it serves smaller variants
+            sizes="(max-width: 768px) 200px, (max-width: 1024px) 320px, 360px"
             className="w-[200px] md:w-[320px] lg:w-[360px] h-auto"
           />
         </div>
