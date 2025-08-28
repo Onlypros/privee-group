@@ -33,7 +33,7 @@ export default function Home() {
         {/* Background video */}
         <video
           ref={videoRef}
-          src="/video/herovideo1.mp4"
+          src="/video/herovideo1-optimized.mp4"
           poster="/creative/hero-poster.webp"
           autoPlay
           muted
