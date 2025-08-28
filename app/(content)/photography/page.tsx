@@ -19,7 +19,7 @@ export default function PhotographyPage() {
   return (
     <main className="px-6 bg-white text-black min-h-screen">
       {/* Hero */}
-      <section className="pt-20 pb-10 text-center">
+      <section className="pt-28 pb-10 text-center">
         <div className="mx-auto w-full max-w-4xl">
           <h1 className="text-5xl md:text-6xl leading-tight font-semibold tracking-wide uppercase">
             OUR <span className="font-serif italic">PHOTOGRAPHY</span>

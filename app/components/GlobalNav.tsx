@@ -92,7 +92,7 @@ export default function GlobalNav() {
                   <Link
                     href={item.href ?? "/creative"}
                     aria-haspopup="menu"
-                    /* ADDED px-3 so the parent text column equals submenu item padding */
+                    /* ADDED: px-3 so trigger matches submenu item padding, keeps visual alignment */
                     className={`inline-flex items-center gap-1 px-3 text-[10px] font-light tracking-[0.02em] leading-tight transition-colors
                                 outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded
                                 ${isActive(item.href ?? "/creative") ? "underline underline-offset-4" : "hover:text-gray-300"}`}
@@ -112,12 +112,18 @@ export default function GlobalNav() {
                   {/* Hover dropdown */}
                   <div
                     role="menu"
-                    /* CHANGED positioning: left-0 top-full mt-2 (no centering transform) */
-                    className="invisible opacity-0 group-hover:visible group-hover:opacity-100 transition
+                    /* CHANGED: remove fixed/min width; let box hug content with w-max + min-w-0.
+                       This eliminates the extra black space to the right. */
+                    /* CHANGED: remove container horizontal padding; give padding to items only. */
+                    /* ADDED: pointer-events to avoid hover flicker during fade. */
+                    className="invisible opacity-0 pointer-events-none group-hover:visible group-hover:opacity-100 group-hover:pointer-events-auto
+                               transition-opacity duration-150
                                absolute left-0 top-full mt-2
                                rounded-md bg-black text-white shadow-lg
-                               ring-1 ring-white/10 border border-white/5 min-w-[180px]"
+                               ring-1 ring-white/10 border border-white/5
+                               w-max min-w-0"   // CHANGED
                   >
+                    {/* CHANGED: py only; no px on the box so width = widest text + item padding */}
                     <ul className="py-1">
                       {item.children.map((c) => {
                         const active = isActive(c.href);
@@ -126,9 +132,10 @@ export default function GlobalNav() {
                             <Link
                               href={c.href}
                               role="menuitem"
-                              /* submenu items already have px-3 → matches the parent link's px-3 */
-                              className="relative block px-3 py-2 whitespace-nowrap
-                                         text-[10px] font-light tracking-[0.02em] leading-tight
+                              /* CHANGED: block -> inline-flex + whitespace-nowrap so link only
+                                 occupies its text + padding; no container stretching. */
+                              className="relative inline-flex px-3 py-2 whitespace-nowrap
+                                         text-[9px] font-light tracking-[0.02em] leading-tight
                                          hover:underline underline-offset-4 hover:opacity-80 transition"
                             >
                               {active && (
@@ -224,7 +231,7 @@ export default function GlobalNav() {
                     className={`block py-2 text-sm hover:text-gray-300 ${isActive("/branding") ? "underline underline-offset-4" : ""}`}
                     onClick={() => setOpen(false)}
                   >
-                    Branding
+                    BRANDING
                   </Link>
                 </li>
                 <li>
@@ -233,7 +240,7 @@ export default function GlobalNav() {
                     className={`block py-2 text-sm hover:text-gray-300 ${isActive("/photography") ? "underline underline-offset-4" : ""}`}
                     onClick={() => setOpen(false)}
                   >
-                    Photography
+                    PHOTOGRAPHY
                   </Link>
                 </li>
               </ul>

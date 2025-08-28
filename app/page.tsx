@@ -80,8 +80,3 @@ export default function Home() {
   );
 }
 
-// testing release and main
-//preproduction test
-//main test
-// fuck vervel
-// testin testing
