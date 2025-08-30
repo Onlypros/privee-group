@@ -1,11 +1,7 @@
 // app/(content)/photography/page.tsx
 // Refactor notes:
-// - Hero → <PageHeader topPad="roomy"> with responsive title (2 lines mobile, 1 line desktop).
-// - Dividers → <Divider /> everywhere.
-// - “What We Do” → <FeatureGrid cols={2}> (with Movement spanning 2 cols).
-// - Archive CTA kept as its own short section, using existing ViewArchiveButton.
-// - “Who It’s For” → <AudienceList>.
-// - Final CTA → <RequestCollab>.
+// - Uses PageHeader mobileBreak + italicRest (single source of truth).
+// - Keeps section structure and content unchanged.
 
 import { seo } from "@/app/lib/seo";
 import PageHeader from "../../components/PageHeader";
@@ -30,18 +26,9 @@ export default function PhotographyPage() {
       {/* Hero */}
       <PageHeader
         topPad="roomy"
-        title={
-          // Mobile: break into 2 lines. Desktop: keep on 1 line and centered.
-          <span
-            className="block text-center md:whitespace-nowrap leading-[1.05]"
-            style={{ fontSize: "clamp(28px, 9vw, 44px)" }} // safe mobile scaling
-          >
-            OUR <br className="md:hidden" />
-            <span className="font-serif italic" style={{ fontSize: "inherit" }}>
-              PHOTOGRAPHY
-            </span>
-          </span>
-        }
+        title="OUR PHOTOGRAPHY"
+        mobileBreak      // mobile: two lines; desktop: one line
+        italicRest       // styles the rest (PHOTOGRAPHY) in serif/italic
         lead={
           <>
             <p>PRIVÉE GROUP documents culture and identity through images.</p>
