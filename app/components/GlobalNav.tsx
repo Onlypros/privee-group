@@ -5,9 +5,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-/**
- * Data at module scope avoids re-alloc each render
- */
 type NavItem =
   | { href: string; label: string }
   | { label: string; href?: string; children: Array<{ href: string; label: string }> };
@@ -29,32 +26,25 @@ const links: NavItem[] = [
 export default function GlobalNav() {
   const pathname = usePathname();
 
-  // ─────────────────────────────────────────────────────────────
-  // MOBILE STATE
-  // ─────────────────────────────────────────────────────────────
+  // Mobile
   const [open, setOpen] = useState(false);
-  const [creativeOpen, setCreativeOpen] = useState(false); // mobile submenu
+  const [creativeOpen, setCreativeOpen] = useState(false);
   const drawerRef = useRef<HTMLDivElement | null>(null);
 
-  // Prevent body scroll when mobile drawer is open
   useEffect(() => {
-    const root = document.documentElement;
-    root.classList.toggle("overflow-hidden", open);
-    return () => root.classList.remove("overflow-hidden");
+    document.documentElement.classList.toggle("overflow-hidden", open);
+    return () => document.documentElement.classList.remove("overflow-hidden");
   }, [open]);
 
-  // Click outside closes drawer on mobile
   useEffect(() => {
     const onDown = (e: MouseEvent) => {
       if (!open) return;
-      const el = drawerRef.current;
-      if (el && !el.contains(e.target as Node)) setOpen(false);
+      if (drawerRef.current && !drawerRef.current.contains(e.target as Node)) setOpen(false);
     };
     document.addEventListener("mousedown", onDown);
     return () => document.removeEventListener("mousedown", onDown);
   }, [open]);
 
-  // Escape closes menus
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -67,23 +57,16 @@ export default function GlobalNav() {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  // Close drawers when route changes
   useEffect(() => {
     setOpen(false);
     setCreativeOpen(false);
     setDesktopOpen(false);
   }, [pathname]);
 
-  // Active helper
   const isActive = (href: string) =>
     pathname === href || (href !== "/" && pathname.startsWith(href + "/"));
 
-  // ─────────────────────────────────────────────────────────────
-  // DESKTOP DROPDOWN (single source of truth + linger)
-  // - No pointer-events-none (ever)
-  // - No onBlur on container (avoids focus race)
-  // - Use pointer events enter/leave to manage a close timer
-  // ─────────────────────────────────────────────────────────────
+  // Desktop dropdown with linger
   const [desktopOpen, setDesktopOpen] = useState(false);
   const closeTimer = useRef<number | null>(null);
 
@@ -93,13 +76,10 @@ export default function GlobalNav() {
       closeTimer.current = null;
     }
   };
-
   const scheduleClose = (ms = 1500) => {
     clearCloseTimer();
     closeTimer.current = window.setTimeout(() => setDesktopOpen(false), ms);
   };
-
-  // Clean timers on unmount
   useEffect(() => () => clearCloseTimer(), []);
 
   return (
@@ -109,9 +89,8 @@ export default function GlobalNav() {
       className="fixed top-0 inset-x-0 z-[999] bg-black text-white"
       style={{ paddingTop: "env(safe-area-inset-top)" }}
     >
-      {/* Header bar */}
       <div className="mx-auto max-w-6xl px-6 h-14 flex items-center">
-        {/* Brand (left) */}
+        {/* Brand */}
         <Link
           href="/"
           className="text-sm font-semibold tracking-[0.18em] hover:text-gray-300 transition-colors
@@ -120,7 +99,7 @@ export default function GlobalNav() {
           PRIVÉE GROUP
         </Link>
 
-        {/* Desktop links (centered via flex instead of translate to avoid stacking context oddities) */}
+        {/* Desktop nav */}
         <div className="hidden md:flex flex-1 justify-center">
           <ul className="flex items-center gap-7">
             {links.map((item) => {
@@ -129,27 +108,21 @@ export default function GlobalNav() {
                   <li
                     key={item.label}
                     className="relative"
-                    // Keep open while pointer hovers trigger or panel; close after small delay when leaving.
                     onPointerEnter={() => {
                       clearCloseTimer();
                       setDesktopOpen(true);
                     }}
-                    onPointerLeave={() => {
-                      scheduleClose(1500); // linger ms
-                    }}
+                    onPointerLeave={() => scheduleClose(1500)}
                   >
-                    <button
-                      type="button"
-                      // Button for reliable a11y & focus; still navigable via submenu parent link below.
+                    {/* Trigger is the actual parent link */}
+                    <Link
+                      href={item.href ?? "/creative"}
                       aria-expanded={desktopOpen}
                       aria-haspopup="menu"
                       className={`inline-flex items-center gap-1 px-3 text-[10px] font-light tracking-[0.02em] leading-tight transition-colors
                                   outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded
                                   ${isActive(item.href ?? "/creative") ? "underline underline-offset-4" : "hover:text-gray-300"}`}
-                      onClick={() => {
-                        // Toggle on click; users can also go to /creative from first item in submenu.
-                        setDesktopOpen((v) => !v);
-                      }}
+                      onPointerDown={clearCloseTimer} // ensure no timer races on click
                     >
                       {item.label}
                       <svg
@@ -162,32 +135,17 @@ export default function GlobalNav() {
                       >
                         <path d="M6 9l6 6 6-6" />
                       </svg>
-                    </button>
+                    </Link>
 
-                    {/* Dropdown panel (no pointer-events-none, higher z-index) */}
+                    {/* Panel (only the two children; no extra "home") */}
                     {desktopOpen && (
                       <div
                         role="menu"
                         className="absolute left-0 top-full mt-2 rounded-md bg-black text-white shadow-lg ring-1 ring-white/10 border border-white/5 w-max z-[1000]"
                         onPointerEnter={clearCloseTimer}
-                        onPointerLeave={() => scheduleClose(400)} // shorter close after leaving panel feels snappy
+                        onPointerLeave={() => scheduleClose(400)}
                       >
                         <ul className="py-1">
-                          {/* Provide direct parent link as first item so users can reach /creative */}
-                          <li>
-                            <Link
-                              href={item.href ?? "/creative"}
-                              prefetch={false}
-                              role="menuitem"
-                              className={`block px-3 py-2 whitespace-nowrap text-[9px] font-light tracking-[0.02em] leading-tight hover:underline underline-offset-4 hover:opacity-80 transition ${
-                                isActive(item.href ?? "/creative") ? "opacity-90 underline underline-offset-4" : ""
-                              }`}
-                              onClick={() => setDesktopOpen(false)}
-                            >
-                              {item.label} HOME
-                            </Link>
-                          </li>
-
                           {item.children.map((c) => {
                             const active = isActive(c.href);
                             return (
@@ -216,7 +174,6 @@ export default function GlobalNav() {
                 );
               }
 
-              // Simple link (desktop)
               return (
                 <li key={item.href}>
                   <Link
@@ -235,7 +192,7 @@ export default function GlobalNav() {
           </ul>
         </div>
 
-        {/* Mobile hamburger (right) */}
+        {/* Mobile hamburger */}
         <div className="ml-auto md:hidden">
           <button
             type="button"
@@ -264,7 +221,7 @@ export default function GlobalNav() {
         </div>
       </div>
 
-      {/* Mobile backdrop (md+: hidden; never intercepts desktop clicks) */}
+      {/* Mobile backdrop */}
       <div
         className={`md:hidden fixed inset-0 ${open ? "bg-black/50 z-[998]" : "pointer-events-none bg-transparent"} transition-opacity duration-200`}
         style={{ opacity: open ? 1 : 0 }}
@@ -279,7 +236,6 @@ export default function GlobalNav() {
         className={`md:hidden fixed top-14 inset-x-0 z-[1000] bg-black ${open ? "block" : "hidden"}`}
       >
         <div className="mx-auto max-w-6xl px-6 py-4 flex flex-col gap-1">
-          {/* CREATIVE (Mobile): label navigates; caret toggles submenu */}
           <div>
             <div className="w-full flex items-stretch">
               <Link
@@ -338,7 +294,6 @@ export default function GlobalNav() {
             )}
           </div>
 
-          {/* Remaining top-level links */}
           {links
             .filter((l): l is { href: string; label: string } => "href" in l)
             .filter((l) => l.label !== "CREATIVE")
