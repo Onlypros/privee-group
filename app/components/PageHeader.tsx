@@ -56,9 +56,9 @@ export default function PageHeader({
   // NEW: Formatter for the title when we want an automatic mobile-only line break.
   // WHAT: If `title` is a string, we split it into two parts and insert a <br className="md:hidden" />.
   // WHY: Guarantees two lines on mobile, one line on desktop, without changing font sizes.
-  // HOW: We keep the existing H1 classes (so all H1s look the same), and add minimal span utilities:
+  // HOW: Keep H1 classes universal; add minimal span utilities:
   //      - md:whitespace-nowrap → force single line on desktop
-  //      - break-words/overflow-hidden → guard against weird fallback fonts in emulators
+  //      - break-normal → do NOT break inside words (prevents "PHOTOGRA / PHY")
   //      - [text-wrap:balance] → nicer line balance on supporting browsers
   const formattedTitle =
     mobileBreak && typeof title === "string"
@@ -72,7 +72,7 @@ export default function PageHeader({
             <span
               className="
                 md:whitespace-nowrap
-                break-words overflow-hidden [text-wrap:balance]
+                break-normal [text-wrap:balance]
                 leading-[1.05]
               "
             >
