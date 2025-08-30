@@ -58,7 +58,7 @@ export default function GlobalNav() {
     clearDesktopHideTimer();
     desktopHideTimer.current = window.setTimeout(() => {
       setDesktopCreativeOpen(false);
-    }, 3000); // 3s linger — tweak here if you want a different duration
+    }, 1500); // 1.5s linger — tweak here if you want a different duration
   };
 
   useEffect(() => {
