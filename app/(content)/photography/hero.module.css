@@ -1,0 +1,25 @@
+/* Scoped to Photography only — nothing global changes */
+.hero {
+  /* Stop the right-edge clipping without touching site-wide styles */
+  overflow: visible;
+}
+
+/* Make the large display word big-but-safe on small screens */
+.hero :where(h1, h2, .page-title) {
+  /* Fluid, capped size: stays large on desktop, never overflows mobile */
+  font-size: clamp(2.25rem, 10vw, 4.75rem);
+  line-height: 0.95;
+  letter-spacing: 0.01em;
+
+  /* If a single long word still wants to overflow, wrap instead */
+  overflow-wrap: anywhere;      /* allows breaking long words */
+  text-wrap: balance;           /* nicer multi-line breaks (safe fallback if unsupported) */
+}
+
+/* Optional: if your PageHeader renders the small "OUR" line separately,
+   this gives it sensible scaling without altering desktop look */
+.hero :where(.kicker, .eyebrow) {
+  font-size: clamp(1.25rem, 4.5vw, 2.25rem);
+  line-height: 1;
+  letter-spacing: 0.04em;
+}

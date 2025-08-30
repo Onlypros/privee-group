@@ -1,7 +1,8 @@
 // app/(content)/photography/page.tsx
 // Refactor notes:
-// - Uses PageHeader mobileBreak + italicRest (single source of truth).
-// - Keeps section structure and content unchanged.
+// - Scoped fix: prevent clipping only in Photography hero.
+// - Adds fluid, capped type & safe wrapping to the hero title.
+// - No other structure, components, or copy changed.
 
 import { seo } from "@/app/lib/seo";
 import PageHeader from "../../components/PageHeader";
@@ -13,6 +14,8 @@ import AudienceList from "../../components/AudienceList";
 import RequestCollab from "../../components/RequestCollab";
 import ViewArchiveButton from "../../components/ViewArchiveButton";
 
+import styles from "./hero.module.css"; // ⬅️ NEW (scoped CSS)
+
 export const metadata = seo({
   title: "Photography — PRIVÉE GROUP",
   description:
@@ -23,19 +26,21 @@ export const metadata = seo({
 export default function PhotographyPage() {
   return (
     <main className="px-6 bg-white text-black min-h-screen">
-      {/* Hero */}
-      <PageHeader
-        topPad="roomy"
-        title="OUR PHOTOGRAPHY"
-        mobileBreak      // mobile: two lines; desktop: one line
-        italicRest       // styles the rest (PHOTOGRAPHY) in serif/italic
-        lead={
-          <>
-            <p>PRIVÉE GROUP documents culture and identity through images.</p>
-            <p>Work spanning editorial, portraiture, lifestyle, movement, and environments.</p>
-          </>
-        }
-      />
+      {/* Hero (scoped overflow + fluid type to prevent clipping) */}
+      <section className={styles.hero}>
+        <PageHeader
+          topPad="roomy"
+          title="OUR PHOTOGRAPHY"
+          mobileBreak      // mobile: two lines; desktop: one line (unchanged)
+          italicRest       // styles the rest (PHOTOGRAPHY) in serif/italic (unchanged)
+          lead={
+            <>
+              <p>PRIVÉE GROUP documents culture and identity through images.</p>
+              <p>Work spanning editorial, portraiture, lifestyle, movement, and environments.</p>
+            </>
+          }
+        />
+      </section>
 
       <Divider />
 
