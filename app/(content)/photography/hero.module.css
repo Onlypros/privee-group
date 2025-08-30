@@ -1,25 +1,36 @@
-/* Scoped to Photography only — nothing global changes */
+/* app/(content)/photography/hero.module.css
+   Why: Prevent the big italic word from getting clipped or looking off-center
+   on mobile. Keep this scoped to the Photography hero so nothing else changes.
+*/
+
+/* Stop any local clipping inside the hero (some parents use overflow hidden). */
 .hero {
-  /* Stop the right-edge clipping without touching site-wide styles */
   overflow: visible;
 }
 
-/* Make the large display word big-but-safe on small screens */
-.hero :where(h1, h2, .page-title) {
-  /* Fluid, capped size: stays large on desktop, never overflows mobile */
-  font-size: clamp(2.25rem, 10vw, 4.75rem);
+/* Wrap that centers the heading and gives equal left/right gutters so italic
+   overhang doesn’t appear to "lean" right visually. Also caps readable width. */
+.titleWrap {
+  max-width: min(100%, 38rem); /* keep header narrow enough for balance */
+  margin-inline: auto;         /* center horizontally */
+  padding-inline: 1rem;        /* equal gutters on mobile */
+  text-align: center;          /* center text block */
+}
+
+/* Make the giant word large-but-safe on small screens.
+   'clamp' keeps it big on desktop but prevents overflow on mobile. */
+.titleWrap :where(h1, h2, .page-title) {
+  font-size: clamp(2.25rem, 9.5vw, 4.75rem);
   line-height: 0.95;
   letter-spacing: 0.01em;
 
-  /* If a single long word still wants to overflow, wrap instead */
-  overflow-wrap: anywhere;      /* allows breaking long words */
-  text-wrap: balance;           /* nicer multi-line breaks (safe fallback if unsupported) */
+  /* Prefer wrapping over overflow; 'balance' improves multi-line breaks. */
+  overflow-wrap: anywhere;
+  text-wrap: balance;
 }
 
-/* Optional: if your PageHeader renders the small "OUR" line separately,
-   this gives it sensible scaling without altering desktop look */
-.hero :where(.kicker, .eyebrow) {
+/* If PageHeader renders a smaller “OUR” line (kicker/eyebrow), scale it sanely. */
+.titleWrap :where(.kicker, .eyebrow) {
   font-size: clamp(1.25rem, 4.5vw, 2.25rem);
   line-height: 1;
-  letter-spacing: 0.04em;
 }

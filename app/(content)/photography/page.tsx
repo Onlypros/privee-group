@@ -14,7 +14,7 @@ import AudienceList from "../../components/AudienceList";
 import RequestCollab from "../../components/RequestCollab";
 import ViewArchiveButton from "../../components/ViewArchiveButton";
 
-import styles from "./hero.module.css"; // ⬅️ NEW (scoped CSS)
+import styles from "./hero.module.css"; // ⬅️ NEW: scoped styles for this page only
 
 export const metadata = seo({
   title: "Photography — PRIVÉE GROUP",
@@ -28,18 +28,23 @@ export default function PhotographyPage() {
     <main className="px-6 bg-white text-black min-h-screen">
       {/* Hero (scoped overflow + fluid type to prevent clipping) */}
       <section className={styles.hero}>
-        <PageHeader
-          topPad="roomy"
-          title="OUR PHOTOGRAPHY"
-          mobileBreak      // mobile: two lines; desktop: one line (unchanged)
-          italicRest       // styles the rest (PHOTOGRAPHY) in serif/italic (unchanged)
-          lead={
-            <>
-              <p>PRIVÉE GROUP documents culture and identity through images.</p>
-              <p>Work spanning editorial, portraiture, lifestyle, movement, and environments.</p>
-            </>
-          }
-        />
+        {/* ⬇️ NEW wrapper:
+            - Centers the header within a capped width and adds equal gutters.
+            - Solves the "lean right" look from italic overhang without touching globals. */}
+        <div className={styles.titleWrap}>
+          <PageHeader
+            topPad="roomy"
+            title="OUR PHOTOGRAPHY"
+            mobileBreak      // mobile: two lines; desktop: one line (unchanged)
+            italicRest       // styles the rest (PHOTOGRAPHY) in serif/italic (unchanged)
+            lead={
+              <>
+                <p>PRIVÉE GROUP documents culture and identity through images.</p>
+                <p>Work spanning editorial, portraiture, lifestyle, movement, and environments.</p>
+              </>
+            }
+          />
+        </div>
       </section>
 
       <Divider />
