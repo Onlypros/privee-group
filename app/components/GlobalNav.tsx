@@ -31,17 +31,46 @@ export default function GlobalNav() {
 
   /**
    * Mobile state only.
-   * We delete desktop dropdown JS and use CSS :hover/:focus-within instead.
-   * → less JS shipped, less hydration, better Lighthouse “unused JS”.
+   * We delete desktop dropdown JS and use CSS :hover/:focus-within instead,
+   * EXCEPT for a small linger enhancement on desktop (see below).
    */
   const [open, setOpen] = useState(false);
-  const [creativeOpen, setCreativeOpen] = useState(false);
+  const [creativeOpen, setCreativeOpen] = useState(false); // mobile submenu
   const drawerRef = useRef<HTMLDivElement | null>(null);
+
+  // ─────────────────────────────────────────────────────────────
+  // DESKTOP LINGER (NEW)
+  // WHAT: keep the desktop "CREATIVE" dropdown open for ~3s after hover leaves
+  // WHY: prevents accidental closes when moving cursor toward submenu
+  // HOW: small state machine + timeout; still preserves :hover/:focus for a11y
+  // ─────────────────────────────────────────────────────────────
+  const [desktopCreativeOpen, setDesktopCreativeOpen] = useState(false);
+  const desktopHideTimer = useRef<number | null>(null);
+
+  const clearDesktopHideTimer = () => {
+    if (desktopHideTimer.current) {
+      clearTimeout(desktopHideTimer.current);
+      desktopHideTimer.current = null;
+    }
+  };
+
+  const startDesktopHideTimer = () => {
+    clearDesktopHideTimer();
+    desktopHideTimer.current = window.setTimeout(() => {
+      setDesktopCreativeOpen(false);
+    }, 3000); // 3s linger — tweak here if you want a different duration
+  };
+
+  useEffect(() => {
+    // Cleanup any pending timers on unmount
+    return () => clearDesktopHideTimer();
+  }, []);
 
   // Close drawers when route changes
   useEffect(() => {
     setOpen(false);
     setCreativeOpen(false);
+    setDesktopCreativeOpen(false);
   }, [pathname]);
 
   // Prevent body scroll when mobile drawer is open
@@ -57,6 +86,7 @@ export default function GlobalNav() {
       if (e.key === "Escape") {
         setOpen(false);
         setCreativeOpen(false);
+        setDesktopCreativeOpen(false);
       }
     };
     window.addEventListener("keydown", onKey);
@@ -99,13 +129,31 @@ export default function GlobalNav() {
         <ul className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center gap-7">
           {links.map((item) => {
             if ("children" in item) {
-              /**
-               * DESKTOP DROPDOWN (CREATIVE)
-               * - No React state: CSS handles hover/focus visibility (group/focus-within).
-               * - Less JS → smaller bundle & faster hydration.
-               */
+              // ─────────────────────────────────────────────────────
+              // DESKTOP DROPDOWN (CREATIVE) with 3s linger (NEW)
+              // WHAT: CSS handles instant open on hover/focus; JS state holds it open after leave
+              // WHY: more forgiving UX; keyboard still works via :focus-within
+              // HOW: mouse enter/focus => open + clear timer; mouse leave/blur => start 3s close timer
+              // ─────────────────────────────────────────────────────
               return (
-                <li key={item.label} className="relative group">
+                <li
+                  key={item.label}
+                  className="relative group"
+                  onMouseEnter={() => {
+                    clearDesktopHideTimer();
+                    setDesktopCreativeOpen(true);
+                  }}
+                  onMouseLeave={() => {
+                    startDesktopHideTimer();
+                  }}
+                  onFocus={() => {
+                    clearDesktopHideTimer();
+                    setDesktopCreativeOpen(true);
+                  }}
+                  onBlur={() => {
+                    startDesktopHideTimer();
+                  }}
+                >
                   <Link
                     href={item.href ?? "/creative"}
                     prefetch={false} // non-critical; reduce “unused JS”
@@ -116,7 +164,9 @@ export default function GlobalNav() {
                   >
                     {item.label}
                     <svg
-                      className="h-3 w-3 transition-transform group-hover:rotate-180 group-focus-within:rotate-180"
+                      className={`h-3 w-3 transition-transform ${
+                        desktopCreativeOpen ? "rotate-180" : ""
+                      } group-hover:rotate-180 group-focus-within:rotate-180`}
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="currentColor"
@@ -127,13 +177,13 @@ export default function GlobalNav() {
                     </svg>
                   </Link>
 
-                  {/* CSS-driven dropdown (visible on hover/focus) */}
                   <div
                     role="menu"
-                    className="pointer-events-none opacity-0 translate-y-1 transition
+                    className={`pointer-events-none opacity-0 translate-y-1 transition
                                group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto
                                group-focus-within:opacity-100 group-focus-within:translate-y-0 group-focus-within:pointer-events-auto
-                               absolute left-0 top-full mt-2 rounded-md bg-black text-white shadow-lg ring-1 ring-white/10 border border-white/5 w-max z-50"
+                               absolute left-0 top-full mt-2 rounded-md bg-black text-white shadow-lg ring-1 ring-white/10 border border-white/5 w-max z-50
+                               ${desktopCreativeOpen ? "opacity-100 translate-y-0 pointer-events-auto" : ""}`}
                   >
                     <ul className="py-1">
                       {item.children.map((c) => {
@@ -145,6 +195,12 @@ export default function GlobalNav() {
                               prefetch={false} // non-critical
                               role="menuitem"
                               className="relative inline-flex px-3 py-2 whitespace-nowrap text-[9px] font-light tracking-[0.02em] leading-tight hover:underline underline-offset-4 hover:opacity-80 transition"
+                              onMouseEnter={() => clearDesktopHideTimer()}
+                              onFocus={() => clearDesktopHideTimer()}
+                              onClick={() => {
+                                // navigating away → no linger needed
+                                setDesktopCreativeOpen(false);
+                              }}
                             >
                               {active && (
                                 <span className="absolute left-0 top-1/2 -translate-y-1/2 h-3.5 w-[3px] bg-white rounded-sm" />
@@ -222,18 +278,44 @@ export default function GlobalNav() {
         className={`md:hidden fixed top-14 inset-x-0 z-[1000] bg-black ${open ? "block" : "hidden"}`}
       >
         <div className="mx-auto max-w-6xl px-6 py-4 flex flex-col gap-1">
-          {/* CREATIVE group toggles on mobile only */}
+          {/* ──────────────────────────────────────────────────────────────
+             CREATIVE (Mobile) — label navigates, caret toggles submenu (NEW)
+             WHAT: <Link> to /creative + sibling caret <button>
+             WHY: Users can go to parent page directly; caret just expands
+             HOW: preventDefault on caret; close drawer on navigation
+             ────────────────────────────────────────────────────────────── */}
           <div>
-            <button
-              onClick={() => setCreativeOpen((v) => !v)}
-              aria-expanded={creativeOpen}
-              aria-controls="creative-submenu"
-              className="w-full flex items-center justify-between py-2 text-base hover:text-gray-300
-                         focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded"
-            >
-              <span>CREATIVE</span>
-              <span className={`transition ${creativeOpen ? "rotate-180" : ""}`}>▾</span>
-            </button>
+            <div className="w-full flex items-stretch">
+              <Link
+                href="/creative"
+                prefetch={false}
+                onClick={() => {
+                  setOpen(false);
+                  setCreativeOpen(false);
+                }}
+                className="flex-1 py-2 text-base hover:text-gray-300
+                           focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded"
+                aria-current={isActive("/creative") ? "page" : undefined}
+              >
+                CREATIVE
+              </Link>
+
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault(); // ensure caret never triggers navigation
+                  setCreativeOpen((v) => !v); // toggle submenu visibility
+                }}
+                aria-expanded={creativeOpen}
+                aria-controls="creative-submenu"
+                aria-label={creativeOpen ? "Collapse Creative submenu" : "Expand Creative submenu"}
+                className="shrink-0 px-3 py-2 text-base hover:text-gray-300
+                           focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded"
+              >
+                <span className={`inline-block transition ${creativeOpen ? "rotate-180" : ""}`}>▾</span>
+              </button>
+            </div>
+
             {creativeOpen && (
               <ul id="creative-submenu" className="pl-0 border-l-0 space-y-1">
                 <li>
@@ -241,7 +323,7 @@ export default function GlobalNav() {
                     href="/branding"
                     prefetch={false}
                     className={`block py-2 text-sm hover:text-gray-300 ${isActive("/branding") ? "underline underline-offset-4" : ""}`}
-                    onClick={() => setOpen(false)}
+                    onClick={() => setOpen(false)} // close drawer after navigation
                   >
                     BRANDING
                   </Link>
@@ -251,7 +333,7 @@ export default function GlobalNav() {
                     href="/photography"
                     prefetch={false}
                     className={`block py-2 text-sm hover:text-gray-300 ${isActive("/photography") ? "underline underline-offset-4" : ""}`}
-                    onClick={() => setOpen(false)}
+                    onClick={() => setOpen(false)} // close drawer after navigation
                   >
                     PHOTOGRAPHY
                   </Link>
